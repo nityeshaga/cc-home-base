@@ -96,7 +96,7 @@
                         <a href="https://curatedconnections.io" class="text-blue-600 hover:underline" target="_blank">Curated Connections</a> is a $49/mo community matchmaking SaaS — automated 1-on-1 matching, member directories, accountability challenges, group events. Built on Rails + Turbo/Stimulus. The kind of product that benefits enormously from an always-on AI handling the routine stuff.
                     </p>
                     <p>
-                        <strong class="text-ink">The experiment:</strong> take a spare MacBook Air M1, set it up as a server, install Claude Code with a Max subscription ($200/mo), and create an AI employee. It handles routine maintenance, monitors errors, runs database queries, drafts support responses — and eventually does things that directly grow revenue. All accessible through Slack, just like messaging a teammate.
+                        <strong class="text-ink">The experiment:</strong> can an AI employee 10x the revenue of a two-person SaaS? Not by doing busywork — by doing <em>everything</em>. Product development, customer support, log investigation, marketing asset creation, conversion optimization, onboarding automation, content writing, A/B testing, bug fixes, feature builds. It's smarter than any individual human at every one of these tasks, and it's only getting smarter through 2026. The infrastructure is a MacBook Air M1, Claude Code on a $200/mo Max subscription, and Slack as the interface. The question isn't whether it can help — it's how far you can push it.
                     </p>
                     <p>
                         <strong class="text-ink">Why Claude Code and not the API or OpenClaw?</strong> Anthropic's ToS prohibit using a Max subscription with third-party tools like OpenClaw. Claude Code is Anthropic's own CLI — running it via a Slack bot is fully compliant. Flat $200/mo for Claude Opus instead of unpredictable API bills.
@@ -596,40 +596,55 @@
                 <span class="text-xs font-bold tracking-widest uppercase text-ink-light">Phase 5</span>
                 <span class="badge-both text-xs font-medium px-2 py-0.5 rounded-full">Nityesh + Piyush</span>
             </div>
-            <h2 class="text-2xl font-bold mb-2">Growing the AI employee</h2>
-            <p class="text-ink-muted mb-8">Start simple, add capabilities as you gain confidence.</p>
+            <h2 class="text-2xl font-bold mb-2">The 10x roadmap</h2>
+            <p class="text-ink-muted mb-8">This isn't a helper. It's your third cofounder — one that never sleeps, knows the entire codebase, and gets smarter every month. Here's how you ramp it up.</p>
 
             <div data-role="shared" class="space-y-4">
                 <div class="border border-slate-100 rounded-xl p-5">
                     <div class="flex items-center gap-2 mb-1">
                         <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Week 1</span>
-                        <h3 class="font-semibold">Basic support & monitoring</h3>
+                        <h3 class="font-semibold">Learn the business</h3>
                     </div>
-                    <p class="text-ink-muted text-[0.92rem]">Answer questions about the codebase. Check error logs. Draft support responses. Run read-only database queries. Get comfortable with the workflow.</p>
+                    <p class="text-ink-muted text-[0.92rem]">Write a comprehensive CLAUDE.md — the AI's employee handbook. Business model, codebase architecture, deployment process, key metrics, customer personas, common support issues, tone of voice. The better this handbook, the more autonomous it becomes. Start using it for codebase questions and support draft responses to build trust.</p>
                 </div>
 
                 <div class="border border-slate-100 rounded-xl p-5">
                     <div class="flex items-center gap-2 mb-1">
                         <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Week 2-3</span>
-                        <h3 class="font-semibold">Routine maintenance</h3>
+                        <h3 class="font-semibold">Own customer support</h3>
                     </div>
-                    <p class="text-ink-muted text-[0.92rem]">Fix small bugs (review before merge). Run scheduled health checks. Monitor signup/churn metrics. Auto-generate weekly analytics summaries.</p>
+                    <p class="text-ink-muted text-[0.92rem]">Investigate bugs end-to-end — read logs, trace the code, write the fix, open a PR. Draft every support response. Respond to feature requests with technical assessments. Monitor error rates and proactively flag issues before customers report them. <strong class="text-ink">Goal: zero support backlog.</strong></p>
                 </div>
 
                 <div class="border border-slate-100 rounded-xl p-5">
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">Month 2+</span>
-                        <h3 class="font-semibold">Revenue growth experiments</h3>
+                        <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">Month 1-2</span>
+                        <h3 class="font-semibold">Ship features, fast</h3>
                     </div>
-                    <p class="text-ink-muted text-[0.92rem]">A/B test landing page copy. Automate onboarding emails. Build feature prototypes. Monitor conversion funnels. Draft marketing content. The AI handles execution while you focus on strategy.</p>
+                    <p class="text-ink-muted text-[0.92rem]">Build features you've been putting off. Improve the matching algorithm. Add the onboarding flow you've been meaning to build. Implement integrations customers have asked for. You describe what you want in Slack, it writes the code, you review and merge. <strong class="text-ink">Goal: ship weekly what used to take a month.</strong></p>
                 </div>
 
                 <div class="border border-slate-100 rounded-xl p-5">
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">Ongoing</span>
-                        <h3 class="font-semibold">Browser automation</h3>
+                        <span class="text-xs font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full">Month 2-3</span>
+                        <h3 class="font-semibold">Growth engine</h3>
                     </div>
-                    <p class="text-ink-muted text-[0.92rem]">Since it's a full MacBook with a GUI, use <strong class="text-ink">Vercel's Agent Browser</strong> — a purpose-built browser automation tool for AI agents, much more capable than raw Playwright. Check admin dashboards, take screenshots of analytics, log into services, interact with web UIs that don't have APIs. Open the lid + Screen Sharing to watch it work.</p>
+                    <p class="text-ink-muted text-[0.92rem]">A/B test landing page copy and measure conversion. Rewrite onboarding emails based on churn data. Generate case studies from customer usage patterns. Create social media content, blog posts, comparison pages. Analyze what your best customers have in common and target more like them. <strong class="text-ink">Goal: marketing on autopilot.</strong></p>
+                </div>
+
+                <div class="border border-slate-100 rounded-xl p-5">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">Month 3+</span>
+                        <h3 class="font-semibold">Full autonomy</h3>
+                    </div>
+                    <p class="text-ink-muted text-[0.92rem]">Scheduled morning briefings with key metrics, overnight error reports, and suggested priorities. Proactive feature suggestions based on customer behavior. Use <strong class="text-ink">Vercel's Agent Browser</strong> for tasks that need a real browser — check competitor sites, log into analytics dashboards, interact with third-party admin panels. The AI doesn't just execute your instructions anymore — it identifies what needs doing and proposes it. <strong class="text-ink">Goal: you and Piyush focus purely on vision and strategy.</strong></p>
+                </div>
+
+                <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 text-white">
+                    <h3 class="font-bold mb-2">The math</h3>
+                    <p class="text-slate-300 text-[0.92rem] leading-relaxed">
+                        A $200/mo AI employee that works 24/7, never takes a day off, knows your entire codebase by heart, and gets smarter every month. It can do the work of a support rep, a junior developer, a marketing intern, and a data analyst — simultaneously. If it helps you ship one feature that converts even a handful of new customers, or saves you the hours that let you focus on the deals that matter, it pays for itself many times over. The question isn't ROI — it's how fast you can give it more to do.
+                    </p>
                 </div>
             </div>
         </section>

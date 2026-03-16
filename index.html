@@ -132,7 +132,7 @@
 
                     <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 text-white w-full max-w-md">
                         <div class="font-bold mb-1">MacBook Air M1 — Home</div>
-                        <div class="text-slate-400 text-xs mb-4">Always on. Lid closed. Plugged in. Same household — walk over if needed.</div>
+                        <div class="text-slate-400 text-xs mb-4">Always on. Lid closed. Plugged in. Tailscale for access from anywhere.</div>
                         <div class="grid grid-cols-2 gap-2 text-xs">
                             <div class="bg-slate-700/50 rounded-lg px-3 py-2">Claude Code <span class="text-slate-500">CLI</span></div>
                             <div class="bg-slate-700/50 rounded-lg px-3 py-2">Slack Bot <span class="text-slate-500">Python</span></div>
@@ -170,7 +170,26 @@
                         <div class="px-5 pb-4 text-[0.92rem] text-ink-muted leading-relaxed">
                             <strong class="text-ink">What is it?</strong> SSH lets you open a terminal on another computer over the network. You type commands on your main machine, they execute on the MacBook Air. Text only — no desktop, no mouse.
                             <br><br>
-                            <strong class="text-ink">Do we need it?</strong> Since you're in the same house, you can always just open the lid. But SSH is handy for quick checks from your main machine without walking over — check logs, restart the bot, pull code updates. Enable it; you'll use it more than you think.
+                            <strong class="text-ink">Do we need it?</strong> Yes — for quick admin from your main machines without walking over, and essential when you're travelling. Combined with Tailscale, you can SSH into the MacBook Air from a coffee shop, a co-working space, or another city.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-slate-150 rounded-xl overflow-hidden">
+                    <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-surface-dim transition-colors">
+                        <div>
+                            <span class="font-semibold">Tailscale</span>
+                            <span class="text-ink-light text-sm ml-2">Private network between your devices</span>
+                        </div>
+                        <svg class="accordion-chevron w-5 h-5 text-ink-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="px-5 pb-4 text-[0.92rem] text-ink-muted leading-relaxed">
+                            <strong class="text-ink">What is it?</strong> Tailscale creates an invisible, encrypted tunnel between your devices. Your laptops and the MacBook Air join the same private network — as if they were on the same WiFi, even when you're in different cities. Each device gets a stable address (like 100.x.x.x) that never changes.
+                            <br><br>
+                            <strong class="text-ink">Why do we need it?</strong> At home, you can SSH using the local network. But the moment you step out — a coffee shop, a co-working space, travelling — your home network is unreachable. Tailscale makes the MacBook Air accessible from anywhere in the world, securely, without exposing anything to the public internet. Free for personal use.
+                            <br><br>
+                            <strong class="text-ink">Analogy:</strong> If SSH is a phone call, Tailscale is the phone network. SSH needs a way to reach the MacBook Air — at home that's your WiFi, but outside the house, Tailscale provides that path.
                         </div>
                     </div>
                 </div>
@@ -318,9 +337,25 @@
                     </div>
                 </div>
 
-                <!-- Step 3: Clamshell -->
+                <!-- Step 3: Tailscale -->
                 <div>
-                    <h3 class="font-semibold mb-3">3. Keep it awake with the lid closed</h3>
+                    <h3 class="font-semibold mb-3">3. Install Tailscale on all three machines</h3>
+                    <p class="text-ink-muted text-[0.92rem] mb-3">Tailscale lets you both access the MacBook Air from anywhere — home, a coffee shop, travelling. Install it on all three machines:</p>
+                    <ul class="checklist space-y-2.5 text-[0.92rem] text-ink-muted">
+                        <li>Open the <strong class="text-ink">Mac App Store</strong> on the MacBook Air, search for <strong class="text-ink">Tailscale</strong>, install it</li>
+                        <li>Open Tailscale, sign in with a shared account (Google, GitHub, or Apple ID)</li>
+                        <li>Do the same on <strong class="text-ink">Nityesh's MacBook</strong> and <strong class="text-ink">Piyush's machine</strong> — same account</li>
+                        <li>All three devices now appear in your Tailscale dashboard with stable IPs like <strong class="text-ink">100.x.x.x</strong></li>
+                        <li>In Tailscale preferences on the MacBook Air, enable <strong class="text-ink">"Start Tailscale when I log in"</strong></li>
+                    </ul>
+                    <div class="mt-3 text-xs text-ink-light bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">
+                        <strong class="text-blue-800">At home</strong> you can SSH using the local address (<code class="bg-blue-100/50 px-1 py-0.5 rounded text-xs font-mono">cc@macbook-air.local</code>). <strong class="text-blue-800">Outside</strong> use the Tailscale IP (<code class="bg-blue-100/50 px-1 py-0.5 rounded text-xs font-mono">cc@100.x.x.x</code>). Both always work.
+                    </div>
+                </div>
+
+                <!-- Step 4: Clamshell -->
+                <div>
+                    <h3 class="font-semibold mb-3">4. Keep it awake with the lid closed</h3>
                     <p class="text-ink-muted text-[0.92rem] mb-3">Open Terminal and run:</p>
                     <div class="code-block">
                         <span class="comment"># Prevent sleep entirely — even with the lid closed</span><br>
@@ -336,7 +371,7 @@
 
                 <!-- Step 4: Install core tools -->
                 <div>
-                    <h3 class="font-semibold mb-3">4. Install core tools</h3>
+                    <h3 class="font-semibold mb-3">5. Install core tools</h3>
                     <div class="code-block">
                         <span class="comment"># Install Homebrew (package manager — makes installing everything else easy)</span><br>
                         <span class="cmd">/bin/bash</span> -c <span class="string">"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</span><br><br>
@@ -352,7 +387,7 @@
 
                 <!-- Step 5: Physical placement -->
                 <div>
-                    <h3 class="font-semibold mb-3">5. Set it up physically</h3>
+                    <h3 class="font-semibold mb-3">6. Set it up physically</h3>
                     <ul class="checklist space-y-2.5 text-[0.92rem] text-ink-muted">
                         <li>Plug into <strong class="text-ink">power</strong> (always — use a reliable outlet)</li>
                         <li>Connect to your home <strong class="text-ink">WiFi</strong> (or ethernet via USB-C adapter if you have one — more reliable)</li>
@@ -610,8 +645,9 @@
 
             <div data-role="shared">
                 <div class="code-block text-[0.78rem]">
-                    <span class="comment"># SSH in from your main machine (same WiFi)</span><br>
-                    <span class="cmd">ssh</span> cc@macbook-air.local<br><br>
+                    <span class="comment"># SSH in — at home (local) or anywhere (Tailscale)</span><br>
+                    <span class="cmd">ssh</span> cc@macbook-air.local      <span class="comment"># at home</span><br>
+                    <span class="cmd">ssh</span> cc@100.x.x.x              <span class="comment"># from anywhere via Tailscale</span><br><br>
 
                     <span class="comment"># Check bot status</span><br>
                     <span class="cmd">launchctl</span> list | <span class="cmd">grep</span> cc<br>
@@ -632,8 +668,9 @@
                     <span class="cmd">cd</span> ~/Projects/curated-connections && <span class="cmd">claude</span><br>
                     <span class="comment"># Detach: Ctrl+B then D | Reattach: tmux attach -t claude</span><br><br>
 
-                    <span class="comment"># Full desktop access (from any Mac on the same network)</span><br>
-                    <span class="comment"># Finder → Go → Connect to Server → vnc://macbook-air.local</span><br><br>
+                    <span class="comment"># Full desktop access (home or via Tailscale)</span><br>
+                    <span class="comment"># Finder → Go → Connect to Server → vnc://macbook-air.local (home)</span><br>
+                    <span class="comment"># Finder → Go → Connect to Server → vnc://100.x.x.x (anywhere)</span><br><br>
 
                     <span class="comment"># Or just walk over and open the lid :)</span>
                 </div>

@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Home Base — Curated Connections</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nityesh: { light: '#eff6ff', DEFAULT: '#3b82f6', dark: '#1d4ed8', border: '#bfdbfe' },
+                        piyush: { light: '#fef3c7', DEFAULT: '#f59e0b', dark: '#b45309', border: '#fde68a' },
+                        surface: { DEFAULT: '#ffffff', muted: '#f8fafc', dim: '#f1f5f9' },
+                        ink: { DEFAULT: '#0f172a', muted: '#475569', light: '#94a3b8' },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'SF Mono', 'Menlo', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        [data-role] { transition: opacity 0.3s ease, max-height 0.4s ease, margin 0.3s ease, padding 0.3s ease; overflow: hidden; }
+        .view-nityesh [data-role="piyush"] { opacity: 0; max-height: 0 !important; margin: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; pointer-events: none; }
+        .view-piyush [data-role="nityesh"] { opacity: 0; max-height: 0 !important; margin: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; pointer-events: none; }
+        [data-role="both"], .view-nityesh [data-role="nityesh"], .view-piyush [data-role="piyush"], .view-all [data-role] { opacity: 1; max-height: 2000px; }
+
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+        .accordion-content.open { max-height: 800px; }
+        .accordion-chevron { transition: transform 0.25s ease; }
+        .accordion-chevron.open { transform: rotate(180deg); }
+
+        .badge-nityesh { background: #dbeafe; color: #1d4ed8; border: 1px solid #bfdbfe; }
+        .badge-piyush { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+        .badge-both { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+
+        .code-block { background: #0f172a; color: #e2e8f0; border-radius: 0.75rem; padding: 1.25rem; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 1.7; overflow-x: auto; }
+        .code-block .comment { color: #64748b; }
+        .code-block .cmd { color: #38bdf8; }
+        .code-block .flag { color: #a78bfa; }
+        .code-block .string { color: #34d399; }
+
+        .checklist li { position: relative; padding-left: 2rem; }
+        .checklist li::before { content: ''; position: absolute; left: 0; top: 0.35rem; width: 1.25rem; height: 1.25rem; border: 2px solid #cbd5e1; border-radius: 0.375rem; }
+
+        html { scroll-behavior: smooth; }
+        .nav-stuck { box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    </style>
+</head>
+<body class="bg-surface font-sans text-ink antialiased view-all">
+
+    <!-- Navigation -->
+    <nav id="nav" class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-slate-100">
+        <div class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-amber-500 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                </div>
+                <span class="font-bold text-sm tracking-tight">CC Home Base</span>
+            </div>
+
+            <div class="flex items-center bg-slate-100 rounded-full p-1 text-sm">
+                <button onclick="setView('all')" id="btn-all" class="px-3 py-1.5 rounded-full font-medium transition-all bg-white shadow-sm text-ink">All</button>
+                <button onclick="setView('nityesh')" id="btn-nityesh" class="px-3 py-1.5 rounded-full font-medium transition-all text-ink-muted hover:text-ink">For Nityesh</button>
+                <button onclick="setView('piyush')" id="btn-piyush" class="px-3 py-1.5 rounded-full font-medium transition-all text-ink-muted hover:text-ink">For Piyush</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-3xl mx-auto px-6">
+
+        <!-- Hero -->
+        <section class="pt-16 pb-12">
+            <p class="text-sm font-medium text-ink-muted tracking-wide uppercase mb-4">Curated Connections Infrastructure</p>
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.1] mb-6">
+                Your first<br>
+                <span class="bg-gradient-to-r from-blue-600 to-amber-500 bg-clip-text text-transparent">AI employee.</span>
+            </h1>
+            <p class="text-lg text-ink-muted leading-relaxed max-w-2xl">
+                A MacBook Air M1 running as an always-on server in India. Your AI employee handles routine maintenance, monitors the SaaS, and helps grow Curated Connections — while you and Piyush focus on the big moves.
+            </p>
+        </section>
+
+        <!-- The Idea -->
+        <section class="pb-12">
+            <div class="bg-surface-dim rounded-2xl p-6 border border-slate-100">
+                <h3 class="font-semibold text-sm uppercase tracking-wide text-ink-muted mb-3">The idea</h3>
+                <div class="text-ink-muted leading-relaxed text-[0.95rem] space-y-3">
+                    <p>
+                        Curated Connections is a $49/mo community matchmaking SaaS — automated 1-on-1 matching, member directories, accountability challenges, group events. It runs on Rails + Turbo/Stimulus. The kind of product that benefits enormously from an always-on AI that can handle the repetitive stuff.
+                    </p>
+                    <p>
+                        <strong class="text-ink">The experiment:</strong> take a spare MacBook Air M1, set it up as a server, install Claude Code with a Max subscription ($200/mo), and create an AI employee that handles routine maintenance — monitoring errors, responding to support, running database tasks, checking analytics, and eventually doing things that directly grow revenue.
+                    </p>
+                    <p>
+                        <strong class="text-ink">Why Claude Code and not the API?</strong> Anthropic's ToS prohibit using a Max subscription with third-party tools like OpenClaw. But Claude Code is Anthropic's own CLI — so running it via a Slack bot is fully compliant. You get Claude Opus at a flat $200/mo instead of unpredictable API bills.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Architecture -->
+        <section class="pb-16">
+            <h2 class="text-2xl font-bold mb-8">How it works</h2>
+            <div class="bg-surface-dim rounded-2xl p-8 border border-slate-100">
+                <div class="flex flex-col items-center gap-4 text-sm">
+                    <div class="flex items-center gap-6 w-full justify-center flex-wrap">
+                        <div class="bg-blue-50 border border-blue-200 rounded-xl px-5 py-3 text-center">
+                            <div class="font-semibold text-blue-800">Nityesh</div>
+                            <div class="text-blue-600 text-xs">Slack / SSH</div>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-200 rounded-xl px-5 py-3 text-center">
+                            <div class="font-semibold text-amber-800">Piyush</div>
+                            <div class="text-amber-600 text-xs">Slack</div>
+                        </div>
+                    </div>
+
+                    <svg class="w-5 h-8 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 20 32"><path stroke-linecap="round" stroke-width="2" d="M10 0v28m-5-5l5 5 5-5"/></svg>
+
+                    <div class="bg-white border border-slate-200 rounded-xl px-6 py-3 text-center shadow-sm w-full max-w-sm">
+                        <div class="font-semibold">Slack</div>
+                        <div class="text-ink-light text-xs">DM your AI employee, get responses with full context</div>
+                    </div>
+
+                    <svg class="w-5 h-8 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 20 32"><path stroke-linecap="round" stroke-width="2" d="M10 0v28m-5-5l5 5 5-5"/></svg>
+
+                    <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 text-white w-full max-w-md">
+                        <div class="font-bold mb-1">MacBook Air M1 — India</div>
+                        <div class="text-slate-400 text-xs mb-4">Always on. Plugged in. Auto-restarts. You have physical access.</div>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div class="bg-slate-700/50 rounded-lg px-3 py-2">Claude Code <span class="text-slate-500">CLI</span></div>
+                            <div class="bg-slate-700/50 rounded-lg px-3 py-2">Slack Bot <span class="text-slate-500">Python</span></div>
+                            <div class="bg-slate-700/50 rounded-lg px-3 py-2">Rails Console <span class="text-slate-500">Access</span></div>
+                            <div class="bg-slate-700/50 rounded-lg px-3 py-2">Browser <span class="text-slate-500">Automation</span></div>
+                        </div>
+                        <div class="mt-3 text-xs text-slate-500 border-t border-slate-700 pt-3">
+                            launchd + Socket Mode + CLAUDE.md context for Curated Connections
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Concepts Explained -->
+        <section class="pb-16">
+            <h2 class="text-2xl font-bold mb-2">Concepts explained</h2>
+            <p class="text-ink-muted mb-8">For when either of you wants to understand what's actually going on. Click to expand.</p>
+
+            <div class="space-y-3" id="concepts">
+                <div class="border border-slate-150 rounded-xl overflow-hidden">
+                    <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-surface-dim transition-colors">
+                        <div>
+                            <span class="font-semibold">SSH</span>
+                            <span class="text-ink-light text-sm ml-2">Remote terminal access</span>
+                        </div>
+                        <svg class="accordion-chevron w-5 h-5 text-ink-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="px-5 pb-4 text-[0.92rem] text-ink-muted leading-relaxed">
+                            <strong class="text-ink">What is it?</strong> SSH lets you open a terminal on another computer. You type commands on your machine, they execute on the MacBook Air. Text only — no desktop, no mouse. Like a phone call to the machine's command line.
+                            <br><br>
+                            <strong class="text-ink">Do we need it here?</strong> Since the MacBook Air is physically with you, SSH is optional — you could just open the lid. But it's handy for quick checks without disturbing the setup, and essential if Piyush needs access from his machine.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-slate-150 rounded-xl overflow-hidden">
+                    <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-surface-dim transition-colors">
+                        <div>
+                            <span class="font-semibold">launchd</span>
+                            <span class="text-ink-light text-sm ml-2">macOS process supervisor</span>
+                        </div>
+                        <svg class="accordion-chevron w-5 h-5 text-ink-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="px-5 pb-4 text-[0.92rem] text-ink-muted leading-relaxed">
+                            <strong class="text-ink">What is it?</strong> macOS's built-in system for keeping programs alive. You write a small config file that says "run this script, keep it alive forever, restart it if it crashes, start it when the computer boots." Apple uses it for its own services.
+                            <br><br>
+                            <strong class="text-ink">Why do we need it?</strong> This is what makes the Slack bot truly always-on. Bot crashes at 3am? launchd restarts it in seconds. MacBook reboots after a power outage? launchd starts the bot automatically. No human intervention.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-slate-150 rounded-xl overflow-hidden">
+                    <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-surface-dim transition-colors">
+                        <div>
+                            <span class="font-semibold">Socket Mode</span>
+                            <span class="text-ink-light text-sm ml-2">How Slack connects to our bot</span>
+                        </div>
+                        <svg class="accordion-chevron w-5 h-5 text-ink-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="px-5 pb-4 text-[0.92rem] text-ink-muted leading-relaxed">
+                            <strong class="text-ink">What is it?</strong> Normally, Slack bots need a public URL. Socket Mode flips this — our bot reaches out to Slack and holds the connection open. No public URL, no firewall config.
+                            <br><br>
+                            <strong class="text-ink">Why do we need it?</strong> The MacBook Air is on a home network with no public address. Socket Mode means the bot works perfectly — it only makes outbound connections, which always work regardless of your router setup.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-slate-150 rounded-xl overflow-hidden">
+                    <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-surface-dim transition-colors">
+                        <div>
+                            <span class="font-semibold">Claude Code CLI</span>
+                            <span class="text-ink-light text-sm ml-2">The engine behind everything</span>
+                        </div>
+                        <svg class="accordion-chevron w-5 h-5 text-ink-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="px-5 pb-4 text-[0.92rem] text-ink-muted leading-relaxed">
+                            <strong class="text-ink">What is it?</strong> Anthropic's <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">claude</code> command-line tool. When the Slack bot receives a message, it runs <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">claude -p "your message"</code> — giving Claude access to your codebase, CLAUDE.md context, and any tools you configure. Powered by the $200/month Max subscription — flat rate, no per-message costs.
+                            <br><br>
+                            <strong class="text-ink">Why not the API?</strong> The CLI inherits everything — your project context, installed tools, plugins. The API would require rebuilding all of that. Plus, Max is flat-rate vs unpredictable API billing.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-slate-150 rounded-xl overflow-hidden">
+                    <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-surface-dim transition-colors">
+                        <div>
+                            <span class="font-semibold">CLAUDE.md</span>
+                            <span class="text-ink-light text-sm ml-2">Your AI employee's handbook</span>
+                        </div>
+                        <svg class="accordion-chevron w-5 h-5 text-ink-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="px-5 pb-4 text-[0.92rem] text-ink-muted leading-relaxed">
+                            <strong class="text-ink">What is it?</strong> A markdown file in your project root that Claude Code reads automatically. It's like an employee handbook — you write the business context, codebase conventions, deployment process, common tasks, and any standing instructions. Every time Claude responds, it has this context.
+                            <br><br>
+                            <strong class="text-ink">For Curated Connections:</strong> this would include your Rails architecture, database schema highlights, deployment process (Render? Heroku?), common maintenance tasks, how to check analytics, support response templates, and anything else your AI employee needs to know to be effective.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 1: Hardware Setup -->
+        <section class="pb-16">
+            <div class="flex items-center gap-3 mb-2">
+                <span class="text-xs font-bold tracking-widest uppercase text-ink-light">Phase 1</span>
+                <span class="badge-nityesh text-xs font-medium px-2 py-0.5 rounded-full">Nityesh</span>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">MacBook Air setup</h2>
+            <p class="text-ink-muted mb-8">Factory reset, configure for always-on use. ~30 minutes.</p>
+
+            <div data-role="nityesh" class="space-y-6">
+
+                <div>
+                    <h3 class="font-semibold mb-3">1. Factory reset</h3>
+                    <ul class="checklist space-y-2.5 text-[0.92rem] text-ink-muted">
+                        <li>Back up anything you want to keep</li>
+                        <li>Go to <strong class="text-ink">System Settings &rarr; General &rarr; Transfer or Reset &rarr; Erase All Content and Settings</strong></li>
+                        <li>Go through the macOS setup wizard — create a user account (e.g., <strong class="text-ink">cc</strong> or <strong class="text-ink">nityesh</strong>)</li>
+                        <li>Sign in with an Apple ID (needed for App Store)</li>
+                        <li>When asked about FileVault: <strong class="text-ink">skip it / turn it off</strong>
+                            <div class="mt-1 text-xs text-ink-light bg-amber-50 border border-amber-100 rounded-lg px-3 py-2">
+                                If the MacBook restarts after a power loss, FileVault shows an unlock screen. Since it might restart unattended, skip encryption so it boots straight to the desktop.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold mb-3">2. Configure for always-on use</h3>
+                    <p class="text-ink-muted text-sm mb-3">Open <strong class="text-ink">System Settings</strong>:</p>
+
+                    <div class="space-y-4">
+                        <div class="bg-surface-dim rounded-xl p-4">
+                            <div class="font-medium text-sm mb-2">Energy / Battery</div>
+                            <ul class="checklist space-y-2 text-[0.92rem] text-ink-muted">
+                                <li><strong class="text-ink">Prevent automatic sleeping when the display is off</strong> — ON</li>
+                                <li><strong class="text-ink">Wake for network access</strong> — ON</li>
+                                <li><strong class="text-ink">Optimized Battery Charging</strong> — ON (protects the battery while plugged in 24/7)</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-surface-dim rounded-xl p-4">
+                            <div class="font-medium text-sm mb-2">General &rarr; Sharing</div>
+                            <ul class="checklist space-y-2 text-[0.92rem] text-ink-muted">
+                                <li><strong class="text-ink">Remote Login</strong> (SSH) — ON (so Piyush can connect, and for quick admin from your main machine)</li>
+                                <li><strong class="text-ink">Screen Sharing</strong> — ON (full desktop access from another Mac)</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-surface-dim rounded-xl p-4">
+                            <div class="font-medium text-sm mb-2">Users & Groups</div>
+                            <ul class="checklist space-y-2 text-[0.92rem] text-ink-muted">
+                                <li><strong class="text-ink">Automatic login</strong> — set to your user account</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-surface-dim rounded-xl p-4">
+                            <div class="font-medium text-sm mb-2">Lock Screen</div>
+                            <ul class="checklist space-y-2 text-[0.92rem] text-ink-muted">
+                                <li><strong class="text-ink">Require password after screen saver</strong> — set to a long delay or "Never" (so screen sharing works without auth prompts)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold mb-3">3. Keep it awake with the lid closed</h3>
+                    <p class="text-ink-muted text-[0.92rem] mb-3">The MacBook Air will run as a server with the lid closed (clamshell mode). Open Terminal and run:</p>
+                    <div class="code-block">
+                        <span class="comment"># Prevent sleep entirely — even with the lid closed</span><br>
+                        <span class="cmd">sudo</span> pmset <span class="flag">-a</span> disablesleep 1<br><br>
+                        <span class="comment"># Verify the setting</span><br>
+                        <span class="cmd">pmset</span> <span class="flag">-g</span><br><br>
+                        <span class="comment"># To reverse later if needed:</span><br>
+                        <span class="comment"># sudo pmset -a disablesleep 0</span>
+                    </div>
+                    <div class="mt-3 text-xs text-ink-light bg-amber-50 border border-amber-100 rounded-lg px-3 py-2">
+                        <strong class="text-amber-800">Battery note:</strong> Running plugged in 24/7 can cause battery swelling over months/years. Keep "Optimized Battery Charging" enabled. Worst case, a battery replacement is $100-150. Acceptable trade-off for an always-on AI employee.
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold mb-3">4. Physical setup</h3>
+                    <ul class="checklist space-y-2.5 text-[0.92rem] text-ink-muted">
+                        <li>Plug into <strong class="text-ink">power</strong> (always)</li>
+                        <li>Connect to <strong class="text-ink">ethernet</strong> if possible (more reliable than WiFi) — a USB-C to Ethernet adapter works</li>
+                        <li>Close the lid, tuck it somewhere out of the way</li>
+                        <li>Optional: plug into a <strong class="text-ink">power strip with a switch</strong> for easy power cycling</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 2: Software Setup -->
+        <section class="pb-16">
+            <div class="flex items-center gap-3 mb-2">
+                <span class="text-xs font-bold tracking-widest uppercase text-ink-light">Phase 2</span>
+                <span class="badge-nityesh text-xs font-medium px-2 py-0.5 rounded-full">Nityesh</span>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Software setup</h2>
+            <p class="text-ink-muted mb-8">Install everything the AI employee needs. ~20 minutes.</p>
+
+            <div data-role="nityesh" class="space-y-6">
+
+                <div>
+                    <h3 class="font-semibold mb-3">1. Install core tools</h3>
+                    <p class="text-ink-muted text-[0.92rem] mb-3">Open Terminal on the MacBook Air (before closing the lid, or SSH in from your main machine):</p>
+                    <div class="code-block">
+                        <span class="comment"># Install Homebrew (package manager)</span><br>
+                        <span class="cmd">/bin/bash</span> -c <span class="string">"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</span><br><br>
+                        <span class="comment"># Install essentials</span><br>
+                        <span class="cmd">brew install</span> git python3 tmux<br><br>
+                        <span class="comment"># Install Node.js (needed for Claude Code)</span><br>
+                        <span class="cmd">brew install</span> node<br><br>
+                        <span class="comment"># Install Claude Code</span><br>
+                        <span class="cmd">npm install</span> <span class="flag">-g</span> @anthropic-ai/claude-code<br><br>
+                        <span class="comment"># Sign in to Claude Code with your Max subscription</span><br>
+                        <span class="cmd">claude</span><br>
+                        <span class="comment"># Follow the login prompts</span>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold mb-3">2. Clone your codebase</h3>
+                    <div class="code-block">
+                        <span class="comment"># Set up your workspace</span><br>
+                        <span class="cmd">mkdir</span> <span class="flag">-p</span> ~/Projects<br>
+                        <span class="cmd">cd</span> ~/Projects<br><br>
+                        <span class="comment"># Clone the Curated Connections repo</span><br>
+                        <span class="cmd">git clone</span> <span class="string">&lt;your-repo-url&gt;</span> curated-connections<br>
+                        <span class="cmd">cd</span> curated-connections<br><br>
+                        <span class="comment"># Install Ruby/Rails dependencies if you want the AI to run rails console, etc.</span><br>
+                        <span class="cmd">bundle install</span>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold mb-3">3. Set up the Slack bot</h3>
+                    <p class="text-ink-muted text-[0.92rem] mb-3">Create a new Slack app for your CC workspace:</p>
+
+                    <div class="bg-surface-dim rounded-xl p-5 text-[0.92rem] text-ink-muted space-y-3">
+                        <p><strong class="text-ink">a.</strong> Go to <a href="https://api.slack.com/apps" class="text-blue-600 hover:underline" target="_blank">api.slack.com/apps</a> &rarr; Create New App &rarr; "From scratch"</p>
+                        <p><strong class="text-ink">b.</strong> Name it something like <strong class="text-ink">"CC Bot"</strong> or <strong class="text-ink">"CC Employee"</strong> — whatever feels right</p>
+                        <p><strong class="text-ink">c.</strong> Settings &rarr; Socket Mode &rarr; Enable &rarr; create an App-Level Token with <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">connections:write</code>. Save the <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">xapp-...</code> token.</p>
+                        <p><strong class="text-ink">d.</strong> OAuth & Permissions &rarr; Add Bot Token Scopes: <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">app_mentions:read</code>, <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">chat:write</code>, <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">im:history</code>, <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">im:read</code>, <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">im:write</code>, <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">files:read</code></p>
+                        <p><strong class="text-ink">e.</strong> Event Subscriptions &rarr; Subscribe to: <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">app_mention</code>, <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">message.im</code></p>
+                        <p><strong class="text-ink">f.</strong> Install to workspace &rarr; save the Bot Token (<code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">xoxb-...</code>)</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold mb-3">4. Install and configure the bot code</h3>
+                    <div class="code-block">
+                        <span class="comment"># Create the bot directory</span><br>
+                        <span class="cmd">mkdir</span> <span class="flag">-p</span> ~/Projects/cc-slack-bot<br>
+                        <span class="cmd">cd</span> ~/Projects/cc-slack-bot<br><br>
+                        <span class="comment"># Set up Python environment</span><br>
+                        <span class="cmd">python3</span> <span class="flag">-m</span> venv venv<br>
+                        <span class="cmd">source</span> venv/bin/activate<br>
+                        <span class="cmd">pip install</span> slack-bolt slack-sdk python-dotenv websocket-client<br><br>
+                        <span class="comment"># Create .env file</span><br>
+                        <span class="cmd">cat</span> &lt;&lt;'EOF' &gt; .env<br>
+                        <span class="string">SLACK_BOT_TOKEN=xoxb-your-bot-token</span><br>
+                        <span class="string">SLACK_APP_TOKEN=xapp-your-app-level-token</span><br>
+                        <span class="string">AUTHORIZED_USERS=UNITYESH,UPIYUSH</span><br>
+                        <span class="string">PROJECT_DIR=/Users/cc/Projects/curated-connections</span><br>
+                        <span class="string">CLAUDE_TIMEOUT=1800</span><br>
+                        EOF<br><br>
+                        <span class="comment"># Copy the bot script (from the Every repo or write a fresh one)</span><br>
+                        <span class="comment"># The same claudie_bot.py pattern works — just change the config</span>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold mb-3">5. Test it</h3>
+                    <div class="code-block">
+                        <span class="cmd">python</span> claudie_bot.py<br><br>
+                        <span class="comment"># You should see:</span><br>
+                        <span class="string">Claudie starting — authorized users: {'UNITYESH', 'UPIYUSH'}</span>
+                    </div>
+                    <p class="text-ink-muted text-[0.92rem] mt-3">DM the bot in Slack. If it responds — you're in business.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 3: Always On -->
+        <section class="pb-16">
+            <div class="flex items-center gap-3 mb-2">
+                <span class="text-xs font-bold tracking-widest uppercase text-ink-light">Phase 3</span>
+                <span class="badge-nityesh text-xs font-medium px-2 py-0.5 rounded-full">Nityesh</span>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Make it always on</h2>
+            <p class="text-ink-muted mb-8">Survive crashes, reboots, and power outages.</p>
+
+            <div data-role="nityesh" class="space-y-6">
+
+                <div>
+                    <h3 class="font-semibold mb-3">1. Create a launchd service</h3>
+                    <div class="code-block text-[0.72rem]">
+                        <span class="cmd">cat</span> &lt;&lt;'EOF' &gt; ~/Library/LaunchAgents/com.cc.slack-bot.plist<br>
+                        <span class="string">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span><br>
+                        <span class="string">&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"</span><br>
+                        <span class="string">  "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;</span><br>
+                        <span class="string">&lt;plist version="1.0"&gt;</span><br>
+                        <span class="string">&lt;dict&gt;</span><br>
+                        <span class="string">    &lt;key&gt;Label&lt;/key&gt;</span><br>
+                        <span class="string">    &lt;string&gt;com.cc.slack-bot&lt;/string&gt;</span><br>
+                        <span class="string">    &lt;key&gt;ProgramArguments&lt;/key&gt;</span><br>
+                        <span class="string">    &lt;array&gt;</span><br>
+                        <span class="string">        &lt;string&gt;/Users/cc/Projects/cc-slack-bot/venv/bin/python&lt;/string&gt;</span><br>
+                        <span class="string">        &lt;string&gt;/Users/cc/Projects/cc-slack-bot/claudie_bot.py&lt;/string&gt;</span><br>
+                        <span class="string">    &lt;/array&gt;</span><br>
+                        <span class="string">    &lt;key&gt;WorkingDirectory&lt;/key&gt;</span><br>
+                        <span class="string">    &lt;string&gt;/Users/cc/Projects/cc-slack-bot&lt;/string&gt;</span><br>
+                        <span class="string">    &lt;key&gt;RunAtLoad&lt;/key&gt;&lt;true/&gt;</span><br>
+                        <span class="string">    &lt;key&gt;KeepAlive&lt;/key&gt;&lt;true/&gt;</span><br>
+                        <span class="string">    &lt;key&gt;StandardOutPath&lt;/key&gt;</span><br>
+                        <span class="string">    &lt;string&gt;/Users/cc/Projects/cc-slack-bot/bot.log&lt;/string&gt;</span><br>
+                        <span class="string">    &lt;key&gt;StandardErrorPath&lt;/key&gt;</span><br>
+                        <span class="string">    &lt;string&gt;/Users/cc/Projects/cc-slack-bot/bot-stderr.log&lt;/string&gt;</span><br>
+                        <span class="string">&lt;/dict&gt;</span><br>
+                        <span class="string">&lt;/plist&gt;</span><br>
+                        EOF
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold mb-3">2. Load, verify, and test</h3>
+                    <div class="code-block">
+                        <span class="comment"># Start the service</span><br>
+                        <span class="cmd">launchctl</span> load ~/Library/LaunchAgents/com.cc.slack-bot.plist<br><br>
+                        <span class="comment"># Verify it's running</span><br>
+                        <span class="cmd">launchctl</span> list | <span class="cmd">grep</span> cc<br><br>
+                        <span class="comment"># Test crash recovery — kill it, watch it come back</span><br>
+                        <span class="cmd">kill</span> $(pgrep -f claudie_bot)<br>
+                        <span class="cmd">sleep</span> 3 && <span class="cmd">pgrep</span> <span class="flag">-f</span> claudie_bot<br><br>
+                        <span class="comment"># Test reboot survival</span><br>
+                        <span class="cmd">sudo</span> reboot<br>
+                        <span class="comment"># Wait 2-3 min, DM the bot in Slack</span>
+                    </div>
+
+                    <div class="mt-4 bg-green-50 border border-green-100 rounded-xl p-4 text-[0.92rem] text-green-800">
+                        <strong>It's alive!</strong> Your AI employee is now running 24/7 on the MacBook Air. Close the lid, tuck it away. It'll keep working.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 4: Piyush Access -->
+        <section class="pb-16">
+            <div class="flex items-center gap-3 mb-2">
+                <span class="text-xs font-bold tracking-widest uppercase text-ink-light">Phase 4</span>
+                <span class="badge-piyush text-xs font-medium px-2 py-0.5 rounded-full">Piyush</span>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Piyush's access</h2>
+            <p class="text-ink-muted mb-8">How Piyush uses the AI employee day-to-day.</p>
+
+            <div data-role="piyush" class="space-y-6">
+
+                <div class="bg-amber-50/50 border border-amber-100 rounded-2xl p-6">
+                    <h3 class="font-semibold mb-1">Hey Piyush!</h3>
+                    <p class="text-ink-muted text-[0.92rem] leading-relaxed">
+                        Nityesh handles all the setup. For you, it's simple: you have a new teammate in Slack. DM it, @mention it in channels, ask it anything about Curated Connections — it has access to the codebase, can check things, and respond intelligently.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold mb-3">How to use it</h3>
+                    <ul class="checklist space-y-2.5 text-[0.92rem] text-ink-muted">
+                        <li><strong class="text-ink">DM the bot directly</strong> — just like messaging any teammate</li>
+                        <li><strong class="text-ink">@mention it in channels</strong> — it responds in a thread</li>
+                        <li><strong class="text-ink">Thread replies continue the conversation</strong> — it remembers context within a thread</li>
+                        <li><strong class="text-ink">Attach screenshots or files</strong> — it can read images and documents</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold mb-3">Example things to ask</h3>
+                    <div class="bg-surface-dim rounded-xl p-5 space-y-3 text-[0.92rem]">
+                        <p class="text-ink-muted"><span class="text-ink font-medium">"How many new signups did we get this week?"</span> — it can check the database</p>
+                        <p class="text-ink-muted"><span class="text-ink font-medium">"There's a bug in the matching algorithm — user X got matched with themselves"</span> — it can investigate the code</p>
+                        <p class="text-ink-muted"><span class="text-ink font-medium">"Draft a response to this support email"</span> — paste the email, it writes a reply</p>
+                        <p class="text-ink-muted"><span class="text-ink font-medium">"What's our MRR trend looking like?"</span> — it can run analytics queries</p>
+                        <p class="text-ink-muted"><span class="text-ink font-medium">"Can you add a 'last active' column to the member directory?"</span> — it can write and test code</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold mb-3">What it can't do (yet)</h3>
+                    <ul class="checklist space-y-2.5 text-[0.92rem] text-ink-muted">
+                        <li>Deploy to production (we'll gate this intentionally at first)</li>
+                        <li>Access external services it hasn't been configured for</li>
+                        <li>Replace human judgment on product decisions — it's a tool, not a cofounder</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- What the AI Employee Can Do -->
+        <section class="pb-16">
+            <div class="flex items-center gap-3 mb-2">
+                <span class="text-xs font-bold tracking-widest uppercase text-ink-light">Phase 5</span>
+                <span class="badge-both text-xs font-medium px-2 py-0.5 rounded-full">Both</span>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Growing the AI employee</h2>
+            <p class="text-ink-muted mb-8">Start simple, add capabilities as you gain confidence.</p>
+
+            <div data-role="both" class="space-y-4">
+                <div class="border border-slate-100 rounded-xl p-5">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Week 1</span>
+                        <h3 class="font-semibold">Basic support & monitoring</h3>
+                    </div>
+                    <p class="text-ink-muted text-[0.92rem]">Answer questions about the codebase. Check error logs. Draft support responses. Run read-only database queries. Get familiar with having an always-on assistant.</p>
+                </div>
+
+                <div class="border border-slate-100 rounded-xl p-5">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Week 2-3</span>
+                        <h3 class="font-semibold">Routine maintenance</h3>
+                    </div>
+                    <p class="text-ink-muted text-[0.92rem]">Fix small bugs via code changes (review before merge). Run scheduled health checks. Monitor signup/churn metrics. Generate weekly analytics summaries automatically.</p>
+                </div>
+
+                <div class="border border-slate-100 rounded-xl p-5">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">Month 2+</span>
+                        <h3 class="font-semibold">Revenue growth experiments</h3>
+                    </div>
+                    <p class="text-ink-muted text-[0.92rem]">A/B test landing page copy. Automate onboarding email sequences. Build feature prototypes. Monitor conversion funnels. Draft content for marketing. The AI handles execution while you and Piyush focus on strategy.</p>
+                </div>
+
+                <div class="border border-slate-100 rounded-xl p-5">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">Ongoing</span>
+                        <h3 class="font-semibold">Browser automation</h3>
+                    </div>
+                    <p class="text-ink-muted text-[0.92rem]">Since it's a full MacBook with a GUI, install Playwright for browser automation. Log into admin panels, check third-party dashboards, take screenshots of analytics, interact with services that don't have APIs.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Reference -->
+        <section class="pb-16">
+            <div class="flex items-center gap-3 mb-2">
+                <span class="text-xs font-bold tracking-widest uppercase text-ink-light">Reference</span>
+                <span class="badge-nityesh text-xs font-medium px-2 py-0.5 rounded-full">Nityesh</span>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Admin commands</h2>
+            <p class="text-ink-muted mb-8">Quick reference for managing the MacBook Air server.</p>
+
+            <div data-role="nityesh">
+                <div class="code-block text-[0.78rem]">
+                    <span class="comment"># Check bot status</span><br>
+                    <span class="cmd">launchctl</span> list | <span class="cmd">grep</span> cc<br>
+                    <span class="cmd">pgrep</span> <span class="flag">-f</span> claudie_bot<br><br>
+
+                    <span class="comment"># View live logs</span><br>
+                    <span class="cmd">tail</span> <span class="flag">-f</span> ~/Projects/cc-slack-bot/bot.log<br><br>
+
+                    <span class="comment"># Restart the bot</span><br>
+                    <span class="cmd">launchctl</span> unload ~/Library/LaunchAgents/com.cc.slack-bot.plist<br>
+                    <span class="cmd">launchctl</span> load ~/Library/LaunchAgents/com.cc.slack-bot.plist<br><br>
+
+                    <span class="comment"># Pull latest code</span><br>
+                    <span class="cmd">cd</span> ~/Projects/curated-connections && <span class="cmd">git</span> pull<br><br>
+
+                    <span class="comment"># Interactive Claude Code session</span><br>
+                    <span class="cmd">tmux</span> new <span class="flag">-s</span> claude<br>
+                    <span class="cmd">cd</span> ~/Projects/curated-connections && <span class="cmd">claude</span><br>
+                    <span class="comment"># Detach: Ctrl+B then D | Reattach: tmux attach -t claude</span><br><br>
+
+                    <span class="comment"># Re-enable sleep (if you want to use the MacBook normally again)</span><br>
+                    <span class="cmd">sudo</span> pmset <span class="flag">-a</span> disablesleep 0
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="pb-12 pt-8 border-t border-slate-100">
+            <div class="flex items-center justify-between text-xs text-ink-light">
+                <span>Curated Connections &middot; AI Home Base</span>
+                <span>Built with Claude Code</span>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        function setView(view) {
+            document.body.className = document.body.className.replace(/view-\w+/, '') + ` view-${view}`;
+            ['all', 'nityesh', 'piyush'].forEach(v => {
+                const btn = document.getElementById(`btn-${v}`);
+                if (v === view) {
+                    btn.className = 'px-3 py-1.5 rounded-full font-medium transition-all bg-white shadow-sm text-ink';
+                } else {
+                    btn.className = 'px-3 py-1.5 rounded-full font-medium transition-all text-ink-muted hover:text-ink';
+                }
+            });
+        }
+
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+            const chevron = button.querySelector('.accordion-chevron');
+            content.classList.toggle('open');
+            chevron.classList.toggle('open');
+        }
+
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('nav-stuck', window.scrollY > 10);
+        });
+    </script>
+
+</body>
+</html>

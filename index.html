@@ -53,10 +53,17 @@
         .code-block .flag { color: #a78bfa; }
         .code-block .string { color: #34d399; }
 
-        .checklist li { position: relative; padding-left: 2rem; }
-        .checklist li::before { content: ''; position: absolute; left: 0; top: 0.35rem; width: 1.25rem; height: 1.25rem; border: 2px solid #cbd5e1; border-radius: 0.375rem; }
+        .checklist li { position: relative; padding-left: 2rem; cursor: pointer; user-select: none; }
+        .checklist li::before { content: ''; position: absolute; left: 0; top: 0.35rem; width: 1.25rem; height: 1.25rem; border: 2px solid #cbd5e1; border-radius: 0.375rem; transition: all 0.2s ease; }
+        .checklist li:hover::before { border-color: #94a3b8; }
+        .checklist li.checked::before { background: #22c55e; border-color: #22c55e; }
+        .checklist li.checked::after { content: ''; position: absolute; left: 0.3rem; top: 0.5rem; width: 0.4rem; height: 0.7rem; border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+        .checklist li.checked { opacity: 0.6; }
+        .checklist li.checked > strong, .checklist li.checked > a { opacity: 0.7; }
         @media (prefers-color-scheme: dark) {
             .checklist li::before { border-color: #475569; }
+            .checklist li:hover::before { border-color: #64748b; }
+            .checklist li.checked::before { background: #22c55e; border-color: #22c55e; }
         }
 
         html { scroll-behavior: smooth; }
@@ -829,6 +836,31 @@
             content.classList.toggle('open');
             chevron.classList.toggle('open');
         }
+
+        // Checklist — click to check, persisted in localStorage
+        const STORAGE_KEY = 'cc-homebase-checklist';
+
+        function getChecked() {
+            try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
+        }
+
+        function initChecklist() {
+            const checked = getChecked();
+            document.querySelectorAll('.checklist li').forEach((li, i) => {
+                const id = 'check-' + i;
+                li.dataset.checkId = id;
+                if (checked[id]) li.classList.add('checked');
+                li.addEventListener('click', (e) => {
+                    // Don't toggle if clicking a link or code inside the li
+                    if (e.target.closest('a, code, .rounded-lg')) return;
+                    li.classList.toggle('checked');
+                    const state = getChecked();
+                    if (li.classList.contains('checked')) { state[id] = true; } else { delete state[id]; }
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                });
+            });
+        }
+        initChecklist();
 
         const nav = document.getElementById('nav');
         window.addEventListener('scroll', () => {

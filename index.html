@@ -764,6 +764,61 @@
             </div>
         </section>
 
+        <!-- Setup Details -->
+        <section class="pb-16">
+            <div class="flex items-center gap-3 mb-2">
+                <span class="text-xs font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500">Reference</span>
+                <span class="badge-both text-xs font-medium px-2 py-0.5 rounded-full">Nityesh + Piyush</span>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Our setup details</h2>
+            <p class="text-slate-500 dark:text-slate-400 mb-8">Everything you need to connect. Bookmark this page.</p>
+
+            <div data-role="shared">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-[0.88rem]">
+                        <tbody class="text-slate-500 dark:text-slate-400">
+                            <tr class="border-b border-slate-100 dark:border-slate-800">
+                                <td class="py-3 pr-4 font-medium text-slate-900 dark:text-slate-100 whitespace-nowrap">Machine</td>
+                                <td class="py-3">MacBook Air M1 (Piyush's old one)</td>
+                            </tr>
+                            <tr class="border-b border-slate-100 dark:border-slate-800">
+                                <td class="py-3 pr-4 font-medium text-slate-900 dark:text-slate-100 whitespace-nowrap">macOS username</td>
+                                <td class="py-3"><code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">luo</code></td>
+                            </tr>
+                            <tr class="border-b border-slate-100 dark:border-slate-800">
+                                <td class="py-3 pr-4 font-medium text-slate-900 dark:text-slate-100 whitespace-nowrap">Tailscale hostname</td>
+                                <td class="py-3"><code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">luos-macbook-air</code></td>
+                            </tr>
+                            <tr class="border-b border-slate-100 dark:border-slate-800">
+                                <td class="py-3 pr-4 font-medium text-slate-900 dark:text-slate-100 whitespace-nowrap">Tailscale IP</td>
+                                <td class="py-3"><code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">100.89.76.77</code></td>
+                            </tr>
+                            <tr class="border-b border-slate-100 dark:border-slate-800">
+                                <td class="py-3 pr-4 font-medium text-slate-900 dark:text-slate-100 whitespace-nowrap">SSH (home)</td>
+                                <td class="py-3"><code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">ssh luo@luos-macbook-air.local</code></td>
+                            </tr>
+                            <tr class="border-b border-slate-100 dark:border-slate-800">
+                                <td class="py-3 pr-4 font-medium text-slate-900 dark:text-slate-100 whitespace-nowrap">SSH (anywhere)</td>
+                                <td class="py-3"><code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">ssh luo@100.89.76.77</code></td>
+                            </tr>
+                            <tr class="border-b border-slate-100 dark:border-slate-800">
+                                <td class="py-3 pr-4 font-medium text-slate-900 dark:text-slate-100 whitespace-nowrap">Screen Sharing</td>
+                                <td class="py-3"><code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">vnc://100.89.76.77</code></td>
+                            </tr>
+                            <tr class="border-b border-slate-100 dark:border-slate-800">
+                                <td class="py-3 pr-4 font-medium text-slate-900 dark:text-slate-100 whitespace-nowrap">Claude Code</td>
+                                <td class="py-3">Nityesh's Max subscription ($200/mo)</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 pr-4 font-medium text-slate-900 dark:text-slate-100 whitespace-nowrap">Slack bot endpoint</td>
+                                <td class="py-3"><code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">https://bot.curatedconnections.io/slack/events</code> (after Cloudflare Tunnel setup)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
         <!-- Admin Reference -->
         <section class="pb-16">
             <div class="flex items-center gap-3 mb-2">
@@ -776,8 +831,8 @@
             <div data-role="shared">
                 <div class="code-block text-[0.78rem]">
                     <span class="comment"># SSH in — at home (local) or anywhere (Tailscale)</span><br>
-                    <span class="cmd">ssh</span> cc@macbook-air.local      <span class="comment"># at home</span><br>
-                    <span class="cmd">ssh</span> cc@100.x.x.x              <span class="comment"># from anywhere via Tailscale</span><br><br>
+                    <span class="cmd">ssh</span> luo@luos-macbook-air.local  <span class="comment"># at home</span><br>
+                    <span class="cmd">ssh</span> luo@100.89.76.77            <span class="comment"># from anywhere via Tailscale</span><br><br>
 
                     <span class="comment"># Check bot status</span><br>
                     <span class="cmd">launchctl</span> list | <span class="cmd">grep</span> cc<br>
@@ -799,8 +854,8 @@
                     <span class="comment"># Detach: Ctrl+B then D | Reattach: tmux attach -t claude</span><br><br>
 
                     <span class="comment"># Full desktop access (home or via Tailscale)</span><br>
-                    <span class="comment"># Finder → Go → Connect to Server → vnc://macbook-air.local (home)</span><br>
-                    <span class="comment"># Finder → Go → Connect to Server → vnc://100.x.x.x (anywhere)</span><br><br>
+                    <span class="comment"># Finder → Go → Connect to Server → vnc://luos-macbook-air.local (home)</span><br>
+                    <span class="comment"># Finder → Go → Connect to Server → vnc://100.89.76.77 (anywhere)</span><br><br>
 
                     <span class="comment"># Or just walk over and open the lid :)</span>
                 </div>

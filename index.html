@@ -461,7 +461,7 @@
 
                     <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 text-[0.92rem] text-slate-500 dark:text-slate-400 space-y-3">
                         <p><strong class="text-slate-900 dark:text-slate-100">a.</strong> Go to <a href="https://api.slack.com/apps" class="text-blue-600 hover:underline" target="_blank">api.slack.com/apps</a> &rarr; Create New App &rarr; "From scratch"</p>
-                        <p><strong class="text-slate-900 dark:text-slate-100">b.</strong> Name it — <strong class="text-slate-900 dark:text-slate-100">"CC Bot"</strong>, <strong class="text-slate-900 dark:text-slate-100">"CC Employee"</strong>, or whatever feels right</p>
+                        <p><strong class="text-slate-900 dark:text-slate-100">b.</strong> Name it — <strong class="text-slate-900 dark:text-slate-100">"Luo Ji"</strong>, <strong class="text-slate-900 dark:text-slate-100">"Luo Ji"</strong>, or whatever feels right</p>
                         <p><strong class="text-slate-900 dark:text-slate-100">c.</strong> OAuth & Permissions &rarr; Add Bot Token Scopes: <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">app_mentions:read</code>, <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">chat:write</code>, <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">im:history</code>, <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">im:read</code>, <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">im:write</code>, <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">files:read</code></p>
                         <p><strong class="text-slate-900 dark:text-slate-100">d.</strong> Event Subscriptions &rarr; Enable Events &rarr; set Request URL to <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">https://bot.curatedconnections.io/slack/events</code> (we'll set up Cloudflare Tunnel for this in step 6)</p>
                         <p><strong class="text-slate-900 dark:text-slate-100">e.</strong> Subscribe to bot events: <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">app_mention</code>, <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">message.im</code></p>
@@ -470,7 +470,69 @@
                         <p><strong class="text-slate-900 dark:text-slate-100">h.</strong> Find both your Slack user IDs: Profile &rarr; <strong>&#8942;</strong> menu &rarr; "Copy member ID"</p>
                     </div>
                     <div class="mt-3 text-xs text-slate-400 dark:text-slate-500 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-lg px-3 py-2">
-                        <strong class="text-blue-800">No Socket Mode.</strong> We're using the HTTP Events API — the production-standard approach. Slack sends HTTP POST requests to your public URL. Each event is stateless and independent. No fragile WebSocket connections to drop.
+                        <strong class="text-blue-800 dark:text-blue-400">No Socket Mode.</strong> We're using the HTTP Events API — the production-standard approach. Slack sends HTTP POST requests to your public URL. Each event is stateless and independent. No fragile WebSocket connections to drop.
+                    </div>
+
+                    <!-- App Manifest -->
+                    <div class="mt-4 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden">
+                        <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                            <div>
+                                <span class="font-semibold">Shortcut: App Manifest</span>
+                                <span class="text-slate-400 dark:text-slate-500 text-sm ml-2">Paste this instead of clicking through settings</span>
+                            </div>
+                            <svg class="accordion-chevron w-5 h-5 text-slate-400 dark:text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="px-5 pb-4">
+                                <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-3">When creating the app, choose <strong class="text-slate-900 dark:text-slate-100">"From an app manifest"</strong> instead of "From scratch". Paste this JSON — it configures everything in one shot:</p>
+                                <div class="code-block text-[0.7rem]">
+{<br>
+&nbsp;&nbsp;<span class="string">"display_information"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"name"</span>: <span class="string">"Luo Ji"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"description"</span>: <span class="string">"AI cofounder for Curated Connections"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"background_color"</span>: <span class="string">"#0f172a"</span><br>
+&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;<span class="string">"features"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"bot_user"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"display_name"</span>: <span class="string">"Luo Ji"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"always_online"</span>: <span class="cmd">true</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;<span class="string">"oauth_config"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"scopes"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"bot"</span>: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"app_mentions:read"</span>, <span class="string">"channels:history"</span>, <span class="string">"channels:join"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"channels:read"</span>, <span class="string">"chat:write"</span>, <span class="string">"chat:write.customize"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"commands"</span>, <span class="string">"files:read"</span>, <span class="string">"files:write"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"groups:history"</span>, <span class="string">"groups:read"</span>, <span class="string">"im:history"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"im:read"</span>, <span class="string">"im:write"</span>, <span class="string">"links:read"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"mpim:history"</span>, <span class="string">"mpim:read"</span>, <span class="string">"mpim:write"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"pins:read"</span>, <span class="string">"pins:write"</span>, <span class="string">"reactions:read"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"reactions:write"</span>, <span class="string">"team:read"</span>, <span class="string">"users:read"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"users:read.email"</span>, <span class="string">"users.profile:read"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"bookmarks:read"</span>, <span class="string">"metadata.message:read"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;<span class="string">"settings"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"event_subscriptions"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"request_url"</span>: <span class="string">"https://bot.curatedconnections.io/slack/events"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"bot_events"</span>: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"app_mention"</span>, <span class="string">"message.im"</span>, <span class="string">"message.channels"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"message.groups"</span>, <span class="string">"message.mpim"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"member_joined_channel"</span>, <span class="string">"reaction_added"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"file_shared"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"org_deploy_enabled"</span>: <span class="cmd">false</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"socket_mode_enabled"</span>: <span class="cmd">false</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"token_rotation_enabled"</span>: <span class="cmd">false</span><br>
+&nbsp;&nbsp;}<br>
+}
+                                </div>
+                                <p class="text-slate-500 dark:text-slate-400 text-[0.85rem] mt-3">After creating, you still need to manually grab the <strong class="text-slate-900 dark:text-slate-100">Bot Token</strong> (OAuth & Permissions → Install to workspace → <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">xoxb-...</code>) and the <strong class="text-slate-900 dark:text-slate-100">Signing Secret</strong> (Basic Information).</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

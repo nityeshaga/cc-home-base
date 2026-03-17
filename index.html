@@ -300,9 +300,17 @@
                     <h3 class="font-semibold mb-3">1. Factory reset</h3>
                     <ul class="checklist space-y-2.5 text-[0.92rem] text-slate-500 dark:text-slate-400">
                         <li>Back up anything worth keeping from the old install</li>
-                        <li>Go to <strong class="text-slate-900 dark:text-slate-100">System Settings &rarr; General &rarr; Transfer or Reset &rarr; Erase All Content and Settings</strong></li>
-                        <li>Go through the macOS setup wizard — create a user account (e.g., <strong class="text-slate-900 dark:text-slate-100">cc</strong>)</li>
-                        <li>Sign in with an Apple ID (needed for App Store later)</li>
+                        <li>Go to <strong class="text-slate-900 dark:text-slate-100">System Settings &rarr; General &rarr; Transfer or Reset &rarr; Erase All Content and Settings</strong>
+                            <div class="mt-1 text-xs text-slate-400 dark:text-slate-500 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-lg px-3 py-2">
+                                <strong class="text-blue-800 dark:text-blue-400">Heads up:</strong> This takes ~15-20 minutes. The Mac will restart and walk you through setup like it's brand new. Keep it plugged in and connected to WiFi.
+                            </div>
+                        </li>
+                        <li>Go through the macOS setup wizard — create a user account (e.g., <strong class="text-slate-900 dark:text-slate-100">cc</strong>)
+                            <div class="mt-1 text-xs text-slate-400 dark:text-slate-500 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-lg px-3 py-2">
+                                <strong class="text-blue-800 dark:text-blue-400">Tip:</strong> Pick a short username — you'll type it every time you SSH in (<code class="bg-blue-100/50 dark:bg-blue-900/50 px-1 py-0.5 rounded text-xs font-mono">ssh cc@...</code>). Share the password with Nityesh since you both need full access.
+                            </div>
+                        </li>
+                        <li>Sign in with <strong class="text-slate-900 dark:text-slate-100">your existing Apple ID</strong> (needed to download Tailscale from the App Store — no reason to create a new one)</li>
                         <li>When asked about FileVault (disk encryption): <strong class="text-slate-900 dark:text-slate-100">skip it / turn it off</strong>
                             <div class="mt-1 text-xs text-slate-400 dark:text-slate-500 bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900 rounded-lg px-3 py-2">
                                 If the MacBook restarts after a power loss, FileVault shows an unlock screen that needs a keyboard. Since it might restart unattended (lid closed), skip encryption so it boots straight to the desktop.
@@ -356,7 +364,11 @@
                     <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-3">Tailscale lets you both access the MacBook Air from anywhere — home, a coffee shop, travelling. Install it on all three machines:</p>
                     <ul class="checklist space-y-2.5 text-[0.92rem] text-slate-500 dark:text-slate-400">
                         <li>Open the <strong class="text-slate-900 dark:text-slate-100">Mac App Store</strong> on the MacBook Air, search for <strong class="text-slate-900 dark:text-slate-100">Tailscale</strong>, install it</li>
-                        <li>Open Tailscale, sign in with a shared account (Google, GitHub, or Apple ID)</li>
+                        <li>Open Tailscale, sign in with a shared account (Google, GitHub, or Apple ID)
+                            <div class="mt-1 text-xs text-slate-400 dark:text-slate-500 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-lg px-3 py-2">
+                                <strong class="text-blue-800 dark:text-blue-400">Tip:</strong> Use one of your existing Google/GitHub accounts — whichever you and Nityesh can both access. Don't create a separate Tailscale account. If either of your machines runs Windows or Linux, Tailscale works on those too — download from <a href="https://tailscale.com/download" class="text-blue-600 hover:underline" target="_blank">tailscale.com/download</a>.
+                            </div>
+                        </li>
                         <li>Do the same on <strong class="text-slate-900 dark:text-slate-100">Nityesh's MacBook</strong> and <strong class="text-slate-900 dark:text-slate-100">Piyush's machine</strong> — same account</li>
                         <li>All three devices now appear in your Tailscale dashboard with stable IPs like <strong class="text-slate-900 dark:text-slate-100">100.x.x.x</strong></li>
                         <li>In Tailscale preferences on the MacBook Air, enable <strong class="text-slate-900 dark:text-slate-100">"Start Tailscale when I log in"</strong></li>
@@ -377,8 +389,11 @@
                         <span class="cmd">pmset</span> <span class="flag">-g</span><br><br>
                         <span class="comment"># To reverse later: sudo pmset -a disablesleep 0</span>
                     </div>
-                    <div class="mt-3 text-xs text-slate-400 dark:text-slate-500 bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900 rounded-lg px-3 py-2">
-                        <strong class="text-amber-800">Battery note:</strong> Running plugged in 24/7 can cause battery swelling over months/years. "Optimized Battery Charging" helps. Worst case, battery replacement is ~$100-150. Acceptable trade-off for an always-on AI employee.
+                    <div class="mt-3 text-xs text-slate-400 dark:text-slate-500 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-lg px-3 py-2">
+                        <strong class="text-blue-800 dark:text-blue-400">What's <code>sudo</code>?</strong> It means "run as admin." It will ask for the password you set during setup. Type it — nothing will appear on screen as you type, that's normal — and press Enter.
+                    </div>
+                    <div class="mt-2 text-xs text-slate-400 dark:text-slate-500 bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900 rounded-lg px-3 py-2">
+                        <strong class="text-amber-800 dark:text-amber-400">Battery note:</strong> Running plugged in 24/7 can cause battery swelling over months/years. "Optimized Battery Charging" helps. Worst case, battery replacement is ~$100-150. Acceptable trade-off for an always-on AI employee.
                     </div>
                 </div>
 
@@ -388,6 +403,10 @@
                     <div class="code-block">
                         <span class="comment"># Install Homebrew (package manager — makes installing everything else easy)</span><br>
                         <span class="cmd">/bin/bash</span> -c <span class="string">"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</span><br><br>
+                        <span class="comment"># IMPORTANT: Homebrew on M1 Macs needs this to work.</span><br>
+                        <span class="comment"># After install, it prints these 2 commands — run them both:</span><br>
+                        <span class="cmd">echo</span> <span class="string">'eval "$(/opt/homebrew/bin/brew shellenv)"'</span> &gt;&gt; ~/.zprofile<br>
+                        <span class="cmd">eval</span> <span class="string">"$(/opt/homebrew/bin/brew shellenv)"</span><br><br>
                         <span class="comment"># Install essentials</span><br>
                         <span class="cmd">brew install</span> git python3 tmux node<br><br>
                         <span class="comment"># Install Claude Code</span><br>
@@ -395,6 +414,9 @@
                         <span class="comment"># Sign in to Claude Code (Nityesh's Max subscription)</span><br>
                         <span class="cmd">claude</span><br>
                         <span class="comment"># Follow the login prompts — it opens a URL you paste in any browser</span>
+                    </div>
+                    <div class="mt-3 text-xs text-slate-400 dark:text-slate-500 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-lg px-3 py-2">
+                        <strong class="text-blue-800 dark:text-blue-400">Tip:</strong> Claude will print a URL. Open it in any browser — on this Mac, your phone, or your main machine. It's just a login link. Sign in with <strong>Nityesh's Anthropic account</strong> (the one with the $200/mo Max subscription).
                     </div>
                 </div>
 
@@ -496,12 +518,15 @@
                 <div>
                     <h3 class="font-semibold mb-3">5. Set up Cloudflare Tunnel</h3>
                     <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-3">This gives your MacBook Air a public URL (<code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">bot.curatedconnections.io</code>) so Slack can send events to it. Free, production-grade, HTTPS included.</p>
+                    <div class="mb-3 text-xs text-slate-400 dark:text-slate-500 bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900 rounded-lg px-3 py-2">
+                        <strong class="text-amber-800 dark:text-amber-400">Prerequisite:</strong> <code class="bg-amber-100/50 dark:bg-amber-900/50 px-1 py-0.5 rounded text-xs font-mono">curatedconnections.io</code> must already be on Cloudflare — its nameservers must point to Cloudflare. If the domain is on a different registrar (Namecheap, GoDaddy, etc.), add it to Cloudflare first and update the nameservers.
+                    </div>
                     <div class="code-block">
                         <span class="comment"># Install Cloudflare's tunnel daemon</span><br>
                         <span class="cmd">brew install</span> cloudflared<br><br>
-                        <span class="comment"># Authenticate (opens browser to log into Cloudflare)</span><br>
+                        <span class="comment"># Authenticate (opens browser — do this before closing the lid!)</span><br>
                         <span class="cmd">cloudflared</span> tunnel login<br><br>
-                        <span class="comment"># Create a named tunnel</span><br>
+                        <span class="comment"># Create a named tunnel (note the UUID it prints — you'll need it below)</span><br>
                         <span class="cmd">cloudflared</span> tunnel create cc-bot<br><br>
                         <span class="comment"># Route your subdomain to the tunnel</span><br>
                         <span class="cmd">cloudflared</span> tunnel route dns cc-bot bot.curatedconnections.io<br><br>

@@ -80,8 +80,8 @@
 
             <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-full p-1 text-sm">
                 <button onclick="setView('all')" id="btn-all" class="px-3 py-1.5 rounded-full font-medium transition-all bg-white dark:bg-slate-700 shadow-sm text-ink">All</button>
-                <button onclick="setView('piyush')" id="btn-piyush" class="px-3 py-1.5 rounded-full font-medium transition-all text-ink-muted hover:text-ink dark:text-slate-400 dark:hover:text-slate-200">For Piyush</button>
-                <button onclick="setView('both')" id="btn-both" class="px-3 py-1.5 rounded-full font-medium transition-all text-ink-muted hover:text-ink dark:text-slate-400 dark:hover:text-slate-200">For Both</button>
+                <button onclick="setView('piyush')" id="btn-piyush" class="px-3 py-1.5 rounded-full font-medium transition-all text-slate-500 dark:text-slate-400 hover:text-ink dark:text-slate-400 dark:hover:text-slate-200">For Piyush</button>
+                <button onclick="setView('both')" id="btn-both" class="px-3 py-1.5 rounded-full font-medium transition-all text-slate-500 dark:text-slate-400 hover:text-ink dark:text-slate-400 dark:hover:text-slate-200">For Both</button>
             </div>
         </div>
     </nav>
@@ -90,12 +90,12 @@
 
         <!-- Hero -->
         <section class="pt-16 pb-12">
-            <p class="text-sm font-medium text-ink-muted tracking-wide uppercase mb-4">Curated Connections Infrastructure</p>
+            <p class="text-sm font-medium text-slate-500 dark:text-slate-400 tracking-wide uppercase mb-4">Curated Connections Infrastructure</p>
             <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.1] mb-6">
                 Our first<br>
-                <span class="line-through text-ink-light decoration-2">AI employee</span> <span class="bg-gradient-to-r from-amber-500 to-blue-600 bg-clip-text text-transparent">AI cofounder.</span>
+                <span class="line-through text-slate-400 dark:text-slate-500 decoration-2">AI employee</span> <span class="bg-gradient-to-r from-amber-500 to-blue-600 bg-clip-text text-transparent">AI cofounder.</span>
             </h1>
-            <p class="text-lg text-ink-muted leading-relaxed max-w-2xl">
+            <p class="text-lg text-slate-500 dark:text-slate-400 leading-relaxed max-w-2xl">
                 A spare MacBook Air M1 turned into an always-on AI employee for Curated Connections. DM it in Slack, ask it anything — it has full access to the codebase and tools. Piyush sets up the hardware, then you both run it together.
             </p>
         </section>
@@ -103,16 +103,16 @@
         <!-- The Idea -->
         <section class="pb-12">
             <div class="bg-slate-50 dark:bg-slate-900 rounded-2xl p-6 border border-slate-100 dark:border-slate-800">
-                <h3 class="font-semibold text-sm uppercase tracking-wide text-ink-muted mb-3">The idea</h3>
-                <div class="text-ink-muted leading-relaxed text-[0.95rem] space-y-3">
+                <h3 class="font-semibold text-sm uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-3">The idea</h3>
+                <div class="text-slate-500 dark:text-slate-400 leading-relaxed text-[0.95rem] space-y-3">
                     <p>
                         <a href="https://curatedconnections.io" class="text-blue-600 hover:underline" target="_blank">Curated Connections</a> is a $49/mo community matchmaking SaaS — automated 1-on-1 matching, member directories, accountability challenges, group events. Built on Rails + Turbo/Stimulus. The kind of product that benefits enormously from an always-on AI handling the routine stuff.
                     </p>
                     <p>
-                        <strong class="text-ink">The experiment:</strong> can an AI employee 10x the revenue of a two-person SaaS? Not by doing busywork — by doing <em>everything</em>. Product development, customer support, log investigation, marketing asset creation, conversion optimization, onboarding automation, content writing, A/B testing, bug fixes, feature builds. It's smarter than any individual human at every one of these tasks, and it's only getting smarter through 2026. The infrastructure is a MacBook Air M1, Claude Code on a $200/mo Max subscription, and Slack as the interface. The question isn't whether it can help — it's how far you can push it.
+                        <strong class="text-slate-900 dark:text-slate-100">The experiment:</strong> can an AI employee 10x the revenue of a two-person SaaS? Not by doing busywork — by doing <em>everything</em>. Product development, customer support, log investigation, marketing asset creation, conversion optimization, onboarding automation, content writing, A/B testing, bug fixes, feature builds. It's smarter than any individual human at every one of these tasks, and it's only getting smarter through 2026. The infrastructure is a MacBook Air M1, Claude Code on a $200/mo Max subscription, and Slack as the interface. The question isn't whether it can help — it's how far you can push it.
                     </p>
                     <p>
-                        <strong class="text-ink">Why Claude Code and not the API or OpenClaw?</strong> Anthropic's ToS prohibit using a Max subscription with third-party tools like OpenClaw. Claude Code is Anthropic's own CLI — running it via a Slack bot is fully compliant. Flat $200/mo for Claude Opus instead of unpredictable API bills.
+                        <strong class="text-slate-900 dark:text-slate-100">Why Claude Code and not the API or OpenClaw?</strong> Anthropic's ToS prohibit using a Max subscription with third-party tools like OpenClaw. Claude Code is Anthropic's own CLI — running it via a Slack bot is fully compliant. Flat $200/mo for Claude Opus instead of unpredictable API bills.
                     </p>
                 </div>
             </div>
@@ -138,7 +138,7 @@
 
                     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-6 py-3 text-center shadow-sm w-full max-w-sm">
                         <div class="font-semibold">Slack</div>
-                        <div class="text-ink-light text-xs">DM your AI employee, get responses with full context</div>
+                        <div class="text-slate-400 dark:text-slate-500 text-xs">DM your AI employee, get responses with full context</div>
                     </div>
 
                     <svg class="w-5 h-8 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 20 32"><path stroke-linecap="round" stroke-width="2" d="M10 0v28m-5-5l5 5 5-5"/></svg>
@@ -157,7 +157,7 @@
                         </div>
                     </div>
 
-                    <div class="text-xs text-ink-light mt-2 text-center">
+                    <div class="text-xs text-slate-400 dark:text-slate-500 mt-2 text-center">
                         Both of you have full root access. Same house, same network.<br>
                         Walk over and open the lid anytime.
                     </div>
@@ -168,22 +168,22 @@
         <!-- Concepts Explained -->
         <section class="pb-16">
             <h2 class="text-2xl font-bold mb-2">Concepts explained</h2>
-            <p class="text-ink-muted mb-8">For when either of you wants to understand what's actually going on. Click to expand.</p>
+            <p class="text-slate-500 dark:text-slate-400 mb-8">For when either of you wants to understand what's actually going on. Click to expand.</p>
 
             <div class="space-y-3" id="concepts">
                 <div class="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden">
                     <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
                         <div>
                             <span class="font-semibold">SSH</span>
-                            <span class="text-ink-light text-sm ml-2">Remote terminal access</span>
+                            <span class="text-slate-400 dark:text-slate-500 text-sm ml-2">Remote terminal access</span>
                         </div>
-                        <svg class="accordion-chevron w-5 h-5 text-ink-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        <svg class="accordion-chevron w-5 h-5 text-slate-400 dark:text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
                     <div class="accordion-content">
-                        <div class="px-5 pb-4 text-[0.92rem] text-ink-muted leading-relaxed">
-                            <strong class="text-ink">What is it?</strong> SSH lets you open a terminal on another computer over the network. You type commands on your main machine, they execute on the MacBook Air. Text only — no desktop, no mouse.
+                        <div class="px-5 pb-4 text-[0.92rem] text-slate-500 dark:text-slate-400 leading-relaxed">
+                            <strong class="text-slate-900 dark:text-slate-100">What is it?</strong> SSH lets you open a terminal on another computer over the network. You type commands on your main machine, they execute on the MacBook Air. Text only — no desktop, no mouse.
                             <br><br>
-                            <strong class="text-ink">Do we need it?</strong> Yes — for quick admin from your main machines without walking over, and essential when you're travelling. Combined with Tailscale, you can SSH into the MacBook Air from a coffee shop, a co-working space, or another city.
+                            <strong class="text-slate-900 dark:text-slate-100">Do we need it?</strong> Yes — for quick admin from your main machines without walking over, and essential when you're travelling. Combined with Tailscale, you can SSH into the MacBook Air from a coffee shop, a co-working space, or another city.
                         </div>
                     </div>
                 </div>
@@ -192,17 +192,17 @@
                     <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
                         <div>
                             <span class="font-semibold">Tailscale</span>
-                            <span class="text-ink-light text-sm ml-2">Private network between your devices</span>
+                            <span class="text-slate-400 dark:text-slate-500 text-sm ml-2">Private network between your devices</span>
                         </div>
-                        <svg class="accordion-chevron w-5 h-5 text-ink-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        <svg class="accordion-chevron w-5 h-5 text-slate-400 dark:text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
                     <div class="accordion-content">
-                        <div class="px-5 pb-4 text-[0.92rem] text-ink-muted leading-relaxed">
-                            <strong class="text-ink">What is it?</strong> Tailscale creates an invisible, encrypted tunnel between your devices. Your laptops and the MacBook Air join the same private network — as if they were on the same WiFi, even when you're in different cities. Each device gets a stable address (like 100.x.x.x) that never changes.
+                        <div class="px-5 pb-4 text-[0.92rem] text-slate-500 dark:text-slate-400 leading-relaxed">
+                            <strong class="text-slate-900 dark:text-slate-100">What is it?</strong> Tailscale creates an invisible, encrypted tunnel between your devices. Your laptops and the MacBook Air join the same private network — as if they were on the same WiFi, even when you're in different cities. Each device gets a stable address (like 100.x.x.x) that never changes.
                             <br><br>
-                            <strong class="text-ink">Why do we need it?</strong> At home, you can SSH using the local network. But the moment you step out — a coffee shop, a co-working space, travelling — your home network is unreachable. Tailscale makes the MacBook Air accessible from anywhere in the world, securely, without exposing anything to the public internet. Free for personal use.
+                            <strong class="text-slate-900 dark:text-slate-100">Why do we need it?</strong> At home, you can SSH using the local network. But the moment you step out — a coffee shop, a co-working space, travelling — your home network is unreachable. Tailscale makes the MacBook Air accessible from anywhere in the world, securely, without exposing anything to the public internet. Free for personal use.
                             <br><br>
-                            <strong class="text-ink">Analogy:</strong> If SSH is a phone call, Tailscale is the phone network. SSH needs a way to reach the MacBook Air — at home that's your WiFi, but outside the house, Tailscale provides that path.
+                            <strong class="text-slate-900 dark:text-slate-100">Analogy:</strong> If SSH is a phone call, Tailscale is the phone network. SSH needs a way to reach the MacBook Air — at home that's your WiFi, but outside the house, Tailscale provides that path.
                         </div>
                     </div>
                 </div>
@@ -211,15 +211,15 @@
                     <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
                         <div>
                             <span class="font-semibold">launchd</span>
-                            <span class="text-ink-light text-sm ml-2">macOS process supervisor</span>
+                            <span class="text-slate-400 dark:text-slate-500 text-sm ml-2">macOS process supervisor</span>
                         </div>
-                        <svg class="accordion-chevron w-5 h-5 text-ink-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        <svg class="accordion-chevron w-5 h-5 text-slate-400 dark:text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
                     <div class="accordion-content">
-                        <div class="px-5 pb-4 text-[0.92rem] text-ink-muted leading-relaxed">
-                            <strong class="text-ink">What is it?</strong> macOS's built-in system for keeping programs alive. You write a small config file that says "run this script, keep it alive forever, restart it if it crashes, start it when the computer boots." Apple uses it for its own services.
+                        <div class="px-5 pb-4 text-[0.92rem] text-slate-500 dark:text-slate-400 leading-relaxed">
+                            <strong class="text-slate-900 dark:text-slate-100">What is it?</strong> macOS's built-in system for keeping programs alive. You write a small config file that says "run this script, keep it alive forever, restart it if it crashes, start it when the computer boots." Apple uses it for its own services.
                             <br><br>
-                            <strong class="text-ink">Why do we need it?</strong> This is what makes the Slack bot truly always-on. Bot crashes at 3am? launchd restarts it in seconds. MacBook reboots after a power blip? launchd starts the bot automatically. No human intervention.
+                            <strong class="text-slate-900 dark:text-slate-100">Why do we need it?</strong> This is what makes the Slack bot truly always-on. Bot crashes at 3am? launchd restarts it in seconds. MacBook reboots after a power blip? launchd starts the bot automatically. No human intervention.
                         </div>
                     </div>
                 </div>
@@ -228,15 +228,15 @@
                     <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
                         <div>
                             <span class="font-semibold">Cloudflare Tunnel</span>
-                            <span class="text-ink-light text-sm ml-2">How Slack reaches your MacBook Air</span>
+                            <span class="text-slate-400 dark:text-slate-500 text-sm ml-2">How Slack reaches your MacBook Air</span>
                         </div>
-                        <svg class="accordion-chevron w-5 h-5 text-ink-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        <svg class="accordion-chevron w-5 h-5 text-slate-400 dark:text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
                     <div class="accordion-content">
-                        <div class="px-5 pb-4 text-[0.92rem] text-ink-muted leading-relaxed">
-                            <strong class="text-ink">What is it?</strong> Cloudflare Tunnel creates a secure outbound connection from your MacBook Air to Cloudflare's global network. You point a domain (like <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">bot.curatedconnections.io</code>) at the tunnel, and Cloudflare routes traffic through it to your local machine. HTTPS, DDoS protection, and auto-retries — all free.
+                        <div class="px-5 pb-4 text-[0.92rem] text-slate-500 dark:text-slate-400 leading-relaxed">
+                            <strong class="text-slate-900 dark:text-slate-100">What is it?</strong> Cloudflare Tunnel creates a secure outbound connection from your MacBook Air to Cloudflare's global network. You point a domain (like <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">bot.curatedconnections.io</code>) at the tunnel, and Cloudflare routes traffic through it to your local machine. HTTPS, DDoS protection, and auto-retries — all free.
                             <br><br>
-                            <strong class="text-ink">Why not Socket Mode?</strong> Most Slack tutorials use "Socket Mode" — a WebSocket connection that avoids needing a public URL. But WebSocket connections are fragile: they drop on network blips, hit idle timeouts, and need reconnection logic. The production standard is <strong>HTTP Events API</strong> — Slack sends stateless HTTP requests to your URL. Each event is independent. If one fails, Slack retries. Much more robust. Cloudflare Tunnel gives you the public URL you need to use this approach.
+                            <strong class="text-slate-900 dark:text-slate-100">Why not Socket Mode?</strong> Most Slack tutorials use "Socket Mode" — a WebSocket connection that avoids needing a public URL. But WebSocket connections are fragile: they drop on network blips, hit idle timeouts, and need reconnection logic. The production standard is <strong>HTTP Events API</strong> — Slack sends stateless HTTP requests to your URL. Each event is independent. If one fails, Slack retries. Much more robust. Cloudflare Tunnel gives you the public URL you need to use this approach.
                         </div>
                     </div>
                 </div>
@@ -245,15 +245,15 @@
                     <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
                         <div>
                             <span class="font-semibold">Claude Code CLI</span>
-                            <span class="text-ink-light text-sm ml-2">The engine behind everything</span>
+                            <span class="text-slate-400 dark:text-slate-500 text-sm ml-2">The engine behind everything</span>
                         </div>
-                        <svg class="accordion-chevron w-5 h-5 text-ink-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        <svg class="accordion-chevron w-5 h-5 text-slate-400 dark:text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
                     <div class="accordion-content">
-                        <div class="px-5 pb-4 text-[0.92rem] text-ink-muted leading-relaxed">
-                            <strong class="text-ink">What is it?</strong> Anthropic's <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">claude</code> command-line tool. When the Slack bot receives a message, it runs <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">claude -p "your message"</code> — giving Claude access to your codebase, CLAUDE.md context, and any tools you configure. Powered by the $200/month Max subscription — flat rate, no per-message costs.
+                        <div class="px-5 pb-4 text-[0.92rem] text-slate-500 dark:text-slate-400 leading-relaxed">
+                            <strong class="text-slate-900 dark:text-slate-100">What is it?</strong> Anthropic's <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">claude</code> command-line tool. When the Slack bot receives a message, it runs <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">claude -p "your message"</code> — giving Claude access to your codebase, CLAUDE.md context, and any tools you configure. Powered by the $200/month Max subscription — flat rate, no per-message costs.
                             <br><br>
-                            <strong class="text-ink">Why not the API?</strong> The CLI inherits everything — your project context, installed tools, plugins. The API would require rebuilding all of that. Plus, Max is flat-rate vs unpredictable API billing.
+                            <strong class="text-slate-900 dark:text-slate-100">Why not the API?</strong> The CLI inherits everything — your project context, installed tools, plugins. The API would require rebuilding all of that. Plus, Max is flat-rate vs unpredictable API billing.
                         </div>
                     </div>
                 </div>
@@ -262,15 +262,15 @@
                     <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
                         <div>
                             <span class="font-semibold">CLAUDE.md</span>
-                            <span class="text-ink-light text-sm ml-2">Your AI employee's handbook</span>
+                            <span class="text-slate-400 dark:text-slate-500 text-sm ml-2">Your AI employee's handbook</span>
                         </div>
-                        <svg class="accordion-chevron w-5 h-5 text-ink-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        <svg class="accordion-chevron w-5 h-5 text-slate-400 dark:text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
                     <div class="accordion-content">
-                        <div class="px-5 pb-4 text-[0.92rem] text-ink-muted leading-relaxed">
-                            <strong class="text-ink">What is it?</strong> A markdown file in your project root that Claude Code reads automatically. It's like an employee handbook — you write the business context, codebase conventions, deployment process, common tasks, and standing instructions. Every time Claude responds, it has this context.
+                        <div class="px-5 pb-4 text-[0.92rem] text-slate-500 dark:text-slate-400 leading-relaxed">
+                            <strong class="text-slate-900 dark:text-slate-100">What is it?</strong> A markdown file in your project root that Claude Code reads automatically. It's like an employee handbook — you write the business context, codebase conventions, deployment process, common tasks, and standing instructions. Every time Claude responds, it has this context.
                             <br><br>
-                            <strong class="text-ink">For Curated Connections:</strong> this would include your Rails architecture, database schema highlights, deployment process, common maintenance tasks, how to check analytics, support response templates, and anything else your AI employee needs to know to be effective.
+                            <strong class="text-slate-900 dark:text-slate-100">For Curated Connections:</strong> this would include your Rails architecture, database schema highlights, deployment process, common maintenance tasks, how to check analytics, support response templates, and anything else your AI employee needs to know to be effective.
                         </div>
                     </div>
                 </div>
@@ -280,17 +280,17 @@
         <!-- Phase 1: Hardware Setup -->
         <section class="pb-16">
             <div class="flex items-center gap-3 mb-2">
-                <span class="text-xs font-bold tracking-widest uppercase text-ink-light">Phase 1</span>
+                <span class="text-xs font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500">Phase 1</span>
                 <span class="badge-piyush text-xs font-medium px-2 py-0.5 rounded-full">Piyush</span>
             </div>
             <h2 class="text-2xl font-bold mb-2">Hardware setup</h2>
-            <p class="text-ink-muted mb-8">Factory reset and configure the MacBook Air for always-on use. ~30 minutes.</p>
+            <p class="text-slate-500 dark:text-slate-400 mb-8">Factory reset and configure the MacBook Air for always-on use. ~30 minutes.</p>
 
             <div data-role="piyush-only" class="space-y-6">
 
                 <div class="bg-amber-50/50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900 rounded-2xl p-6">
                     <h3 class="font-semibold mb-1">Hey Piyush!</h3>
-                    <p class="text-ink-muted text-[0.92rem] leading-relaxed">
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] leading-relaxed">
                         You're setting up the MacBook Air M1 as a dedicated server. Factory reset it, configure it to stay awake with the lid closed, and get the basic software installed. After this, both of you manage it together — but this first phase is your show.
                     </p>
                 </div>
@@ -298,13 +298,13 @@
                 <!-- Step 1: Factory Reset -->
                 <div>
                     <h3 class="font-semibold mb-3">1. Factory reset</h3>
-                    <ul class="checklist space-y-2.5 text-[0.92rem] text-ink-muted">
+                    <ul class="checklist space-y-2.5 text-[0.92rem] text-slate-500 dark:text-slate-400">
                         <li>Back up anything worth keeping from the old install</li>
-                        <li>Go to <strong class="text-ink">System Settings &rarr; General &rarr; Transfer or Reset &rarr; Erase All Content and Settings</strong></li>
-                        <li>Go through the macOS setup wizard — create a user account (e.g., <strong class="text-ink">cc</strong>)</li>
+                        <li>Go to <strong class="text-slate-900 dark:text-slate-100">System Settings &rarr; General &rarr; Transfer or Reset &rarr; Erase All Content and Settings</strong></li>
+                        <li>Go through the macOS setup wizard — create a user account (e.g., <strong class="text-slate-900 dark:text-slate-100">cc</strong>)</li>
                         <li>Sign in with an Apple ID (needed for App Store later)</li>
-                        <li>When asked about FileVault (disk encryption): <strong class="text-ink">skip it / turn it off</strong>
-                            <div class="mt-1 text-xs text-ink-light bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900 rounded-lg px-3 py-2">
+                        <li>When asked about FileVault (disk encryption): <strong class="text-slate-900 dark:text-slate-100">skip it / turn it off</strong>
+                            <div class="mt-1 text-xs text-slate-400 dark:text-slate-500 bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900 rounded-lg px-3 py-2">
                                 If the MacBook restarts after a power loss, FileVault shows an unlock screen that needs a keyboard. Since it might restart unattended (lid closed), skip encryption so it boots straight to the desktop.
                             </div>
                         </li>
@@ -314,37 +314,37 @@
                 <!-- Step 2: System Settings -->
                 <div>
                     <h3 class="font-semibold mb-3">2. System Settings checklist</h3>
-                    <p class="text-ink-muted text-sm mb-3">Open <strong class="text-ink">System Settings</strong> and configure each:</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-3">Open <strong class="text-slate-900 dark:text-slate-100">System Settings</strong> and configure each:</p>
 
                     <div class="space-y-4">
                         <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4">
                             <div class="font-medium text-sm mb-2">Energy / Battery</div>
-                            <ul class="checklist space-y-2 text-[0.92rem] text-ink-muted">
-                                <li><strong class="text-ink">Prevent automatic sleeping when the display is off</strong> — ON</li>
-                                <li><strong class="text-ink">Wake for network access</strong> — ON</li>
-                                <li><strong class="text-ink">Optimized Battery Charging</strong> — ON (protects battery while plugged in 24/7)</li>
+                            <ul class="checklist space-y-2 text-[0.92rem] text-slate-500 dark:text-slate-400">
+                                <li><strong class="text-slate-900 dark:text-slate-100">Prevent automatic sleeping when the display is off</strong> — ON</li>
+                                <li><strong class="text-slate-900 dark:text-slate-100">Wake for network access</strong> — ON</li>
+                                <li><strong class="text-slate-900 dark:text-slate-100">Optimized Battery Charging</strong> — ON (protects battery while plugged in 24/7)</li>
                             </ul>
                         </div>
 
                         <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4">
                             <div class="font-medium text-sm mb-2">General &rarr; Sharing</div>
-                            <ul class="checklist space-y-2 text-[0.92rem] text-ink-muted">
-                                <li><strong class="text-ink">Remote Login</strong> (SSH) — ON (so you can both manage it from your main machines without opening the lid)</li>
-                                <li><strong class="text-ink">Screen Sharing</strong> — ON (full desktop access from another Mac on the same network)</li>
+                            <ul class="checklist space-y-2 text-[0.92rem] text-slate-500 dark:text-slate-400">
+                                <li><strong class="text-slate-900 dark:text-slate-100">Remote Login</strong> (SSH) — ON (so you can both manage it from your main machines without opening the lid)</li>
+                                <li><strong class="text-slate-900 dark:text-slate-100">Screen Sharing</strong> — ON (full desktop access from another Mac on the same network)</li>
                             </ul>
                         </div>
 
                         <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4">
                             <div class="font-medium text-sm mb-2">Users & Groups</div>
-                            <ul class="checklist space-y-2 text-[0.92rem] text-ink-muted">
-                                <li><strong class="text-ink">Automatic login</strong> — set to the user account you created</li>
+                            <ul class="checklist space-y-2 text-[0.92rem] text-slate-500 dark:text-slate-400">
+                                <li><strong class="text-slate-900 dark:text-slate-100">Automatic login</strong> — set to the user account you created</li>
                             </ul>
                         </div>
 
                         <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4">
                             <div class="font-medium text-sm mb-2">Lock Screen</div>
-                            <ul class="checklist space-y-2 text-[0.92rem] text-ink-muted">
-                                <li><strong class="text-ink">Require password after screen saver</strong> — Never (so Screen Sharing works without auth prompts)</li>
+                            <ul class="checklist space-y-2 text-[0.92rem] text-slate-500 dark:text-slate-400">
+                                <li><strong class="text-slate-900 dark:text-slate-100">Require password after screen saver</strong> — Never (so Screen Sharing works without auth prompts)</li>
                             </ul>
                         </div>
                     </div>
@@ -353,15 +353,15 @@
                 <!-- Step 3: Tailscale -->
                 <div>
                     <h3 class="font-semibold mb-3">3. Install Tailscale on all three machines</h3>
-                    <p class="text-ink-muted text-[0.92rem] mb-3">Tailscale lets you both access the MacBook Air from anywhere — home, a coffee shop, travelling. Install it on all three machines:</p>
-                    <ul class="checklist space-y-2.5 text-[0.92rem] text-ink-muted">
-                        <li>Open the <strong class="text-ink">Mac App Store</strong> on the MacBook Air, search for <strong class="text-ink">Tailscale</strong>, install it</li>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-3">Tailscale lets you both access the MacBook Air from anywhere — home, a coffee shop, travelling. Install it on all three machines:</p>
+                    <ul class="checklist space-y-2.5 text-[0.92rem] text-slate-500 dark:text-slate-400">
+                        <li>Open the <strong class="text-slate-900 dark:text-slate-100">Mac App Store</strong> on the MacBook Air, search for <strong class="text-slate-900 dark:text-slate-100">Tailscale</strong>, install it</li>
                         <li>Open Tailscale, sign in with a shared account (Google, GitHub, or Apple ID)</li>
-                        <li>Do the same on <strong class="text-ink">Nityesh's MacBook</strong> and <strong class="text-ink">Piyush's machine</strong> — same account</li>
-                        <li>All three devices now appear in your Tailscale dashboard with stable IPs like <strong class="text-ink">100.x.x.x</strong></li>
-                        <li>In Tailscale preferences on the MacBook Air, enable <strong class="text-ink">"Start Tailscale when I log in"</strong></li>
+                        <li>Do the same on <strong class="text-slate-900 dark:text-slate-100">Nityesh's MacBook</strong> and <strong class="text-slate-900 dark:text-slate-100">Piyush's machine</strong> — same account</li>
+                        <li>All three devices now appear in your Tailscale dashboard with stable IPs like <strong class="text-slate-900 dark:text-slate-100">100.x.x.x</strong></li>
+                        <li>In Tailscale preferences on the MacBook Air, enable <strong class="text-slate-900 dark:text-slate-100">"Start Tailscale when I log in"</strong></li>
                     </ul>
-                    <div class="mt-3 text-xs text-ink-light bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-lg px-3 py-2">
+                    <div class="mt-3 text-xs text-slate-400 dark:text-slate-500 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-lg px-3 py-2">
                         <strong class="text-blue-800">At home</strong> you can SSH using the local address (<code class="bg-blue-100/50 px-1 py-0.5 rounded text-xs font-mono">cc@macbook-air.local</code>). <strong class="text-blue-800">Outside</strong> use the Tailscale IP (<code class="bg-blue-100/50 px-1 py-0.5 rounded text-xs font-mono">cc@100.x.x.x</code>). Both always work.
                     </div>
                 </div>
@@ -369,7 +369,7 @@
                 <!-- Step 4: Clamshell -->
                 <div>
                     <h3 class="font-semibold mb-3">4. Keep it awake with the lid closed</h3>
-                    <p class="text-ink-muted text-[0.92rem] mb-3">Open Terminal and run:</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-3">Open Terminal and run:</p>
                     <div class="code-block">
                         <span class="comment"># Prevent sleep entirely — even with the lid closed</span><br>
                         <span class="cmd">sudo</span> pmset <span class="flag">-a</span> disablesleep 1<br><br>
@@ -377,7 +377,7 @@
                         <span class="cmd">pmset</span> <span class="flag">-g</span><br><br>
                         <span class="comment"># To reverse later: sudo pmset -a disablesleep 0</span>
                     </div>
-                    <div class="mt-3 text-xs text-ink-light bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900 rounded-lg px-3 py-2">
+                    <div class="mt-3 text-xs text-slate-400 dark:text-slate-500 bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900 rounded-lg px-3 py-2">
                         <strong class="text-amber-800">Battery note:</strong> Running plugged in 24/7 can cause battery swelling over months/years. "Optimized Battery Charging" helps. Worst case, battery replacement is ~$100-150. Acceptable trade-off for an always-on AI employee.
                     </div>
                 </div>
@@ -401,14 +401,14 @@
                 <!-- Step 5: Physical placement -->
                 <div>
                     <h3 class="font-semibold mb-3">6. Set it up physically</h3>
-                    <ul class="checklist space-y-2.5 text-[0.92rem] text-ink-muted">
-                        <li>Plug into <strong class="text-ink">power</strong> (always — use a reliable outlet)</li>
-                        <li>Connect to your home <strong class="text-ink">WiFi</strong> (or ethernet via USB-C adapter if you have one — more reliable)</li>
+                    <ul class="checklist space-y-2.5 text-[0.92rem] text-slate-500 dark:text-slate-400">
+                        <li>Plug into <strong class="text-slate-900 dark:text-slate-100">power</strong> (always — use a reliable outlet)</li>
+                        <li>Connect to your home <strong class="text-slate-900 dark:text-slate-100">WiFi</strong> (or ethernet via USB-C adapter if you have one — more reliable)</li>
                         <li>Close the lid, tuck it somewhere out of the way — a shelf, behind a monitor, wherever</li>
-                        <li>Note the local IP address or hostname (shown in System Settings &rarr; Sharing, something like <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">cc@macbook-air.local</code>)</li>
+                        <li>Note the local IP address or hostname (shown in System Settings &rarr; Sharing, something like <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">cc@macbook-air.local</code>)</li>
                     </ul>
 
-                    <div class="mt-4 bg-green-50 dark:bg-green-950/30 border border-green-100 dark:border-green-900 rounded-xl p-4 text-[0.92rem] text-green-800">
+                    <div class="mt-4 bg-green-50 dark:bg-green-950/30 border border-green-100 dark:border-green-900 rounded-xl p-4 text-[0.92rem] text-green-800 dark:text-green-300">
                         <strong>Hardware done!</strong> The MacBook Air is now a headless server. Both of you can SSH in from your main machines, or just walk over and open the lid. Time to set up the Slack bot together.
                     </div>
                 </div>
@@ -418,36 +418,36 @@
         <!-- Phase 2: Slack Bot Setup -->
         <section class="pb-16">
             <div class="flex items-center gap-3 mb-2">
-                <span class="text-xs font-bold tracking-widest uppercase text-ink-light">Phase 2</span>
+                <span class="text-xs font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500">Phase 2</span>
                 <span class="badge-both text-xs font-medium px-2 py-0.5 rounded-full">Nityesh + Piyush</span>
             </div>
             <h2 class="text-2xl font-bold mb-2">Slack bot setup</h2>
-            <p class="text-ink-muted mb-8">Create the Slack app, install the bot, wire it to Claude Code. ~20 minutes.</p>
+            <p class="text-slate-500 dark:text-slate-400 mb-8">Create the Slack app, install the bot, wire it to Claude Code. ~20 minutes.</p>
 
             <div data-role="both-only" class="space-y-6">
 
                 <div>
                     <h3 class="font-semibold mb-3">1. Create the Slack app</h3>
-                    <p class="text-ink-muted text-[0.92rem] mb-3">Either of you can do this — whoever has admin access to your Slack workspace:</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-3">Either of you can do this — whoever has admin access to your Slack workspace:</p>
 
-                    <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 text-[0.92rem] text-ink-muted space-y-3">
-                        <p><strong class="text-ink">a.</strong> Go to <a href="https://api.slack.com/apps" class="text-blue-600 hover:underline" target="_blank">api.slack.com/apps</a> &rarr; Create New App &rarr; "From scratch"</p>
-                        <p><strong class="text-ink">b.</strong> Name it — <strong class="text-ink">"CC Bot"</strong>, <strong class="text-ink">"CC Employee"</strong>, or whatever feels right</p>
-                        <p><strong class="text-ink">c.</strong> OAuth & Permissions &rarr; Add Bot Token Scopes: <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">app_mentions:read</code>, <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">chat:write</code>, <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">im:history</code>, <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">im:read</code>, <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">im:write</code>, <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">files:read</code></p>
-                        <p><strong class="text-ink">d.</strong> Event Subscriptions &rarr; Enable Events &rarr; set Request URL to <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">https://bot.curatedconnections.io/slack/events</code> (we'll set up Cloudflare Tunnel for this in step 6)</p>
-                        <p><strong class="text-ink">e.</strong> Subscribe to bot events: <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">app_mention</code>, <code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">message.im</code></p>
-                        <p><strong class="text-ink">f.</strong> Basic Information &rarr; copy the <strong class="text-ink">Signing Secret</strong> (used to verify requests are really from Slack)</p>
-                        <p><strong class="text-ink">g.</strong> Install to workspace &rarr; save the Bot Token (<code class="bg-slate-200 px-1.5 py-0.5 rounded text-xs font-mono">xoxb-...</code>)</p>
-                        <p><strong class="text-ink">h.</strong> Find both your Slack user IDs: Profile &rarr; <strong>&#8942;</strong> menu &rarr; "Copy member ID"</p>
+                    <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 text-[0.92rem] text-slate-500 dark:text-slate-400 space-y-3">
+                        <p><strong class="text-slate-900 dark:text-slate-100">a.</strong> Go to <a href="https://api.slack.com/apps" class="text-blue-600 hover:underline" target="_blank">api.slack.com/apps</a> &rarr; Create New App &rarr; "From scratch"</p>
+                        <p><strong class="text-slate-900 dark:text-slate-100">b.</strong> Name it — <strong class="text-slate-900 dark:text-slate-100">"CC Bot"</strong>, <strong class="text-slate-900 dark:text-slate-100">"CC Employee"</strong>, or whatever feels right</p>
+                        <p><strong class="text-slate-900 dark:text-slate-100">c.</strong> OAuth & Permissions &rarr; Add Bot Token Scopes: <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">app_mentions:read</code>, <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">chat:write</code>, <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">im:history</code>, <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">im:read</code>, <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">im:write</code>, <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">files:read</code></p>
+                        <p><strong class="text-slate-900 dark:text-slate-100">d.</strong> Event Subscriptions &rarr; Enable Events &rarr; set Request URL to <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">https://bot.curatedconnections.io/slack/events</code> (we'll set up Cloudflare Tunnel for this in step 6)</p>
+                        <p><strong class="text-slate-900 dark:text-slate-100">e.</strong> Subscribe to bot events: <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">app_mention</code>, <code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">message.im</code></p>
+                        <p><strong class="text-slate-900 dark:text-slate-100">f.</strong> Basic Information &rarr; copy the <strong class="text-slate-900 dark:text-slate-100">Signing Secret</strong> (used to verify requests are really from Slack)</p>
+                        <p><strong class="text-slate-900 dark:text-slate-100">g.</strong> Install to workspace &rarr; save the Bot Token (<code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs font-mono">xoxb-...</code>)</p>
+                        <p><strong class="text-slate-900 dark:text-slate-100">h.</strong> Find both your Slack user IDs: Profile &rarr; <strong>&#8942;</strong> menu &rarr; "Copy member ID"</p>
                     </div>
-                    <div class="mt-3 text-xs text-ink-light bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-lg px-3 py-2">
+                    <div class="mt-3 text-xs text-slate-400 dark:text-slate-500 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-lg px-3 py-2">
                         <strong class="text-blue-800">No Socket Mode.</strong> We're using the HTTP Events API — the production-standard approach. Slack sends HTTP POST requests to your public URL. Each event is stateless and independent. No fragile WebSocket connections to drop.
                     </div>
                 </div>
 
                 <div>
                     <h3 class="font-semibold mb-3">2. Install the bot on the MacBook Air</h3>
-                    <p class="text-ink-muted text-[0.92rem] mb-3">SSH in from either of your machines, or open the lid:</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-3">SSH in from either of your machines, or open the lid:</p>
                     <div class="code-block">
                         <span class="comment"># SSH from your main machine (same WiFi network)</span><br>
                         <span class="cmd">ssh</span> cc@macbook-air.local<br><br>
@@ -482,8 +482,8 @@
 
                 <div>
                     <h3 class="font-semibold mb-3">4. Add the bot script</h3>
-                    <p class="text-ink-muted text-[0.92rem] mb-3">Copy the <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">claudie_bot.py</code> from the Every Consulting repo (or Nityesh will set this up). The bot script handles:</p>
-                    <ul class="checklist space-y-2 text-[0.92rem] text-ink-muted">
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-3">Copy the <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">claudie_bot.py</code> from the Every Consulting repo (or Nityesh will set this up). The bot script handles:</p>
+                    <ul class="checklist space-y-2 text-[0.92rem] text-slate-500 dark:text-slate-400">
                         <li>HTTP Events API via Flask (production-standard, stateless)</li>
                         <li>Auth gating — only your two Slack IDs can interact</li>
                         <li>Thread-based conversations with Claude session continuity</li>
@@ -495,7 +495,7 @@
 
                 <div>
                     <h3 class="font-semibold mb-3">5. Set up Cloudflare Tunnel</h3>
-                    <p class="text-ink-muted text-[0.92rem] mb-3">This gives your MacBook Air a public URL (<code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">bot.curatedconnections.io</code>) so Slack can send events to it. Free, production-grade, HTTPS included.</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-3">This gives your MacBook Air a public URL (<code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">bot.curatedconnections.io</code>) so Slack can send events to it. Free, production-grade, HTTPS included.</p>
                     <div class="code-block">
                         <span class="comment"># Install Cloudflare's tunnel daemon</span><br>
                         <span class="cmd">brew install</span> cloudflared<br><br>
@@ -520,7 +520,7 @@
                         <span class="comment"># Once working, install as a persistent system service</span><br>
                         <span class="cmd">sudo</span> cloudflared service install
                     </div>
-                    <div class="mt-3 text-xs text-ink-light bg-green-50 border border-green-100 rounded-lg px-3 py-2">
+                    <div class="mt-3 text-xs text-slate-400 dark:text-slate-500 bg-green-50 border border-green-100 rounded-lg px-3 py-2">
                         <strong class="text-green-800">Now <code>https://bot.curatedconnections.io</code> routes to your MacBook Air.</strong> Cloudflare handles HTTPS, DDoS protection, and auto-retries. The tunnel runs as a system service — survives reboots. Go back to your Slack app's Event Subscriptions and set the Request URL to <code>https://bot.curatedconnections.io/slack/events</code>.
                     </div>
                 </div>
@@ -534,7 +534,7 @@
                         <span class="comment"># You should see:</span><br>
                         <span class="string">Claudie starting — authorized users: {'UNITYESH', 'UPIYUSH'}</span>
                     </div>
-                    <p class="text-ink-muted text-[0.92rem] mt-3">DM the bot in Slack. If it responds — you're in business.</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mt-3">DM the bot in Slack. If it responds — you're in business.</p>
                 </div>
             </div>
         </section>
@@ -542,17 +542,17 @@
         <!-- Phase 3: Always On -->
         <section class="pb-16">
             <div class="flex items-center gap-3 mb-2">
-                <span class="text-xs font-bold tracking-widest uppercase text-ink-light">Phase 3</span>
+                <span class="text-xs font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500">Phase 3</span>
                 <span class="badge-both text-xs font-medium px-2 py-0.5 rounded-full">Nityesh + Piyush</span>
             </div>
             <h2 class="text-2xl font-bold mb-2">Make it always on</h2>
-            <p class="text-ink-muted mb-8">Survive crashes, reboots, and power outages — permanently.</p>
+            <p class="text-slate-500 dark:text-slate-400 mb-8">Survive crashes, reboots, and power outages — permanently.</p>
 
             <div data-role="both-only" class="space-y-6">
 
                 <div>
                     <h3 class="font-semibold mb-3">1. Create a launchd service</h3>
-                    <p class="text-ink-muted text-[0.92rem] mb-3">This tells macOS to keep the bot alive forever:</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-3">This tells macOS to keep the bot alive forever:</p>
                     <div class="code-block text-[0.72rem]">
                         <span class="cmd">cat</span> &lt;&lt;'EOF' &gt; ~/Library/LaunchAgents/com.cc.slack-bot.plist<br>
                         <span class="string">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span><br>
@@ -596,7 +596,7 @@
                         <span class="comment"># Wait 2-3 min, then DM the bot in Slack</span>
                     </div>
 
-                    <div class="mt-4 bg-green-50 dark:bg-green-950/30 border border-green-100 dark:border-green-900 rounded-xl p-4 text-[0.92rem] text-green-800">
+                    <div class="mt-4 bg-green-50 dark:bg-green-950/30 border border-green-100 dark:border-green-900 rounded-xl p-4 text-[0.92rem] text-green-800 dark:text-green-300">
                         <strong>It's alive!</strong> Your AI employee is running 24/7 on the MacBook Air. Close the lid, tuck it away. It'll keep working. If either of you needs to debug, SSH in or just walk over and open it.
                     </div>
                 </div>
@@ -606,34 +606,34 @@
         <!-- Phase 4: Using It -->
         <section class="pb-16">
             <div class="flex items-center gap-3 mb-2">
-                <span class="text-xs font-bold tracking-widest uppercase text-ink-light">Phase 4</span>
+                <span class="text-xs font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500">Phase 4</span>
                 <span class="badge-both text-xs font-medium px-2 py-0.5 rounded-full">Nityesh + Piyush</span>
             </div>
             <h2 class="text-2xl font-bold mb-2">Using your AI employee</h2>
-            <p class="text-ink-muted mb-8">How you both interact with it day-to-day.</p>
+            <p class="text-slate-500 dark:text-slate-400 mb-8">How you both interact with it day-to-day.</p>
 
             <div data-role="shared" class="space-y-6">
 
                 <div>
                     <h3 class="font-semibold mb-3">How to talk to it</h3>
-                    <ul class="checklist space-y-2.5 text-[0.92rem] text-ink-muted">
-                        <li><strong class="text-ink">DM the bot directly</strong> — just like messaging each other</li>
-                        <li><strong class="text-ink">@mention it in channels</strong> — it responds in a thread</li>
-                        <li><strong class="text-ink">Thread replies continue the conversation</strong> — it remembers context within a thread</li>
-                        <li><strong class="text-ink">Attach screenshots or files</strong> — it can read images and documents</li>
+                    <ul class="checklist space-y-2.5 text-[0.92rem] text-slate-500 dark:text-slate-400">
+                        <li><strong class="text-slate-900 dark:text-slate-100">DM the bot directly</strong> — just like messaging each other</li>
+                        <li><strong class="text-slate-900 dark:text-slate-100">@mention it in channels</strong> — it responds in a thread</li>
+                        <li><strong class="text-slate-900 dark:text-slate-100">Thread replies continue the conversation</strong> — it remembers context within a thread</li>
+                        <li><strong class="text-slate-900 dark:text-slate-100">Attach screenshots or files</strong> — it can read images and documents</li>
                     </ul>
                 </div>
 
                 <div>
                     <h3 class="font-semibold mb-3">Things to try</h3>
                     <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 space-y-3 text-[0.92rem]">
-                        <p class="text-ink-muted"><span class="text-ink font-medium">"How many new signups did we get this week?"</span></p>
-                        <p class="text-ink-muted"><span class="text-ink font-medium">"There's a bug — user X got matched with themselves"</span></p>
-                        <p class="text-ink-muted"><span class="text-ink font-medium">"Draft a response to this support email"</span> — paste the email</p>
-                        <p class="text-ink-muted"><span class="text-ink font-medium">"What's our MRR looking like? Any churn this month?"</span></p>
-                        <p class="text-ink-muted"><span class="text-ink font-medium">"Add a 'last active' badge to the member directory"</span></p>
-                        <p class="text-ink-muted"><span class="text-ink font-medium">"Review this PR and tell me what you think"</span> — paste a GitHub link</p>
-                        <p class="text-ink-muted"><span class="text-ink font-medium">"Write a migration to add an 'interests' column to the members table"</span></p>
+                        <p class="text-slate-500 dark:text-slate-400"><span class="text-slate-900 dark:text-slate-100 font-medium">"How many new signups did we get this week?"</span></p>
+                        <p class="text-slate-500 dark:text-slate-400"><span class="text-slate-900 dark:text-slate-100 font-medium">"There's a bug — user X got matched with themselves"</span></p>
+                        <p class="text-slate-500 dark:text-slate-400"><span class="text-slate-900 dark:text-slate-100 font-medium">"Draft a response to this support email"</span> — paste the email</p>
+                        <p class="text-slate-500 dark:text-slate-400"><span class="text-slate-900 dark:text-slate-100 font-medium">"What's our MRR looking like? Any churn this month?"</span></p>
+                        <p class="text-slate-500 dark:text-slate-400"><span class="text-slate-900 dark:text-slate-100 font-medium">"Add a 'last active' badge to the member directory"</span></p>
+                        <p class="text-slate-500 dark:text-slate-400"><span class="text-slate-900 dark:text-slate-100 font-medium">"Review this PR and tell me what you think"</span> — paste a GitHub link</p>
+                        <p class="text-slate-500 dark:text-slate-400"><span class="text-slate-900 dark:text-slate-100 font-medium">"Write a migration to add an 'interests' column to the members table"</span></p>
                     </div>
                 </div>
             </div>
@@ -642,78 +642,78 @@
         <!-- Phase 5: Growing It -->
         <section class="pb-16">
             <div class="flex items-center gap-3 mb-2">
-                <span class="text-xs font-bold tracking-widest uppercase text-ink-light">Phase 5</span>
+                <span class="text-xs font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500">Phase 5</span>
                 <span class="badge-both text-xs font-medium px-2 py-0.5 rounded-full">Nityesh + Piyush</span>
             </div>
             <h2 class="text-2xl font-bold mb-2">The 10x roadmap</h2>
-            <p class="text-ink-muted mb-8">Aggressive timeline. Full autonomy in 30 days. Revenue impact by month 3. 10x by end of year.</p>
+            <p class="text-slate-500 dark:text-slate-400 mb-8">Aggressive timeline. Full autonomy in 30 days. Revenue impact by month 3. 10x by end of year.</p>
 
             <div data-role="shared" class="space-y-4">
 
                 <!-- MONTH 1 -->
-                <div class="border-l-4 border-green-400 bg-green-50/30 rounded-r-xl p-5">
-                    <div class="text-xs font-bold text-green-700 uppercase tracking-widest mb-3">Month 1 — From Zero to Full Autonomy</div>
+                <div class="border-l-4 border-green-400 bg-green-50/30 dark:bg-green-950/20 rounded-r-xl p-5">
+                    <div class="text-xs font-bold text-green-700 dark:text-green-400 uppercase tracking-widest mb-3">Month 1 — From Zero to Full Autonomy</div>
 
                     <div class="space-y-4">
                         <div class="border border-green-100 dark:border-green-900 bg-white dark:bg-slate-900 rounded-xl p-4">
                             <div class="flex items-center gap-2 mb-1">
-                                <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Week 1</span>
+                                <span class="text-xs font-bold text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/50 px-2 py-0.5 rounded-full">Week 1</span>
                                 <h3 class="font-semibold">Learn the business</h3>
                             </div>
-                            <p class="text-ink-muted text-[0.92rem]">Write a comprehensive CLAUDE.md — the AI's employee handbook. Business model, Rails architecture, deployment process, key metrics, customer personas, common support issues, tone of voice. Feed it everything. Start using it for codebase questions and support drafts to build trust and calibrate its judgment.</p>
+                            <p class="text-slate-500 dark:text-slate-400 text-[0.92rem]">Write a comprehensive CLAUDE.md — the AI's employee handbook. Business model, Rails architecture, deployment process, key metrics, customer personas, common support issues, tone of voice. Feed it everything. Start using it for codebase questions and support drafts to build trust and calibrate its judgment.</p>
                         </div>
 
                         <div class="border border-green-100 dark:border-green-900 bg-white dark:bg-slate-900 rounded-xl p-4">
                             <div class="flex items-center gap-2 mb-1">
-                                <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Week 2</span>
+                                <span class="text-xs font-bold text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/50 px-2 py-0.5 rounded-full">Week 2</span>
                                 <h3 class="font-semibold">Own support & bugs</h3>
                             </div>
-                            <p class="text-ink-muted text-[0.92rem]">Investigate every bug end-to-end — read logs, trace the code, write the fix, open a PR. Draft every support response. Monitor error rates proactively. <strong class="text-ink">Goal: zero support backlog, you just approve.</strong></p>
+                            <p class="text-slate-500 dark:text-slate-400 text-[0.92rem]">Investigate every bug end-to-end — read logs, trace the code, write the fix, open a PR. Draft every support response. Monitor error rates proactively. <strong class="text-slate-900 dark:text-slate-100">Goal: zero support backlog, you just approve.</strong></p>
                         </div>
 
                         <div class="border border-green-100 dark:border-green-900 bg-white dark:bg-slate-900 rounded-xl p-4">
                             <div class="flex items-center gap-2 mb-1">
-                                <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Week 3-4</span>
+                                <span class="text-xs font-bold text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/50 px-2 py-0.5 rounded-full">Week 3-4</span>
                                 <h3 class="font-semibold">Ship features & full autonomy</h3>
                             </div>
-                            <p class="text-ink-muted text-[0.92rem]">Build features you've been putting off. Improve the matching algorithm. Add the onboarding flow. Implement customer-requested integrations. Set up scheduled morning briefings, overnight error reports, and proactive suggestions. By end of month 1, it identifies what needs doing and proposes it. <strong class="text-ink">Goal: it runs the product, you review its work.</strong></p>
+                            <p class="text-slate-500 dark:text-slate-400 text-[0.92rem]">Build features you've been putting off. Improve the matching algorithm. Add the onboarding flow. Implement customer-requested integrations. Set up scheduled morning briefings, overnight error reports, and proactive suggestions. By end of month 1, it identifies what needs doing and proposes it. <strong class="text-slate-900 dark:text-slate-100">Goal: it runs the product, you review its work.</strong></p>
                         </div>
                     </div>
                 </div>
 
                 <!-- MONTH 2 -->
-                <div class="border-l-4 border-blue-400 bg-blue-50/30 rounded-r-xl p-5">
-                    <div class="text-xs font-bold text-blue-700 uppercase tracking-widest mb-3">Month 2 — AI Runs Maintenance, You Step Back</div>
+                <div class="border-l-4 border-blue-400 bg-blue-50/30 dark:bg-blue-950/20 rounded-r-xl p-5">
+                    <div class="text-xs font-bold text-blue-700 dark:text-blue-400 uppercase tracking-widest mb-3">Month 2 — AI Runs Maintenance, You Step Back</div>
 
                     <div class="border border-blue-100 dark:border-blue-900 bg-white dark:bg-slate-900 rounded-xl p-4">
-                        <p class="text-ink-muted text-[0.92rem]">
-                            You're already in maintenance mode — but <em>you're</em> doing the maintaining. Month 2, the AI takes over completely. It checks customer emails, responds with context-aware answers, handles support end-to-end. When a customer requests a feature or reports a bug, it investigates, writes the fix or builds the feature, and opens a PR — you just review and merge. Deployments, database health, dependency updates, security patches, uptime monitoring — all AI. Use <strong class="text-ink">Vercel's Agent Browser</strong> for anything that needs a real browser — admin dashboards, analytics, third-party integrations.
+                        <p class="text-slate-500 dark:text-slate-400 text-[0.92rem]">
+                            You're already in maintenance mode — but <em>you're</em> doing the maintaining. Month 2, the AI takes over completely. It checks customer emails, responds with context-aware answers, handles support end-to-end. When a customer requests a feature or reports a bug, it investigates, writes the fix or builds the feature, and opens a PR — you just review and merge. Deployments, database health, dependency updates, security patches, uptime monitoring — all AI. Use <strong class="text-slate-900 dark:text-slate-100">Vercel's Agent Browser</strong> for anything that needs a real browser — admin dashboards, analytics, third-party integrations.
                         </p>
-                        <p class="text-ink font-semibold text-[0.92rem] mt-3">Goal: Curated Connections runs itself. 100% AI-maintained. Your hands are completely free.</p>
+                        <p class="text-slate-900 dark:text-slate-100 font-semibold text-[0.92rem] mt-3">Goal: Curated Connections runs itself. 100% AI-maintained. Your hands are completely free.</p>
                     </div>
                 </div>
 
                 <!-- MONTH 3 -->
-                <div class="border-l-4 border-purple-400 bg-purple-50/30 rounded-r-xl p-5">
-                    <div class="text-xs font-bold text-purple-700 uppercase tracking-widest mb-3">Month 3 — Revenue Growth Begins</div>
+                <div class="border-l-4 border-purple-400 bg-purple-50/30 dark:bg-purple-950/20 rounded-r-xl p-5">
+                    <div class="text-xs font-bold text-purple-700 dark:text-purple-400 uppercase tracking-widest mb-3">Month 3 — Revenue Growth Begins</div>
 
                     <div class="border border-purple-100 dark:border-purple-900 bg-white dark:bg-slate-900 rounded-xl p-4">
-                        <p class="text-ink-muted text-[0.92rem]">
+                        <p class="text-slate-500 dark:text-slate-400 text-[0.92rem]">
                             Now that operations are handled, point the AI at growth. A/B test landing page copy. Rewrite onboarding emails based on churn data. Generate case studies from power users. Create comparison pages, blog posts, social content. Analyze what your best customers have in common and find more like them. Build the features that directly drive upgrades and reduce churn.
                         </p>
-                        <p class="text-ink font-semibold text-[0.92rem] mt-3">Goal: meaningful revenue bump. First signs of the 10x trajectory.</p>
+                        <p class="text-slate-900 dark:text-slate-100 font-semibold text-[0.92rem] mt-3">Goal: meaningful revenue bump. First signs of the 10x trajectory.</p>
                     </div>
                 </div>
 
                 <!-- END OF YEAR -->
-                <div class="border-l-4 border-amber-400 bg-amber-50/30 rounded-r-xl p-5">
-                    <div class="text-xs font-bold text-amber-700 uppercase tracking-widest mb-3">End of 2026 — 10x</div>
+                <div class="border-l-4 border-amber-400 bg-amber-50/30 dark:bg-amber-950/20 rounded-r-xl p-5">
+                    <div class="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-widest mb-3">End of 2026 — 10x</div>
 
                     <div class="border border-amber-100 dark:border-amber-900 bg-white dark:bg-slate-900 rounded-xl p-4">
-                        <p class="text-ink-muted text-[0.92rem]">
+                        <p class="text-slate-500 dark:text-slate-400 text-[0.92rem]">
                             Nine months of compounding. The AI gets smarter with every model update. Your CLAUDE.md gets richer with every interaction. The product improves weekly instead of monthly. Support is instant. Marketing runs on autopilot. Features ship at a pace that would require a 5-person team. Except it's just the two of you and a MacBook Air in a corner.
                         </p>
-                        <p class="text-ink font-semibold text-[0.92rem] mt-3">Goal: 10x revenue. Proof that two founders + one AI employee can outrun a funded startup.</p>
+                        <p class="text-slate-900 dark:text-slate-100 font-semibold text-[0.92rem] mt-3">Goal: 10x revenue. Proof that two founders + one AI employee can outrun a funded startup.</p>
                     </div>
                 </div>
 
@@ -735,11 +735,11 @@
         <!-- Admin Reference -->
         <section class="pb-16">
             <div class="flex items-center gap-3 mb-2">
-                <span class="text-xs font-bold tracking-widest uppercase text-ink-light">Reference</span>
+                <span class="text-xs font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500">Reference</span>
                 <span class="badge-both text-xs font-medium px-2 py-0.5 rounded-full">Nityesh + Piyush</span>
             </div>
             <h2 class="text-2xl font-bold mb-2">Admin commands</h2>
-            <p class="text-ink-muted mb-8">Quick reference for managing the server. Either of you can run these.</p>
+            <p class="text-slate-500 dark:text-slate-400 mb-8">Quick reference for managing the server. Either of you can run these.</p>
 
             <div data-role="shared">
                 <div class="code-block text-[0.78rem]">
@@ -777,7 +777,7 @@
 
         <!-- Footer -->
         <footer class="pb-12 pt-8 border-t border-slate-100 dark:border-slate-800">
-            <div class="flex items-center justify-between text-xs text-ink-light">
+            <div class="flex items-center justify-between text-xs text-slate-400 dark:text-slate-500">
                 <span>Curated Connections &middot; AI Home Base</span>
                 <span>Built with Claude Code</span>
             </div>

@@ -561,15 +561,7 @@
                         <span class="comment"># Set up Python environment</span><br>
                         <span class="cmd">python3</span> <span class="flag">-m</span> venv venv<br>
                         <span class="cmd">source</span> venv/bin/activate<br>
-                        <span class="cmd">pip install</span> slack-bolt slack-sdk python-dotenv flask<br><br>
-                        <span class="comment"># Create .env file with your tokens</span><br>
-                        <span class="cmd">cat</span> &lt;&lt;'EOF' &gt; .env<br>
-                        <span class="string">SLACK_BOT_TOKEN=xoxb-your-bot-token</span><br>
-                        <span class="string">SLACK_SIGNING_SECRET=your-signing-secret</span><br>
-                        <span class="string">AUTHORIZED_USERS=UNITYESH_ID,UPIYUSH_ID</span><br>
-                        <span class="string">PROJECT_DIR=/Users/cc/Projects/curated-connections</span><br>
-                        <span class="string">CLAUDE_TIMEOUT=1800</span><br>
-                        EOF
+                        <span class="cmd">pip install</span> slack-bolt slack-sdk python-dotenv flask
                     </div>
                 </div>
 
@@ -585,15 +577,31 @@
                 </div>
 
                 <div>
-                    <h3 class="font-semibold mb-3">4. Add the bot script</h3>
-                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-3">Copy the <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">claudie_bot.py</code> from the Every Consulting repo (or Nityesh will set this up). The bot script handles:</p>
+                    <h3 class="font-semibold mb-3">4. Set up the bot</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-3">The bot script (<code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">luoji_bot.py</code>) is already in this repo. Clone it and configure:</p>
+                    <div class="code-block">
+                        <span class="comment"># Clone the CC Home Base repo (contains the bot + this guide)</span><br>
+                        <span class="cmd">cd</span> ~/Projects<br>
+                        <span class="cmd">git clone</span> <span class="string">https://github.com/nityeshaga/cc-home-base.git</span><br>
+                        <span class="cmd">cd</span> cc-home-base<br><br>
+                        <span class="comment"># Set up Python environment</span><br>
+                        <span class="cmd">python3</span> <span class="flag">-m</span> venv venv<br>
+                        <span class="cmd">source</span> venv/bin/activate<br>
+                        <span class="cmd">pip install</span> <span class="flag">-r</span> requirements.txt<br><br>
+                        <span class="comment"># Configure</span><br>
+                        <span class="cmd">cp</span> .env.example .env<br>
+                        <span class="cmd">nano</span> .env  <span class="comment"># Add your Slack tokens, Signing Secret, user IDs</span>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mt-3">The bot handles:</p>
                     <ul class="checklist space-y-2 text-[0.92rem] text-slate-500 dark:text-slate-400">
-                        <li>HTTP Events API via Flask (production-standard, stateless)</li>
+                        <li>HTTP Events API via Flask (production-standard, each event is a stateless HTTP POST)</li>
+                        <li>Async processing — responds to Slack within 3 seconds, runs Claude in background</li>
                         <li>Auth gating — only your two Slack IDs can interact</li>
                         <li>Thread-based conversations with Claude session continuity</li>
                         <li>Markdown to Slack formatting conversion</li>
                         <li>File/image attachment handling</li>
                         <li>Audit logging of every interaction</li>
+                        <li>Proactive messaging via CLI (<code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">--send</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">--channel</code>)</li>
                     </ul>
                 </div>
 
@@ -633,15 +641,16 @@
                 </div>
 
                 <div>
-                    <h3 class="font-semibold mb-3">6. Test it</h3>
+                    <h3 class="font-semibold mb-3">7. Test it</h3>
                     <div class="code-block">
-                        <span class="cmd">cd</span> ~/Projects/cc-slack-bot<br>
+                        <span class="comment"># Make sure Cloudflare Tunnel is running first, then:</span><br>
+                        <span class="cmd">cd</span> ~/Projects/cc-home-base<br>
                         <span class="cmd">source</span> venv/bin/activate<br>
-                        <span class="cmd">python</span> claudie_bot.py<br><br>
+                        <span class="cmd">python</span> luoji_bot.py<br><br>
                         <span class="comment"># You should see:</span><br>
-                        <span class="string">Claudie starting — authorized users: {'UNITYESH', 'UPIYUSH'}</span>
+                        <span class="string">Luo Ji starting on port 3000</span>
                     </div>
-                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mt-3">DM the bot in Slack. If it responds — you're in business.</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mt-3">DM Luo Ji in Slack. If it responds — you're in business.</p>
                 </div>
             </div>
         </section>
@@ -661,27 +670,27 @@
                     <h3 class="font-semibold mb-3">1. Create a launchd service</h3>
                     <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-3">This tells macOS to keep the bot alive forever:</p>
                     <div class="code-block text-[0.72rem]">
-                        <span class="cmd">cat</span> &lt;&lt;'EOF' &gt; ~/Library/LaunchAgents/com.cc.slack-bot.plist<br>
+                        <span class="cmd">cat</span> &lt;&lt;'EOF' &gt; ~/Library/LaunchAgents/com.cc.luoji.plist<br>
                         <span class="string">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span><br>
                         <span class="string">&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"</span><br>
                         <span class="string">  "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;</span><br>
                         <span class="string">&lt;plist version="1.0"&gt;</span><br>
                         <span class="string">&lt;dict&gt;</span><br>
                         <span class="string">    &lt;key&gt;Label&lt;/key&gt;</span><br>
-                        <span class="string">    &lt;string&gt;com.cc.slack-bot&lt;/string&gt;</span><br>
+                        <span class="string">    &lt;string&gt;com.cc.luoji&lt;/string&gt;</span><br>
                         <span class="string">    &lt;key&gt;ProgramArguments&lt;/key&gt;</span><br>
                         <span class="string">    &lt;array&gt;</span><br>
-                        <span class="string">        &lt;string&gt;/Users/cc/Projects/cc-slack-bot/venv/bin/python&lt;/string&gt;</span><br>
-                        <span class="string">        &lt;string&gt;/Users/cc/Projects/cc-slack-bot/claudie_bot.py&lt;/string&gt;</span><br>
+                        <span class="string">        &lt;string&gt;/Users/luo/Projects/cc-home-base/venv/bin/python&lt;/string&gt;</span><br>
+                        <span class="string">        &lt;string&gt;/Users/luo/Projects/cc-home-base/luoji_bot.py&lt;/string&gt;</span><br>
                         <span class="string">    &lt;/array&gt;</span><br>
                         <span class="string">    &lt;key&gt;WorkingDirectory&lt;/key&gt;</span><br>
-                        <span class="string">    &lt;string&gt;/Users/cc/Projects/cc-slack-bot&lt;/string&gt;</span><br>
+                        <span class="string">    &lt;string&gt;/Users/luo/Projects/cc-home-base&lt;/string&gt;</span><br>
                         <span class="string">    &lt;key&gt;RunAtLoad&lt;/key&gt;&lt;true/&gt;</span><br>
                         <span class="string">    &lt;key&gt;KeepAlive&lt;/key&gt;&lt;true/&gt;</span><br>
                         <span class="string">    &lt;key&gt;StandardOutPath&lt;/key&gt;</span><br>
-                        <span class="string">    &lt;string&gt;/Users/cc/Projects/cc-slack-bot/bot.log&lt;/string&gt;</span><br>
+                        <span class="string">    &lt;string&gt;/Users/luo/Projects/cc-home-base/luoji.log&lt;/string&gt;</span><br>
                         <span class="string">    &lt;key&gt;StandardErrorPath&lt;/key&gt;</span><br>
-                        <span class="string">    &lt;string&gt;/Users/cc/Projects/cc-slack-bot/bot-stderr.log&lt;/string&gt;</span><br>
+                        <span class="string">    &lt;string&gt;/Users/luo/Projects/cc-home-base/luoji-stderr.log&lt;/string&gt;</span><br>
                         <span class="string">&lt;/dict&gt;</span><br>
                         <span class="string">&lt;/plist&gt;</span><br>
                         EOF
@@ -692,11 +701,11 @@
                     <h3 class="font-semibold mb-3">2. Load, verify, and test</h3>
                     <div class="code-block">
                         <span class="comment"># Start the service</span><br>
-                        <span class="cmd">launchctl</span> load ~/Library/LaunchAgents/com.cc.slack-bot.plist<br><br>
+                        <span class="cmd">launchctl</span> load ~/Library/LaunchAgents/com.cc.luoji.plist<br><br>
                         <span class="comment"># Verify it's running</span><br>
                         <span class="cmd">launchctl</span> list | <span class="cmd">grep</span> cc<br><br>
                         <span class="comment"># Test crash recovery — kill it, watch launchd bring it back</span><br>
-                        <span class="cmd">kill</span> $(pgrep -f claudie_bot)<br>
+                        <span class="cmd">kill</span> $(pgrep -f luoji_bot)<br>
                         <span class="cmd">sleep</span> 3 && <span class="cmd">pgrep</span> <span class="flag">-f</span> claudie_bot<br><br>
                         <span class="comment"># Test reboot survival</span><br>
                         <span class="cmd">sudo</span> reboot<br>
@@ -914,11 +923,11 @@
                     <span class="cmd">pgrep</span> <span class="flag">-f</span> claudie_bot<br><br>
 
                     <span class="comment"># View live logs</span><br>
-                    <span class="cmd">tail</span> <span class="flag">-f</span> ~/Projects/cc-slack-bot/bot.log<br><br>
+                    <span class="cmd">tail</span> <span class="flag">-f</span> ~/Projects/cc-home-base/luoji.log<br><br>
 
                     <span class="comment"># Restart the bot</span><br>
-                    <span class="cmd">launchctl</span> unload ~/Library/LaunchAgents/com.cc.slack-bot.plist<br>
-                    <span class="cmd">launchctl</span> load ~/Library/LaunchAgents/com.cc.slack-bot.plist<br><br>
+                    <span class="cmd">launchctl</span> unload ~/Library/LaunchAgents/com.cc.luoji.plist<br>
+                    <span class="cmd">launchctl</span> load ~/Library/LaunchAgents/com.cc.luoji.plist<br><br>
 
                     <span class="comment"># Pull latest code</span><br>
                     <span class="cmd">cd</span> ~/Projects/curated-connections && <span class="cmd">git</span> pull<br><br>

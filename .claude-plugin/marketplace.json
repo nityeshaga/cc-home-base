@@ -12,8 +12,14 @@
     {
       "name": "more-ai",
       "source": "./plugins/more-ai",
-      "description": "Extra AI capabilities — Gemini image generation, Gemini thinking, and structured brainstorming sessions.",
-      "version": "1.1.0"
+      "description": "Other AI models for tasks they excel at — Gemini image generation and Gemini thinking.",
+      "version": "1.0.0"
+    },
+    {
+      "name": "tactical",
+      "source": "./plugins/tactical",
+      "description": "Structured workflows for thinking, creativity, and decision-making — brainstorming sessions and other tactical skills.",
+      "version": "1.0.0"
     }
   ]
 }

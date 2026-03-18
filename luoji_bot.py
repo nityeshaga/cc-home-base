@@ -172,6 +172,8 @@ def call_claude(prompt: str, session_id: str | None = None) -> tuple[str, str | 
         "-p", prompt,
         "--output-format", "json",
         "--permission-mode", "bypassPermissions",
+        "--model", "claude-opus-4-6[1m]",
+        "--effort", "medium",
     ]
     if session_id:
         cmd.extend(["--resume", session_id])

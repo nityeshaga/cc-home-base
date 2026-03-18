@@ -125,6 +125,72 @@
             </div>
         </section>
 
+        <!-- CLI Mode Capabilities -->
+        <section class="pb-12">
+            <div class="bg-slate-50 dark:bg-slate-900 rounded-2xl p-6 border border-slate-100 dark:border-slate-800">
+                <h3 class="font-semibold text-sm uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-3">"But isn't CLI mode limited?"</h3>
+                <div class="text-slate-500 dark:text-slate-400 leading-relaxed text-[0.95rem] space-y-3">
+                    <p>
+                        No. This is the most common concern — that running Claude Code headlessly via <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">claude -p</code> is a stripped-down version. It's not. The CLI has <strong class="text-slate-900 dark:text-slate-100">near-complete feature parity</strong> with interactive Claude Code. Here's what our AI cofounder gets:
+                    </p>
+                </div>
+
+                <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-100 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-green-500 text-sm font-bold">&#10003;</span>
+                            <span class="font-semibold text-sm text-slate-900 dark:text-slate-100">Sub-agents</span>
+                        </div>
+                        <p class="text-xs text-slate-400 dark:text-slate-500">Launches multiple agents in parallel — Explore, Plan, general-purpose. Same Agent tool as interactive mode.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-100 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-green-500 text-sm font-bold">&#10003;</span>
+                            <span class="font-semibold text-sm text-slate-900 dark:text-slate-100">MCP servers</span>
+                        </div>
+                        <p class="text-xs text-slate-400 dark:text-slate-500">All configured MCP servers connect and work — Slack, Gmail, Google Drive, custom tools. No limitations.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-100 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-green-500 text-sm font-bold">&#10003;</span>
+                            <span class="font-semibold text-sm text-slate-900 dark:text-slate-100">Memory</span>
+                        </div>
+                        <p class="text-xs text-slate-400 dark:text-slate-500">Reads CLAUDE.md, auto-memory system, persists knowledge across sessions. Learns and remembers.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-100 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-green-500 text-sm font-bold">&#10003;</span>
+                            <span class="font-semibold text-sm text-slate-900 dark:text-slate-100">All tools</span>
+                        </div>
+                        <p class="text-xs text-slate-400 dark:text-slate-500">Bash, Edit, Read, Write, Glob, Grep, WebFetch, WebSearch, Chrome automation. Everything.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-100 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-green-500 text-sm font-bold">&#10003;</span>
+                            <span class="font-semibold text-sm text-slate-900 dark:text-slate-100">Session continuity</span>
+                        </div>
+                        <p class="text-xs text-slate-400 dark:text-slate-500">Resume conversations with full context via <code class="bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-xs font-mono">--resume</code>. Thread-based memory in Slack.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-100 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-green-500 text-sm font-bold">&#10003;</span>
+                            <span class="font-semibold text-sm text-slate-900 dark:text-slate-100">Plugins</span>
+                        </div>
+                        <p class="text-xs text-slate-400 dark:text-slate-500">Custom plugins, marketplace plugins, skill context — all injected and available in CLI mode.</p>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-slate-500 dark:text-slate-400 leading-relaxed text-[0.95rem] space-y-3">
+                    <p>
+                        <strong class="text-slate-900 dark:text-slate-100">What's interactive-only?</strong> Just the UI stuff: slash commands (<code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">/commit</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">/init</code>), permission dialogs, vim mode, voice dictation, and the visual task list. None of which apply to a Slack bot. The core AI — tools, agents, memory, MCP, context — is identical.
+                    </p>
+                    <p>
+                        Anthropic ships new features to both modes simultaneously. When they release something task-based (new tools, agent improvements, model upgrades), it works in <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">-p</code> mode. The only features that stay interactive-only are UI/interaction elements that don't make sense headlessly. <strong class="text-slate-900 dark:text-slate-100">~95% parity — and the missing 5% is irrelevant for this use case.</strong>
+                    </p>
+                </div>
+            </div>
+        </section>
+
         <!-- Architecture -->
         <section class="pb-16">
             <h2 class="text-2xl font-bold mb-8">How it works</h2>

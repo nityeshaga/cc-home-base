@@ -273,6 +273,70 @@ def download_slack_files(event: dict) -> list[Path]:
     return downloaded
 
 
+def upload_file_to_slack(
+    file_path: str,
+    channel: str,
+    thread_ts: str | None = None,
+    title: str | None = None,
+    message: str | None = None,
+) -> None:
+    """
+    Upload a file from the local machine to Slack.
+
+    Uses Slack's v2 upload flow:
+    1. Get a presigned upload URL
+    2. POST the file to it
+    3. Complete the upload (share to channel/thread)
+
+    Claude can call this to share screenshots, CSVs, reports, etc.
+    """
+    path = Path(file_path)
+    if not path.exists():
+        logger.error(f"File not found: {file_path}")
+        return
+
+    filename = title or path.name
+    file_size = path.stat().st_size
+
+    try:
+        # Step 1: Get upload URL
+        url_response = slack_client.files_getUploadURLExternal(
+            filename=filename,
+            length=file_size,
+        )
+        upload_url = url_response["upload_url"]
+        file_id = url_response["file_id"]
+
+        # Step 2: Upload the file
+        with open(path, "rb") as f:
+            import urllib.request as urlreq
+            req = urlreq.Request(
+                upload_url,
+                data=f.read(),
+                method="POST",
+                headers={"Content-Type": "application/octet-stream"},
+            )
+            urlreq.urlopen(req)
+
+        # Step 3: Complete the upload (share to channel)
+        slack_client.files_completeUploadExternal(
+            files=[{"id": file_id, "title": filename}],
+            channel_id=channel,
+            thread_ts=thread_ts,
+            initial_comment=message or "",
+        )
+
+        logger.info(f"Uploaded file to Slack: {filename} ({file_size} bytes) -> {channel}")
+    except Exception as e:
+        logger.error(f"Failed to upload file {file_path}: {e}")
+        # Fall back: post the file path so the user knows what happened
+        slack_client.chat_postMessage(
+            channel=channel,
+            thread_ts=thread_ts,
+            text=f"Tried to upload `{filename}` but failed: {e}",
+        )
+
+
 # ---------------------------------------------------------------------------
 # Proactive messaging (CLI mode)
 # ---------------------------------------------------------------------------

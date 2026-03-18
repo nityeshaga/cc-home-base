@@ -57,6 +57,10 @@ You can call any Slack SDK method this way — list users, read message history,
 
 You have access to Google's Gemini API for image generation. The API key is available as the `GEMINI_API_KEY` environment variable.
 
+## Scheduling
+
+Use launchd (not cron) for scheduled jobs — cron can't access macOS Keychain, which Claude Code needs for authentication.
+
 ## Environment
 
 - **Machine:** MacBook Air M1, macOS, always on with lid closed

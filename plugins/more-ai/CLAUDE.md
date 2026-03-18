@@ -1,6 +1,6 @@
 # More AI Plugin
 
-Extra AI model capabilities beyond Claude. Use other models for tasks they excel at — image generation, video creation, specialized reasoning.
+Extra AI capabilities — other models for tasks they excel at, plus structured workflows for thinking and creativity.
 
 ## Skills
 
@@ -8,3 +8,4 @@ Extra AI model capabilities beyond Claude. Use other models for tasks they excel
 |-------|----------|
 | `gemini-imagegen` | Creating images from text, editing images, style transfers, logos, stickers, product mockups, compositing multiple images |
 | `gemini-thinking` | Complex multi-step reasoning tasks that benefit from Gemini's thinking approach |
+| `lets-brainstorm` | User wants to brainstorm, think through an idea, explore a problem, or have a structured creative conversation. Runs a timed coaching session. |

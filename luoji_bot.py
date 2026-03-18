@@ -414,13 +414,10 @@ def process_message_async(event: dict) -> None:
         file_instructions = [f"The user attached a file. Read it at: {fp}" for fp in attached_files]
         text = "\n".join(file_instructions) + "\n\n" + (text or "Describe what you see in the attached file(s).")
 
-    # Post "thinking" indicator
+    # Add eyes reaction as thinking indicator
+    msg_ts = event.get("ts")
     try:
-        slack_client.chat_postMessage(
-            channel=channel,
-            thread_ts=thread_ts,
-            text="Luo Ji is thinking...",
-        )
+        slack_client.reactions_add(channel=channel, name="eyes", timestamp=msg_ts)
     except Exception:
         pass
 
@@ -432,18 +429,24 @@ def process_message_async(event: dict) -> None:
         response_text, new_session_id = call_claude(text, session_id)
     except subprocess.TimeoutExpired:
         minutes = CLAUDE_TIMEOUT // 60
+        try: slack_client.reactions_remove(channel=channel, name="eyes", timestamp=msg_ts)
+        except Exception: pass
         slack_client.chat_postMessage(
             channel=channel, thread_ts=thread_ts,
             text=f"Sorry, that timed out after {minutes} minutes. Try a simpler question?",
         )
         return
     except RuntimeError as e:
+        try: slack_client.reactions_remove(channel=channel, name="eyes", timestamp=msg_ts)
+        except Exception: pass
         slack_client.chat_postMessage(
             channel=channel, thread_ts=thread_ts,
             text=f"Something went wrong: {e}",
         )
         return
     except FileNotFoundError:
+        try: slack_client.reactions_remove(channel=channel, name="eyes", timestamp=msg_ts)
+        except Exception: pass
         slack_client.chat_postMessage(
             channel=channel, thread_ts=thread_ts,
             text="Claude CLI not found. Make sure `claude` is installed and on PATH.",
@@ -461,6 +464,12 @@ def process_message_async(event: dict) -> None:
         slack_client.chat_postMessage(
             channel=channel, text=chunk, thread_ts=thread_ts,
         )
+
+    # Remove eyes reaction
+    try:
+        slack_client.reactions_remove(channel=channel, name="eyes", timestamp=msg_ts)
+    except Exception:
+        pass
 
     audit_interaction(event, response_text, duration, new_session_id)
     logger.info(f"Responded to {user_id} in {duration:.1f}s ({len(response_text)} chars)")

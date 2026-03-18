@@ -54,7 +54,7 @@ gws gmail +watch
 
 ## Persistent Preferences
 
-Your preferences are stored in `${CLAUDE_PLUGIN_DATA}/inbox-preferences.json`. This file persists across skill upgrades and conversation sessions.
+Preferences are stored in `${CLAUDE_PLUGIN_DATA}/inbox-preferences.md`. This folder persists across skill upgrades and conversation sessions. Use it like a living document — read it every time you process email, update it whenever a user gives you new instructions.
 
 ### How preferences work
 
@@ -66,80 +66,61 @@ When a user tells you something like:
 - "Research the CC codebase before drafting technical support replies"
 - "Ask me before replying to anything from investors"
 
-Save it immediately:
+Save it immediately to `${CLAUDE_PLUGIN_DATA}/inbox-preferences.md` under the right section. Confirm: "Got it — I'll [action] from now on."
 
-```bash
-# Read current preferences
-cat "${CLAUDE_PLUGIN_DATA}/inbox-preferences.json"
+If a user corrects you ("no, don't archive those"), update the rule and acknowledge the correction.
 
-# Write updated preferences (merge, don't overwrite)
-```
+### Preference format
 
-### Preference schema
+The file has structured sections with freeform rules inside each. This is a hybrid — organized enough to scan, flexible enough to capture nuance:
 
-```json
-{
-  "users": {
-    "nityesh": {
-      "accounts": ["personal@gmail.com", "nityesh@every.to"],
-      "rules": [
-        {
-          "match": {"from": "newsletters@substack.com"},
-          "action": "archive",
-          "reason": "User said: always archive these"
-        },
-        {
-          "match": {"from": "*@github.com"},
-          "action": "label",
-          "label": "dev",
-          "reason": "User said: label GitHub notifications as dev"
-        },
-        {
-          "match": {"from": "*@investor-domain.com"},
-          "action": "ask_user",
-          "reason": "User said: ask me before replying to investors"
-        }
-      ],
-      "reply_style": "Warm but concise. No corporate fluff. Match the formality of the sender.",
-      "drafting_context": [
-        "For technical CC support replies, read the relevant codebase first",
-        "For Every Consulting replies, check ~/projects/nityesh-every/ for context"
-      ]
-    },
-    "piyush": {
-      "accounts": ["piyush@gmail.com"],
-      "rules": [],
-      "reply_style": "",
-      "drafting_context": []
-    }
-  },
-  "global_rules": [
-    {
-      "match": {"subject_contains": "unsubscribe"},
-      "action": "archive",
-      "reason": "Default: marketing emails with unsubscribe links"
-    }
-  ]
-}
+```markdown
+# Inbox Preferences
+
+## Accounts
+- Nityesh: personal@gmail.com, nityesh@every.to
+- Piyush: piyush@gmail.com
+- Luo Ji: luoji@gmail.com
+
+## Archiving
+- Always archive emails from newsletters@substack.com
+- Archive anything with "unsubscribe" in the body — it's marketing
+- Archive all GitHub notification emails from @github.com
+- Don't touch anything from mom (nityesh's mom, not a sender name)
+
+## Labeling
+- Label GitHub notifications as "dev"
+- Label anything from @every.to as "work"
+
+## Drafting
+- Reply style for Nityesh: warm but concise, no corporate fluff, match the formality of the sender
+- For technical CC support replies, read the relevant codebase first before drafting
+- For Every Consulting replies, check ~/projects/nityesh-every/ for context
+- Piyush hasn't set a reply style yet — ask him when it comes up
+
+## Briefing
+- Always surface emails from investors — Nityesh wants to see all of these
+- Surface anything about payments, billing, or subscription issues
+- Don't put GitHub notifications in the brief — they're just noise
+
+## Ask Before Acting
+- Ask before replying to anything from investors
+- Ask before archiving anything that looks like it might be from a real person Nityesh knows
+- When in doubt, surface it rather than archive it
+
+## Auto-Send (explicit permission)
+- Auto-reply to calendar invitations with "Confirmed, thanks!" if there's no conflict
+- (Add more here only when users explicitly say "you can auto-reply to X")
 ```
 
 ### Applying preferences
 
 When processing email:
-1. Load preferences from `${CLAUDE_PLUGIN_DATA}/inbox-preferences.json`
-2. For each unread message, check rules in order
-3. Apply the matching action: `archive`, `label`, `draft_reply`, `ask_user`, or `surface` (add to briefing)
+1. Read `${CLAUDE_PLUGIN_DATA}/inbox-preferences.md`
+2. For each unread message, check the rules across all sections
+3. Apply what matches — archive, label, draft, surface, or ask
 4. If no rule matches, use your judgment — archive obvious junk, surface anything that looks important
-
-### Updating preferences
-
-When a user gives you a new preference:
-1. Read the current file
-2. Add/update the rule
-3. Write the file back
-4. Confirm: "Got it — I'll [action] emails from [sender] from now on."
-
-If a user corrects you ("no, don't archive those"), update the rule and acknowledge the correction.
+5. When you make a judgment call on something new, consider adding it as a rule for next time
 
 ## The Triage Flow
 
@@ -154,7 +135,7 @@ When running as part of the morning/evening routine:
      - Needs a reply but you can handle it → draft reply
      - Needs a reply but requires human input → surface it
      - Important FYI (no reply needed) → surface it
-4. **Surface important items** by appending to `~/work/morning-brief.md`:
+4. **Surface important items** by appending to `~/morning-brief.md`:
    ```
    ## Email — [date]
    - **From sender@example.com**: Subject line — [why it's important / what action is needed]

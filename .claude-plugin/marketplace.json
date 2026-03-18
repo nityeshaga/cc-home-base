@@ -18,8 +18,8 @@
     {
       "name": "tactical",
       "source": "./plugins/tactical",
-      "description": "Structured workflows for thinking, creativity, and decision-making — brainstorming sessions and other tactical skills.",
-      "version": "1.0.0"
+      "description": "Structured workflows for thinking, creativity, decision-making, and operational work — brainstorming, inbox management, and more.",
+      "version": "1.1.0"
     }
   ]
 }

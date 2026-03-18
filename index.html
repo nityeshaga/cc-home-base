@@ -440,9 +440,23 @@
                     </div>
                 </div>
 
-                <!-- Step 6: Physical placement -->
+                <!-- Step 6b: Full Disk Access -->
                 <div>
-                    <h3 class="font-semibold mb-3">7. Set it up physically</h3>
+                    <h3 class="font-semibold mb-3">7. Grant Full Disk Access to Terminal</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-3">macOS blocks background processes (like the Slack bot) from accessing files unless explicitly allowed. Without this, you'll get constant "would like to access data from other apps" popups.</p>
+                    <ul class="checklist space-y-2.5 text-[0.92rem] text-slate-500 dark:text-slate-400">
+                        <li>Go to <strong class="text-slate-900 dark:text-slate-100">System Settings &rarr; Privacy & Security &rarr; Full Disk Access</strong></li>
+                        <li>Click <strong class="text-slate-900 dark:text-slate-100">+</strong>, navigate to <strong class="text-slate-900 dark:text-slate-100">Applications &rarr; Utilities &rarr; Terminal.app</strong>, and add it</li>
+                        <li>Toggle it <strong class="text-slate-900 dark:text-slate-100">ON</strong></li>
+                    </ul>
+                    <div class="mt-3 text-xs text-slate-400 dark:text-slate-500 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-lg px-3 py-2">
+                        <strong class="text-blue-800 dark:text-blue-400">Why?</strong> launchd services inherit permissions from Terminal. Without Full Disk Access, the bot can't read files, and macOS will show a popup every time — but since the lid is closed, nobody can click "Allow." This one setting prevents all of that.
+                    </div>
+                </div>
+
+                <!-- Step 7: Physical placement -->
+                <div>
+                    <h3 class="font-semibold mb-3">8. Set it up physically</h3>
                     <ul class="checklist space-y-2.5 text-[0.92rem] text-slate-500 dark:text-slate-400">
                         <li>Plug into <strong class="text-slate-900 dark:text-slate-100">power</strong> (always — use a reliable outlet)</li>
                         <li>Connect to your home <strong class="text-slate-900 dark:text-slate-100">WiFi</strong> (or ethernet via USB-C adapter if you have one — more reliable)</li>
@@ -590,7 +604,19 @@
                         <span class="cmd">pip install</span> <span class="flag">-r</span> requirements.txt<br><br>
                         <span class="comment"># Configure</span><br>
                         <span class="cmd">cp</span> .env.example .env<br>
-                        <span class="cmd">nano</span> .env  <span class="comment"># Add your Slack tokens, Signing Secret, user IDs</span>
+                        <span class="cmd">nano</span> .env  <span class="comment"># Add your Slack tokens, Signing Secret, user IDs</span><br><br>
+                        <span class="comment"># Copy the bot to ~/Projects/cc-slack-bot (where it actually runs)</span><br>
+                        <span class="comment"># launchd can't access ~/Documents without extra permissions,</span><br>
+                        <span class="comment"># so the bot runs from ~/Projects instead.</span><br>
+                        <span class="cmd">mkdir</span> <span class="flag">-p</span> ~/Projects/cc-slack-bot<br>
+                        <span class="cmd">cp</span> luoji_bot.py requirements.txt .env ~/Projects/cc-slack-bot/<br>
+                        <span class="cmd">cd</span> ~/Projects/cc-slack-bot<br>
+                        <span class="cmd">python3</span> <span class="flag">-m</span> venv venv<br>
+                        <span class="cmd">source</span> venv/bin/activate<br>
+                        <span class="cmd">pip install</span> <span class="flag">-r</span> requirements.txt
+                    </div>
+                    <div class="mt-3 text-xs text-slate-400 dark:text-slate-500 bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900 rounded-lg px-3 py-2">
+                        <strong class="text-amber-800 dark:text-amber-400">Why copy?</strong> The git repo lives in <code class="bg-amber-100/50 dark:bg-amber-900/50 px-1 py-0.5 rounded text-xs font-mono">~/Documents/Github/</code>, but macOS restricts launchd access to the Documents folder. Running the bot from <code class="bg-amber-100/50 dark:bg-amber-900/50 px-1 py-0.5 rounded text-xs font-mono">~/Projects/</code> avoids permission errors. After updates to the repo, just copy the changed files over and restart the bot.
                     </div>
                     <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mt-3">The bot handles:</p>
                     <ul class="checklist space-y-2 text-[0.92rem] text-slate-500 dark:text-slate-400">
@@ -644,7 +670,7 @@
                     <h3 class="font-semibold mb-3">7. Test it</h3>
                     <div class="code-block">
                         <span class="comment"># Make sure Cloudflare Tunnel is running first, then:</span><br>
-                        <span class="cmd">cd</span> ~/Projects/cc-home-base<br>
+                        <span class="cmd">cd</span> ~/Projects/cc-slack-bot<br>
                         <span class="cmd">source</span> venv/bin/activate<br>
                         <span class="cmd">python</span> luoji_bot.py<br><br>
                         <span class="comment"># You should see:</span><br>
@@ -680,20 +706,28 @@
                         <span class="string">    &lt;string&gt;com.cc.luoji&lt;/string&gt;</span><br>
                         <span class="string">    &lt;key&gt;ProgramArguments&lt;/key&gt;</span><br>
                         <span class="string">    &lt;array&gt;</span><br>
-                        <span class="string">        &lt;string&gt;/Users/luo/Projects/cc-home-base/venv/bin/python&lt;/string&gt;</span><br>
-                        <span class="string">        &lt;string&gt;/Users/luo/Projects/cc-home-base/luoji_bot.py&lt;/string&gt;</span><br>
+                        <span class="string">        &lt;string&gt;/Users/luo/Projects/cc-slack-bot/venv/bin/python&lt;/string&gt;</span><br>
+                        <span class="string">        &lt;string&gt;/Users/luo/Projects/cc-slack-bot/luoji_bot.py&lt;/string&gt;</span><br>
                         <span class="string">    &lt;/array&gt;</span><br>
                         <span class="string">    &lt;key&gt;WorkingDirectory&lt;/key&gt;</span><br>
-                        <span class="string">    &lt;string&gt;/Users/luo/Projects/cc-home-base&lt;/string&gt;</span><br>
+                        <span class="string">    &lt;string&gt;/Users/luo/Projects/cc-slack-bot&lt;/string&gt;</span><br>
+                        <span class="string">    &lt;key&gt;EnvironmentVariables&lt;/key&gt;</span><br>
+                        <span class="string">    &lt;dict&gt;</span><br>
+                        <span class="string">        &lt;key&gt;PATH&lt;/key&gt;</span><br>
+                        <span class="string">        &lt;string&gt;/Users/luo/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin&lt;/string&gt;</span><br>
+                        <span class="string">    &lt;/dict&gt;</span><br>
                         <span class="string">    &lt;key&gt;RunAtLoad&lt;/key&gt;&lt;true/&gt;</span><br>
                         <span class="string">    &lt;key&gt;KeepAlive&lt;/key&gt;&lt;true/&gt;</span><br>
                         <span class="string">    &lt;key&gt;StandardOutPath&lt;/key&gt;</span><br>
-                        <span class="string">    &lt;string&gt;/Users/luo/Projects/cc-home-base/luoji.log&lt;/string&gt;</span><br>
+                        <span class="string">    &lt;string&gt;/Users/luo/Projects/cc-slack-bot/bot.log&lt;/string&gt;</span><br>
                         <span class="string">    &lt;key&gt;StandardErrorPath&lt;/key&gt;</span><br>
-                        <span class="string">    &lt;string&gt;/Users/luo/Projects/cc-home-base/luoji-stderr.log&lt;/string&gt;</span><br>
+                        <span class="string">    &lt;string&gt;/Users/luo/Projects/cc-slack-bot/bot-stderr.log&lt;/string&gt;</span><br>
                         <span class="string">&lt;/dict&gt;</span><br>
                         <span class="string">&lt;/plist&gt;</span><br>
                         EOF
+                    </div>
+                    <div class="mt-3 text-xs text-slate-400 dark:text-slate-500 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-lg px-3 py-2">
+                        <strong class="text-blue-800 dark:text-blue-400">Why EnvironmentVariables?</strong> launchd services don't inherit your shell's PATH. Without this, the bot can't find <code class="bg-blue-100/50 dark:bg-blue-900/50 px-1 py-0.5 rounded text-xs font-mono">claude</code> or <code class="bg-blue-100/50 dark:bg-blue-900/50 px-1 py-0.5 rounded text-xs font-mono">brew</code>-installed tools. This tells launchd where to look.
                     </div>
                 </div>
 
@@ -703,10 +737,11 @@
                         <span class="comment"># Start the service</span><br>
                         <span class="cmd">launchctl</span> load ~/Library/LaunchAgents/com.cc.luoji.plist<br><br>
                         <span class="comment"># Verify it's running</span><br>
-                        <span class="cmd">launchctl</span> list | <span class="cmd">grep</span> cc<br><br>
+                        <span class="cmd">launchctl</span> list | <span class="cmd">grep</span> luoji<br>
+                        <span class="cmd">curl</span> <span class="flag">-s</span> http://localhost:3000/health<br><br>
                         <span class="comment"># Test crash recovery — kill it, watch launchd bring it back</span><br>
                         <span class="cmd">kill</span> $(pgrep -f luoji_bot)<br>
-                        <span class="cmd">sleep</span> 3 && <span class="cmd">pgrep</span> <span class="flag">-f</span> claudie_bot<br><br>
+                        <span class="cmd">sleep</span> 3 && <span class="cmd">pgrep</span> <span class="flag">-f</span> luoji_bot<br><br>
                         <span class="comment"># Test reboot survival</span><br>
                         <span class="cmd">sudo</span> reboot<br>
                         <span class="comment"># Wait 2-3 min, then DM the bot in Slack</span>

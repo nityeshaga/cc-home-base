@@ -15,6 +15,8 @@ Also supports proactive messaging via CLI:
     echo '{"result":"..."}' | python luoji_bot.py --send-result USER_ID
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import logging

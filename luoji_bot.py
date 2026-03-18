@@ -416,6 +416,17 @@ def process_message_async(event: dict) -> None:
         file_instructions = [f"The user attached a file. Read it at: {fp}" for fp in attached_files]
         text = "\n".join(file_instructions) + "\n\n" + (text or "Describe what you see in the attached file(s).")
 
+    # For channel messages (not DMs), let Claude decide if it should respond
+    is_channel = event.get("channel_type") not in ("im", "mpim")
+    has_existing_session = _get_session(thread_ts) is not None
+    if is_channel and not has_existing_session:
+        text = (
+            f"You received this message in a public channel from <@{user_id}>. "
+            "Only respond if it's relevant to you or your work. "
+            "If it's not relevant, respond with exactly: SKIP\n\n"
+            + text
+        )
+
     # Add eyes reaction as thinking indicator
     msg_ts = event.get("ts")
     try:
@@ -455,6 +466,13 @@ def process_message_async(event: dict) -> None:
         )
         return
     duration = time.time() - start
+
+    # If Claude decided not to respond (channel messages only), stay silent
+    if response_text.strip() == "SKIP":
+        try: slack_client.reactions_remove(channel=channel, name="eyes", timestamp=msg_ts)
+        except Exception: pass
+        logger.info(f"Skipped message from {user_id} in {channel} (not relevant)")
+        return
 
     # Save session
     if new_session_id and thread_ts:

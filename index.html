@@ -754,10 +754,76 @@
             </div>
         </section>
 
-        <!-- Phase 4: Using It -->
+        <!-- Phase 4: Google Workspace -->
         <section class="pb-16">
             <div class="flex items-center gap-3 mb-2">
                 <span class="text-xs font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500">Phase 4</span>
+                <span class="badge-both text-xs font-medium px-2 py-0.5 rounded-full">Nityesh + Piyush</span>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Connect Google Workspace</h2>
+            <p class="text-slate-500 dark:text-slate-400 mb-8">Give Luo Ji access to Drive, Sheets, Gmail, Calendar, Docs — so it can read and act on your business data.</p>
+
+            <div data-role="both-only" class="space-y-6">
+
+                <div>
+                    <h3 class="font-semibold mb-3">1. Create a Google Cloud project</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-3">This is a one-time setup. Do it in the browser on either machine:</p>
+                    <ul class="checklist space-y-2.5 text-[0.92rem] text-slate-500 dark:text-slate-400">
+                        <li>Go to <a href="https://console.cloud.google.com/" class="text-blue-600 hover:underline" target="_blank">console.cloud.google.com</a> and sign in with your account</li>
+                        <li>Create a new project (name it anything, e.g. <strong class="text-slate-900 dark:text-slate-100">"CC Workspace CLI"</strong>)</li>
+                        <li>Go to <strong class="text-slate-900 dark:text-slate-100">APIs & Services &rarr; Library</strong> and enable the APIs you need:
+                            <div class="mt-2 grid grid-cols-2 gap-1 text-xs text-slate-400 dark:text-slate-500">
+                                <span>Google Drive API</span>
+                                <span>Google Sheets API</span>
+                                <span>Gmail API</span>
+                                <span>Google Calendar API</span>
+                                <span>Google Docs API</span>
+                                <span>Google Slides API</span>
+                            </div>
+                        </li>
+                        <li>Go to <strong class="text-slate-900 dark:text-slate-100">Google Auth Platform &rarr; Audience</strong> &rarr; configure the consent screen if prompted &rarr; set user type to <strong class="text-slate-900 dark:text-slate-100">Internal</strong>
+                            <div class="mt-1 text-xs text-slate-400 dark:text-slate-500 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-lg px-3 py-2">
+                                <strong class="text-blue-800 dark:text-blue-400">Tip:</strong> "Internal" means only people in your Google Workspace org can use it. This skips the test user and verification hassle entirely. If you're using a personal Gmail, choose "External" and add your email as a test user.
+                            </div>
+                        </li>
+                        <li>Go to <strong class="text-slate-900 dark:text-slate-100">Clients &rarr; Create Client &rarr; Desktop app</strong> &rarr; Create</li>
+                        <li>Copy the <strong class="text-slate-900 dark:text-slate-100">Client ID</strong> and <strong class="text-slate-900 dark:text-slate-100">Client Secret</strong></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold mb-3">2. Install and authenticate on the MacBook Air</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-3">SSH into the MacBook Air (or open the lid) and tell Claude to do the rest:</p>
+                    <div class="code-block text-[0.78rem]">
+                        <span class="comment"># Open Claude Code on the MacBook Air</span><br>
+                        <span class="cmd">claude</span><br><br>
+                        <span class="comment"># Then paste this prompt (with your actual credentials):</span>
+                    </div>
+                    <div class="mt-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 text-[0.92rem] text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+                        <p class="italic leading-relaxed">
+                            Install the Google Workspace CLI from
+                            <a href="https://github.com/googleworkspace/cli" class="text-blue-600 hover:underline" target="_blank">https://github.com/googleworkspace/cli</a>
+                            using npm. Then authenticate using these credentials:
+                        </p>
+                        <ul class="mt-2 space-y-1 list-disc list-inside">
+                            <li>Client ID: <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">&lt;paste your client id&gt;</code></li>
+                            <li>Client Secret: <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">&lt;paste your client secret&gt;</code></li>
+                        </ul>
+                        <p class="mt-2 italic leading-relaxed">
+                            Run <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">gws auth login</code> with those set as env vars. I'll handle the browser consent screen. After auth, verify it works by listing my Drive files.
+                        </p>
+                    </div>
+                    <div class="mt-3 text-xs text-slate-400 dark:text-slate-500 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-lg px-3 py-2">
+                        <strong class="text-blue-800 dark:text-blue-400">What happens:</strong> Claude installs the CLI, sets the env vars, runs the auth flow. A browser window opens on the MacBook Air for you to click "Allow." After that, Luo Ji can read your Google Drive, Sheets, Gmail, Calendar, and Docs — programmatically, from Slack.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 5: Using It -->
+        <section class="pb-16">
+            <div class="flex items-center gap-3 mb-2">
+                <span class="text-xs font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500">Phase 5</span>
                 <span class="badge-both text-xs font-medium px-2 py-0.5 rounded-full">Nityesh + Piyush</span>
             </div>
             <h2 class="text-2xl font-bold mb-2">Using your AI employee</h2>
@@ -790,10 +856,10 @@
             </div>
         </section>
 
-        <!-- Phase 5: Growing It -->
+        <!-- Phase 6: Growing It -->
         <section class="pb-16">
             <div class="flex items-center gap-3 mb-2">
-                <span class="text-xs font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500">Phase 5</span>
+                <span class="text-xs font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500">Phase 6</span>
                 <span class="badge-both text-xs font-medium px-2 py-0.5 rounded-full">Nityesh + Piyush</span>
             </div>
             <h2 class="text-2xl font-bold mb-2">The 10x roadmap</h2>

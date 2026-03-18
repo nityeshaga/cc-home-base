@@ -427,9 +427,22 @@
                     </div>
                 </div>
 
-                <!-- Step 5: Physical placement -->
+                <!-- Step 5b: Passwordless sudo -->
                 <div>
-                    <h3 class="font-semibold mb-3">6. Set it up physically</h3>
+                    <h3 class="font-semibold mb-3">6. Enable passwordless sudo for Claude Code</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-3">Claude Code needs to run <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">sudo</code> commands (installing packages, managing services, etc.) but can't type a password into the interactive prompt. This lets it run admin commands freely:</p>
+                    <div class="code-block">
+                        <span class="comment"># Allow passwordless sudo for the 'luo' user</span><br>
+                        <span class="cmd">echo</span> <span class="string">"luo ALL=(ALL) NOPASSWD: ALL"</span> | <span class="cmd">sudo</span> tee /etc/sudoers.d/luo
+                    </div>
+                    <div class="mt-3 text-xs text-slate-400 dark:text-slate-500 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-lg px-3 py-2">
+                        <strong class="text-blue-800 dark:text-blue-400">Is this safe?</strong> On a personal laptop, you wouldn't do this. But this is a dedicated AI server behind Tailscale that only you and Nityesh access. The bot needs full system access to be useful — installing tools, managing services, reading logs. This is the right call for this machine.
+                    </div>
+                </div>
+
+                <!-- Step 6: Physical placement -->
+                <div>
+                    <h3 class="font-semibold mb-3">7. Set it up physically</h3>
                     <ul class="checklist space-y-2.5 text-[0.92rem] text-slate-500 dark:text-slate-400">
                         <li>Plug into <strong class="text-slate-900 dark:text-slate-100">power</strong> (always — use a reliable outlet)</li>
                         <li>Connect to your home <strong class="text-slate-900 dark:text-slate-100">WiFi</strong> (or ethernet via USB-C adapter if you have one — more reliable)</li>

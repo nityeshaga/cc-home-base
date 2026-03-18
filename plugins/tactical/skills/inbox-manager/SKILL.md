@@ -1,6 +1,7 @@
 ---
 name: inbox-manager
 description: Manage email inboxes using the Google Workspace CLI (gws). Triage, archive, draft replies, surface important messages. Learns preferences over time — stores rules like "always archive from this sender" or "draft replies in this tone" in persistent memory. Use this skill when managing email, cleaning inboxes, drafting responses, or when the Chief of Staff routine needs to process mail.
+model: sonnet
 ---
 
 # Inbox Manager

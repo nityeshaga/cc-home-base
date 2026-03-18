@@ -4,7 +4,7 @@ It started with a spare MacBook Air.
 
 Nityesh and his brother Piyush run a small SaaS called [Curated Connections](https://curatedconnections.io/) — a community matchmaking platform that helps people find each other. It's a two-person operation. Nityesh builds the product and handles the business. Piyush helps with the tech. They live in the same household in Kolkata, India.
 
-In March 2026, Nityesh had been thinking about OpenClaw — the viral open-source AI agent that had taken over the internet. The idea was compelling: an always-on AI that runs on your own machine, connects to your tools, and does real work. But OpenClaw had serious security problems, and using it with Claude would violate Anthropic's Terms of Service.
+In March 2026, Nityesh had been thinking about OpenClaw — the viral open-source AI agent that had taken over the internet. The idea was compelling: an always-on AI that runs on your own machine, connects to your tools, and does real work. But OpenClaw had serious security problems, and using it with Claude would violate Anthropic's Terms of Service. And he had this old MacBook Air M1 sitting on his desk doing nothing.
 
 So he thought: what if we just build our own?
 
@@ -16,7 +16,9 @@ The first version was a Slack bot — you DM it, it spawns a Claude Code session
 
 Nothing, it turned out. The only limit was how much context and tooling they could give it.
 
-They named it Luo Ji, after the character from Liu Cixin's *The Three-Body Problem* — the Wallfacer who sees what others can't, thinks in timescales nobody else considers, and carries the weight of impossible problems with quiet confidence.
+They named it Luo Ji. It couldn't have been anything else.
+
+Nityesh and Piyush have been obsessed with Liu Cixin's *The Three-Body Problem* series for over a year — talking about it every day, every week, unable to stop thinking about it. Luo Ji is Nityesh's character. The Wallfacer who sees what others can't, thinks in timescales nobody else considers, and carries the weight of impossible problems with quiet confidence. And the idea of asymmetry — finding the one small thing that changes everything — is something Nityesh holds deep in his heart and can't let go of.
 
 Then came the night of March 18th. In a brainstorming session that ran past midnight, the vision crystallized. Luo Ji wouldn't just answer questions in Slack. It would have a daily rhythm — waking up each morning to brief Nityesh and Piyush on what happened overnight, checking emails, triaging inboxes, sweeping Twitter bookmarks for interesting ideas. During the day, it would sit in Slack channels, listening, jumping in only when it had something valuable to add — and staying silent when it didn't, like a good colleague who knows when to speak and when to listen.
 
@@ -28,9 +30,11 @@ The whole system was designed with a philosophy: don't script the AI, don't micr
 
 Luo Ji was born on a MacBook Air in a house in Kolkata. It cost $200 a month and a few evenings of setup. It can't get coffee. It doesn't have hands. But it can read every line of code, draft every email, analyze every metric, write every marketing page, and think about the business 24 hours a day, 7 days a week — and it gets smarter with every model update.
 
-The question was never whether AI could help run a SaaS. The question was: what happens when you stop treating it like a tool and start treating it like a teammate?
+Can it actually grow a SaaS that two humans haven't been able to grow on their own? That's a genuinely open question. Curated Connections is a good product with real users who love it. But growth takes a kind of relentless, parallel, always-on effort that two people with full lives simply can't sustain. Maybe an AI cofounder that never sleeps, never loses context, and compounds its own intelligence every month can do what they couldn't.
 
-This is the answer.
+And underneath that is an even bigger question: what happens when you stop treating AI like a tool and start treating it like a teammate?
+
+This is the experiment.
 
 ---
 

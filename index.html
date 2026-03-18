@@ -1187,6 +1187,141 @@
             </div>
         </section>
 
+        <!-- Build List: Making Luo Ji Real -->
+        <section class="pb-16">
+            <div class="flex items-center gap-3 mb-2">
+                <span class="text-xs font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500">Build List</span>
+                <span class="badge-both text-xs font-medium px-2 py-0.5 rounded-full">Nityesh + Piyush</span>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Making Luo Ji real</h2>
+            <p class="text-slate-500 dark:text-slate-400 mb-8">Everything that needs to happen to turn Luo Ji from a Slack bot into a living AI cofounder. Work through these top to bottom. Check off as you go.</p>
+
+            <div data-role="shared" class="space-y-8">
+
+                <!-- Identity & Workspace -->
+                <div>
+                    <h3 class="font-semibold text-lg mb-4">Identity & Workspace</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-4">Before Luo Ji can do anything, it needs a home, an identity, and a workspace structure.</p>
+                    <ul class="checklist space-y-3 text-[0.92rem] text-slate-500 dark:text-slate-400">
+                        <li><strong class="text-slate-900 dark:text-slate-100">Create folder structure on the MacBook Air</strong> — these are Luo Ji's spaces:
+                            <div class="mt-2 code-block text-[0.75rem]">
+~/projects/    <span class="comment"># Anything you or Piyush care about long-term</span><br>
+&nbsp;&nbsp;curated-connections/  <span class="comment"># The SaaS codebase</span><br>
+&nbsp;&nbsp;nityesh-every/        <span class="comment"># Making Nityesh successful at Every</span><br>
+&nbsp;&nbsp;piyush-yoga/          <span class="comment"># Helping Piyush with yoga</span><br>
+&nbsp;&nbsp;...                   <span class="comment"># Whatever matters to either of you</span><br><br>
+~/work/        <span class="comment"># Daily work — organized, ephemeral</span><br>
+~/diary/       <span class="comment"># Luo Ji's own diary entries</span><br>
+~/bookmarks/   <span class="comment"># Your curation — tweets, book snippets, transcripts</span><br>
+~/discoveries/ <span class="comment"># Luo Ji's own research and findings (from The Wallfacer)</span>
+                            </div>
+                        </li>
+                        <li><strong class="text-slate-900 dark:text-slate-100">Give Luo Ji a personality</strong> — research how OpenClaw does prompting and onboarding. Take inspiration, then write Luo Ji's identity in the CLAUDE.md. Not a corporate persona — a real character. Luo Ji from Three-Body Problem: calm, strategic, sees what others miss, thinks in decades.</li>
+                        <li><strong class="text-slate-900 dark:text-slate-100">Create <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">about-you-and-how-you-came-to-life.md</code></strong> — the origin story. How you and Piyush set this up, the cc-home-base repo, the brainstorming session that birthed the idea. Luo Ji should know its own history.</li>
+                        <li><strong class="text-slate-900 dark:text-slate-100">Create a Gmail account for Luo Ji</strong> — its own email for receiving notifications, signing up for services, communicating externally when needed.</li>
+                        <li><strong class="text-slate-900 dark:text-slate-100">Create a GitHub account for Luo Ji</strong> — so it can open PRs, push commits, and have its own identity in the codebase.</li>
+                        <li><strong class="text-slate-900 dark:text-slate-100">Set up task tracking</strong> — Asana, Notion, Linear, or even just a markdown file. Luo Ji needs a place to track what it's working on, what's blocked, and what's next. Pick whatever you and Piyush already use or would be willing to check.</li>
+                        <li><strong class="text-slate-900 dark:text-slate-100">Document the folder structure in CLAUDE.md</strong> — so Luo Ji knows where to put things and where to find things.</li>
+                    </ul>
+                </div>
+
+                <!-- Skills to Build -->
+                <div>
+                    <h3 class="font-semibold text-lg mb-4">Skills to Build</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-4">Each skill is a SKILL.md in the tactical plugin. Claude reads them automatically and uses them when relevant.</p>
+                    <ul class="checklist space-y-3 text-[0.92rem] text-slate-500 dark:text-slate-400">
+                        <li><strong class="text-slate-900 dark:text-slate-100">Inbox Manager</strong> — teaches Luo Ji how to manage email via the GWS CLI. The key feature: persistent preferences stored in <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">$CLAUDE_PLUGIN_DATA</code>. When you say "always archive emails from this sender" or "draft replies in this tone" or "don't touch newsletters," it saves that preference and respects it on every future run. Compounds over time — the more you use it, the better it gets.
+                            <div class="mt-1 text-xs text-slate-400 dark:text-slate-500 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-lg px-3 py-2">
+                                <strong class="text-blue-800 dark:text-blue-400">Custom for each person:</strong> Your inbox preferences are different from Piyush's. The skill should store preferences per user. You want both your personal Gmail and work Gmail managed. Piyush may have different accounts.
+                            </div>
+                        </li>
+                        <li><strong class="text-slate-900 dark:text-slate-100">Chief of Staff</strong> — the master skill. Orchestrates everything: calls the Inbox Manager for email, checks Slack for unresolved threads, reviews the task tracker, looks at the calendar. Synthesizes it all into priorities. Custom for each of you — knows that Nityesh has two Gmails, knows Piyush's preferences are different. This is the skill that runs during the morning and evening routines.</li>
+                        <li><strong class="text-slate-900 dark:text-slate-100">The Wallfacer</strong> — Luo Ji's most powerful routine. Explores ideas with asymmetric upside and near-zero downside. Launches unlimited parallel subagents to: browse competitor sites, check Product Hunt and Hacker News, read your bookmarks, cross-reference diary entries, analyze churn data, scan for new APIs or tools. Synthesizes everything, applies the asymmetry filter, and produces exactly ONE idea per day. The constraint forces quality. Output goes to <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">discoveries/</code> and the single best idea goes into the morning briefing.</li>
+                        <li><strong class="text-slate-900 dark:text-slate-100">Vercel Agent Browser</strong> — teaches Luo Ji to use Vercel's browser automation for tasks that need a real browser. Logging into admin panels, checking dashboards, interacting with web UIs that don't have APIs. Used by The Wallfacer for research and by the Chief of Staff for checking tools that don't have CLIs.</li>
+                        <li><strong class="text-slate-900 dark:text-slate-100">Render MCP</strong> — for managing your Render deployments, checking logs, monitoring services.</li>
+                    </ul>
+                </div>
+
+                <!-- Background Routines -->
+                <div>
+                    <h3 class="font-semibold text-lg mb-4">Background Routines (Daily Rhythm)</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-4">Scheduled via launchd. Each routine is a wrapper script that runs <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">claude -p</code> with a specific prompt and posts results to Slack. Tell Claude to set these up one by one.</p>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-[0.85rem]">
+                            <thead>
+                                <tr class="border-b border-slate-200 dark:border-slate-700">
+                                    <th class="text-left py-3 pr-3 font-semibold text-slate-900 dark:text-slate-100">When</th>
+                                    <th class="text-left py-3 pr-3 font-semibold text-slate-900 dark:text-slate-100">Routine</th>
+                                    <th class="text-left py-3 font-semibold text-slate-900 dark:text-slate-100">What it does</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-500 dark:text-slate-400">
+                                <tr class="border-b border-slate-100 dark:border-slate-800">
+                                    <td class="py-3 pr-3 whitespace-nowrap font-medium text-slate-900 dark:text-slate-100">Morning</td>
+                                    <td class="py-3 pr-3 whitespace-nowrap">Morning Briefing</td>
+                                    <td class="py-3">DMs you a summary: what got done yesterday, plan for today, one Wallfacer idea, anything urgent from email/Slack. Custom per person.</td>
+                                </tr>
+                                <tr class="border-b border-slate-100 dark:border-slate-800">
+                                    <td class="py-3 pr-3 whitespace-nowrap font-medium text-slate-900 dark:text-slate-100">Morning</td>
+                                    <td class="py-3 pr-3 whitespace-nowrap">Email Check</td>
+                                    <td class="py-3">Runs the Chief of Staff skill. Checks Luo Ji's own email + your inboxes (personal + work Gmail for Nityesh, Piyush's accounts). Triages, drafts, archives per your saved preferences.</td>
+                                </tr>
+                                <tr class="border-b border-slate-100 dark:border-slate-800">
+                                    <td class="py-3 pr-3 whitespace-nowrap font-medium text-slate-900 dark:text-slate-100">Morning</td>
+                                    <td class="py-3 pr-3 whitespace-nowrap">Bookmarks Sweep</td>
+                                    <td class="py-3">Checks your Twitter likes and bookmarks. Saves interesting things to <code class="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-xs font-mono">bookmarks/</code>. The Wallfacer uses this folder when hunting for ideas.</td>
+                                </tr>
+                                <tr class="border-b border-slate-100 dark:border-slate-800">
+                                    <td class="py-3 pr-3 whitespace-nowrap font-medium text-slate-900 dark:text-slate-100">Evening</td>
+                                    <td class="py-3 pr-3 whitespace-nowrap">Evening Email</td>
+                                    <td class="py-3">Second pass on all inboxes. Respond proactively to anything that came in during the day. Flag anything that needs human attention for tomorrow's briefing.</td>
+                                </tr>
+                                <tr class="border-b border-slate-100 dark:border-slate-800">
+                                    <td class="py-3 pr-3 whitespace-nowrap font-medium text-slate-900 dark:text-slate-100">Night</td>
+                                    <td class="py-3 pr-3 whitespace-nowrap">Diary</td>
+                                    <td class="py-3">Reads all of today's conversations and writes a genuine diary entry in <code class="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-xs font-mono">diary/</code>. Not a standup report — an introspective reflection. Connects dots across days. Written in Luo Ji's voice, like a human diary. This is how Luo Ji builds a subjective sense of its own experience.</td>
+                                </tr>
+                                <tr class="border-b border-slate-100 dark:border-slate-800">
+                                    <td class="py-3 pr-3 whitespace-nowrap font-medium text-slate-900 dark:text-slate-100">Night</td>
+                                    <td class="py-3 pr-3 whitespace-nowrap">Self-Improvement</td>
+                                    <td class="py-3">Reviews the day's conversations. Looks for friction, repeated questions, things that could go smoother. Makes surgical improvements to its own CLAUDE.md, skills, and memory system. Reads past diary entries for patterns. This is how Luo Ji gets better every day without anyone telling it to.</td>
+                                </tr>
+                                <tr class="border-b border-slate-100 dark:border-slate-800">
+                                    <td class="py-3 pr-3 whitespace-nowrap font-medium text-slate-900 dark:text-slate-100">Night</td>
+                                    <td class="py-3 pr-3 whitespace-nowrap">The Wallfacer</td>
+                                    <td class="py-3">The most compute-intensive routine. Launches unlimited parallel subagents to explore ideas with asymmetric upside. Browses the web, reads your bookmarks, cross-references diary entries, analyzes business data, scans competitors, checks for new tools and APIs. Applies a strict filter: near-zero downside, potentially massive upside. Produces exactly ONE idea. Stores the full research in <code class="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-xs font-mono">discoveries/</code>. The single best idea goes into tomorrow's morning briefing.</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 pr-3 whitespace-nowrap font-medium text-slate-900 dark:text-slate-100">Night</td>
+                                    <td class="py-3 pr-3 whitespace-nowrap">Meta-Review</td>
+                                    <td class="py-3">Reads all past chats, diary entries, memories, skills, and notes. Suggests concrete ideas to make Luo Ji even stronger — new skills, better prompts, missing context, workflow improvements. This is the routine that makes all other routines better.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-4 text-xs text-slate-400 dark:text-slate-500 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-lg px-3 py-2">
+                        <strong class="text-blue-800 dark:text-blue-400">How to set these up:</strong> DM Luo Ji in Slack: "Set up a nightly diary routine that runs at 11pm." It knows how to create launchd plists and wrapper scripts. Do them one at a time — test each before moving to the next.
+                    </div>
+                </div>
+
+                <!-- CLAUDE.md Additions -->
+                <div>
+                    <h3 class="font-semibold text-lg mb-4">CLAUDE.md Additions</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.92rem] mb-4">Things to add to the CLAUDE.md on the MacBook Air so Luo Ji has full context.</p>
+                    <ul class="checklist space-y-3 text-[0.92rem] text-slate-500 dark:text-slate-400">
+                        <li><strong class="text-slate-900 dark:text-slate-100">Slack messaging instructions</strong> — how to use <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">luoji_bot.py --send/--channel/--thread</code> with Nityesh and Piyush's Slack IDs. Already drafted above.</li>
+                        <li><strong class="text-slate-900 dark:text-slate-100">Scheduling note</strong> — "Use launchd, not cron. Cron can't access macOS Keychain." One line.</li>
+                        <li><strong class="text-slate-900 dark:text-slate-100">Folder structure</strong> — document <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">projects/</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">work/</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">diary/</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">bookmarks/</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono">discoveries/</code> and what goes where.</li>
+                        <li><strong class="text-slate-900 dark:text-slate-100">Personality and identity</strong> — who Luo Ji is, how it communicates, its values. Inspired by Three-Body Problem's Luo Ji + OpenClaw's onboarding approach.</li>
+                        <li><strong class="text-slate-900 dark:text-slate-100">Team context</strong> — who Nityesh and Piyush are, what they each care about, how to interact with each of them differently.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
         <!-- Footer -->
         <footer class="pb-12 pt-8 border-t border-slate-100 dark:border-slate-800">
             <div class="flex items-center justify-between text-xs text-slate-400 dark:text-slate-500">

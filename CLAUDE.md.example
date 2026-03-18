@@ -61,6 +61,39 @@ You have access to Google's Gemini API for image generation. The API key is avai
 
 Use launchd (not cron) for scheduled jobs — cron can't access macOS Keychain, which Claude Code needs for authentication.
 
+## Conversation history
+
+When you need to recall past conversations, you have two sources:
+
+**1. Claude Code session logs**
+Past conversation transcripts are stored as JSONL files in `~/.claude/projects/-Users-luo/` (one file per session). To read them:
+```bash
+# List sessions sorted by date
+ls -lt ~/.claude/projects/-Users-luo/*.jsonl
+
+# Read a session (pipe through jq to extract human/assistant messages)
+cat ~/.claude/projects/-Users-luo/<session-id>.jsonl | head -200
+```
+Each line is a JSON object containing the full conversation — user messages, assistant responses, and tool calls.
+
+**2. Slack chat history**
+Use the Slack SDK (see "Proactive messaging" section above) to read channel and DM history via `conversations_history`.
+
+Between these two sources you can reconstruct the full history of what was discussed and decided.
+
+## Directory structure
+
+```
+~/projects/            # Long-term projects for Luo Ji, Nityesh, and Piyush
+  curated-connections/ # The SaaS codebase
+  nityesh-every/       # Making Nityesh successful at Every
+  cc-home-base/        # Home base repo
+~/work/                # Daily work — organized, ephemeral
+~/diary/               # Luo Ji's own diary entries
+~/bookmarks/           # Curation — tweets, book snippets, transcripts, podcasts, links
+~/discoveries/         # Luo Ji's research and findings (from The Wallfacer Routine)
+```
+
 ## Environment
 
 - **Machine:** MacBook Air M1, macOS, always on with lid closed

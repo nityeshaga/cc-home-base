@@ -458,6 +458,15 @@ def process_message_async(event: dict) -> None:
     if new_session_id and thread_ts:
         _save_session(thread_ts, new_session_id)
 
+    # Detect file paths in response and upload them
+    file_pattern = re.compile(r'(?:^|\s)(/(?:Users|tmp|var)[^\s\'"<>|*?]+\.(?:png|jpg|jpeg|gif|svg|webp|pdf|csv|xlsx|json|txt|html|zip|tar|gz|mp3|mp4|mov))', re.IGNORECASE | re.MULTILINE)
+    file_matches = file_pattern.findall(response_text)
+    for file_path in file_matches:
+        fp = Path(file_path.strip())
+        if fp.exists() and fp.is_file():
+            upload_file_to_slack(str(fp), channel, thread_ts=thread_ts)
+            logger.info(f"Auto-uploaded file from response: {fp}")
+
     # Send response
     slack_text = md_to_slack(response_text)
     for chunk in chunk_message(slack_text):

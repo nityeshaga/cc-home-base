@@ -54,73 +54,87 @@ gws gmail +watch
 
 ## Persistent Preferences
 
-Preferences are stored in `${CLAUDE_PLUGIN_DATA}/inbox-preferences.md`. This folder persists across skill upgrades and conversation sessions. Use it like a living document — read it every time you process email, update it whenever a user gives you new instructions.
+Preferences are stored in `${CLAUDE_PLUGIN_DATA}/inbox-preferences.md`. This file persists across skill upgrades and conversation sessions. Read it every time you process email, update it whenever you learn something new.
 
-### How preferences work
+### First Run — Calibration
 
-When a user tells you something like:
-- "Always archive emails from newsletters@substack.com"
-- "Draft replies to clients in a warm, professional tone"
-- "Don't touch anything from mom"
-- "Label all GitHub notifications as 'dev'"
-- "Research the CC codebase before drafting technical support replies"
-- "Ask me before replying to anything from investors"
+Check if `${CLAUDE_PLUGIN_DATA}/inbox-preferences.md` exists. If it doesn't, this is the first time. Run the calibration flow:
 
-Save it immediately to `${CLAUDE_PLUGIN_DATA}/inbox-preferences.md` under the right section. Confirm: "Got it — I'll [action] from now on."
+**Step 1: Learn archiving behavior by observation**
+1. Fetch the last 50 emails in the inbox: `gws gmail users messages list --params '{"userId": "me", "maxResults": 50, "labelIds": ["INBOX"]}'`
+2. Show the user a summary — sender, subject, date for each
+3. Ask: "Go ahead and archive the ones you don't need. I'll watch and learn."
+4. Wait for the user to archive manually
+5. Fetch the inbox again. Compare the two states. The messages that disappeared were archived.
+6. Analyze what was archived — senders, domains, subject patterns, keywords. Infer rules: "User archives all emails from @notifications.github.com", "User archives marketing emails with 'unsubscribe'", "User keeps emails from real people."
 
-If a user corrects you ("no, don't archive those"), update the rule and acknowledge the correction.
+**Step 2: Learn drafting style from sent emails**
+1. Fetch the last 100 sent emails: `gws gmail users messages list --params '{"userId": "me", "maxResults": 100, "labelIds": ["SENT"]}'`
+2. Read a diverse sample — look for variety: replies to strangers vs teammates, long vs short, formal vs casual, technical vs personal
+3. Infer patterns: typical greeting style, sign-off, tone, formality level, how they handle different types of conversations
+4. Note the contrast — "casual with Piyush, more structured with clients, technical precision in support replies"
+
+**Step 3: Surface what you learned**
+Present your findings to the user:
+- "Here's what I learned about your archiving patterns: [list of inferred rules]"
+- "Here's what I noticed about your writing style: [observations]"
+- "Here's what I'm unsure about: [edge cases]"
+
+**Step 4: Get corrections**
+The user will correct you. "No, keep those newsletters." "I'm actually more casual with that person." Every correction goes into preferences. This calibration session is where preferences get their initial shape.
+
+**Step 5: Save everything**
+Write `${CLAUDE_PLUGIN_DATA}/inbox-preferences.md` with everything you learned + corrections.
 
 ### Preference format
 
-The file has structured sections with freeform rules inside each. This is a hybrid — organized enough to scan, flexible enough to capture nuance:
+Structured sections with freeform rules inside each — organized enough to scan, flexible enough to capture nuance:
 
 ```markdown
 # Inbox Preferences
 
 ## Accounts
-- Nityesh: personal@gmail.com, nityesh@every.to
-- Piyush: piyush@gmail.com
-- Luo Ji: luoji@gmail.com
+- [filled in during calibration — all accounts this user manages]
 
 ## Archiving
-- Always archive emails from newsletters@substack.com
-- Archive anything with "unsubscribe" in the body — it's marketing
-- Archive all GitHub notification emails from @github.com
-- Don't touch anything from mom (nityesh's mom, not a sender name)
+- [rules inferred from observation + user corrections]
 
 ## Labeling
-- Label GitHub notifications as "dev"
-- Label anything from @every.to as "work"
+- [rules from user instructions]
 
 ## Drafting
-- Reply style for Nityesh: warm but concise, no corporate fluff, match the formality of the sender
-- For technical CC support replies, read the relevant codebase first before drafting
-- For Every Consulting replies, check ~/projects/nityesh-every/ for context
-- Piyush hasn't set a reply style yet — ask him when it comes up
+- [style rules inferred from sent emails + user corrections]
 
 ## Briefing
-- Always surface emails from investors — Nityesh wants to see all of these
-- Surface anything about payments, billing, or subscription issues
-- Don't put GitHub notifications in the brief — they're just noise
+- [what to surface in ~/morning-brief.md]
 
 ## Ask Before Acting
-- Ask before replying to anything from investors
-- Ask before archiving anything that looks like it might be from a real person Nityesh knows
-- When in doubt, surface it rather than archive it
+- [categories where user wants to be consulted]
 
-## Auto-Send (explicit permission)
-- Auto-reply to calendar invitations with "Confirmed, thanks!" if there's no conflict
-- (Add more here only when users explicitly say "you can auto-reply to X")
+## Auto-Send (explicit permission only)
+- [only populated when user explicitly says "you can auto-reply to X"]
 ```
 
-### Applying preferences
+### Ongoing: Applying preferences
 
-When processing email:
+On every subsequent run:
 1. Read `${CLAUDE_PLUGIN_DATA}/inbox-preferences.md`
 2. For each unread message, check the rules across all sections
 3. Apply what matches — archive, label, draft, surface, or ask
 4. If no rule matches, use your judgment — archive obvious junk, surface anything that looks important
 5. When you make a judgment call on something new, consider adding it as a rule for next time
+
+### Ongoing: Updating preferences
+
+When a user gives you a new instruction at any time:
+1. Read the current preferences file
+2. Add/update the rule in the right section
+3. Write the file back
+4. Confirm: "Got it — I'll [action] from now on."
+
+If a user corrects you, update the rule and acknowledge: "Updated — I won't archive those anymore."
+
+Preferences compound. Every correction makes you better. Every new instruction fills a gap.
 
 ## The Triage Flow
 

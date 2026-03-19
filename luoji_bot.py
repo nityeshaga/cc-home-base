@@ -101,6 +101,31 @@ app = App(
 )
 slack_client = WebClient(token=SLACK_BOT_TOKEN)
 
+# Cache for Slack user display names (user_id → display name)
+_user_name_cache: dict[str, str] = {}
+
+
+def _get_user_name(user_id: str) -> str:
+    """Look up a Slack user's display name, with caching."""
+    if user_id in _user_name_cache:
+        return _user_name_cache[user_id]
+    try:
+        info = slack_client.users_info(user=user_id)
+        profile = info["user"].get("profile", {})
+        name = (
+            profile.get("display_name")
+            or profile.get("real_name")
+            or info["user"].get("real_name")
+            or user_id
+        )
+        _user_name_cache[user_id] = name
+    except Exception:
+        name = user_id
+        _user_name_cache[user_id] = name
+    return name
+
+
+
 # ---------------------------------------------------------------------------
 # Session store: thread_ts → Claude session_id (file-backed)
 # ---------------------------------------------------------------------------
@@ -473,16 +498,21 @@ def process_message_async(event: dict) -> None:
         file_instructions = [f"The user attached a file. Read it at: {fp}" for fp in attached_files]
         text = "\n".join(file_instructions) + "\n\n" + (text or "Describe what you see in the attached file(s).")
 
+    # Prepend sender attribution so Claude knows who sent this message
+    sender_name = _get_user_name(user_id)
+
     # For channel messages (not DMs), let Claude decide if it should respond
     is_channel = event.get("channel_type") not in ("im", "mpim")
     has_existing_session = _get_session(thread_ts) is not None
     if is_channel and not has_existing_session:
         text = (
-            f"You received this message in a public channel from <@{user_id}>. "
+            f"You received this message in a public channel from {sender_name} (<@{user_id}>). "
             "Only respond if it's relevant to you or your work. "
             "If it's not relevant, respond with exactly: SKIP\n\n"
             + text
         )
+    else:
+        text = f"[{sender_name}] says:\n{text}"
 
     # Add eyes reaction as thinking indicator
     msg_ts = event.get("ts")

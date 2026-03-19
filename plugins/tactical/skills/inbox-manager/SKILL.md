@@ -67,8 +67,8 @@ Check if `${CLAUDE_PLUGIN_DATA}/inbox-preferences.md` exists. If it doesn't, thi
 - save the list in a temp file - this is the current state to tell you what's in their, is it read/unread
 - ask them to archive the last 50 emails so you can observe them and learn the pattern
 - when they are done, fetch the inbox again and save the new 50 email list in another temp file
-- now compare the previous one with the new one - to understand what happened - think hard
-- now infer rules - senders, domains, subject patterns, keywords, purpose etc.
+- now diff the previous file with the new file - to understand what happened - think hard - you'll probably see a new set of 50 emails except the ones they kept in their inbox from the first list - that's the signal
+- now infer rules
 
 **Step 2: Learn drafting style from sent emails**
 1. Fetch 100 sent emails over the last year or so 

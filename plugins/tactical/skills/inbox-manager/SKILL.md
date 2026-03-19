@@ -62,20 +62,19 @@ Preferences are stored in `${CLAUDE_PLUGIN_DATA}/inbox-preferences.md`. This fil
 Check if `${CLAUDE_PLUGIN_DATA}/inbox-preferences.md` exists. If it doesn't, this is the first time. Run the calibration flow:
 
 **Step 1: Learn archiving behavior by observation**
-1. Fetch the last 50 emails in the inbox
-2. Save the full list (message ID, sender, subject, date) to a temp file — this is your ground truth. Do not rely on memory for the diff.
-3. Show the user a summary — sender, subject, date for each
-4. Ask: "Go ahead and archive the ones you don't need. I'll watch and learn."
-5. Wait for the user to archive manually
-6. Fetch the inbox again. Save this second list to another temp file.
-7. Diff the two files to find exactly which messages were archived. Use the files — do not guess from memory.
-8. Analyze what was archived — senders, domains, subject patterns, keywords. Infer rules: "User archives all emails from @notifications.github.com", "User archives marketing emails with 'unsubscribe'", "User keeps emails from real people."
+
+- fetch the last 50 emails in their inbox
+- save the list in a temp file - this is the current state to tell you what's in their, is it read/unread
+- ask them to archive the last 50 emails so you can observe them and learn the pattern
+- when they are done, fetch the inbox again and save the new 50 email list in another temp file
+- now compare the previous one with the new one - to understand what happened - think hard
+- now infer rules - senders, domains, subject patterns, keywords, purpose etc.
 
 **Step 2: Learn drafting style from sent emails**
-1. Fetch the last 100 sent emails: `gws gmail users messages list --params '{"userId": "me", "maxResults": 100, "labelIds": ["SENT"]}'`
+1. Fetch 100 sent emails over the last year or so 
 2. Read a diverse sample — look for variety: replies to strangers vs teammates, long vs short, formal vs casual, technical vs personal
-3. Infer patterns: typical greeting style, sign-off, tone, formality level, how they handle different types of conversations
-4. Note the contrast — "casual with Piyush, more structured with clients, technical precision in support replies"
+3. Infer patterns, contrasts and commonalities: typical greeting style, sign-off, tone, formality level, how they handle different types of conversations
+4. Note the email style
 
 **Step 3: Ask 5 clarifying questions**
 
@@ -87,7 +86,7 @@ You choose the questions. Make each one count. Draw from what you actually saw �
 - "Your replies to [person] are much shorter than to [other person]. Is that intentional — different relationship, or just context?"
 - "I see recurring emails from [service]. Do you actually read these or do they pile up?"
 - "When someone emails you about [topic], do you want me to draft a reply or just flag it for you?"
-- "What's your relationship with [frequent sender]? Colleague, client, vendor? Helps me know how to prioritize."
+- "You haven't opened emails from [sender list] in X weeks. Looks like this is promotional junk. Want me to unsubscribe to them?"
 
 The questions should help you understand:
 - **Who matters** — which senders/domains are high-priority vs noise
@@ -102,7 +101,9 @@ Ask one question, wait for the answer, then ask the next. Don't dump all 5 at on
 
 Before presenting your findings, go deeper. Sample 50-200 emails from across the last 3 years — not sequentially, but spread out. Use search queries with different date ranges to get variety:
 
-For each email, read the sender name, subject line, body text, and date. You're building an understanding of:
+For each email, read the sender name, subject line, body text, and date. You're building a detailed understanding. 
+
+How detailed? Something to the tune of this:
 
 - **Who this person is** — what they care about, what communities they're part of, what services they use
 - **How their life has evolved** — career changes, new interests, projects that started and ended
@@ -209,13 +210,6 @@ When running as part of the morning/evening routine:
 ## Optional: Set Up Daily Automation
 
 After calibration is complete and the user is happy with their preferences, offer to automate this as a daily routine. **Do not set this up without asking. Always ask first.**
-
-Say something like: "Want me to set this up to run automatically? I can triage your inbox every morning and evening without you having to ask. Before I do — how would you like to be notified about what I did? Options:"
-
-- **Slack DM** with a summary (e.g., "Archived 12, drafted 3, 5 need your attention")
-- **Append to morning brief** (`~/morning-brief.md`) for you to read when you're ready
-- **Both** — Slack ping + detailed brief
-- **Something else** — let the user tell you
 
 Once they answer, set up the scheduled job:
 

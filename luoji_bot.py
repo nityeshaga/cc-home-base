@@ -165,12 +165,22 @@ def audit_interaction(
 # ---------------------------------------------------------------------------
 
 
-def call_claude(prompt: str, session_id: str | None = None) -> tuple[str, str | None]:
-    """Invoke `claude -p` and return (response_text, session_id)."""
+def call_claude_streaming(
+    prompt: str,
+    session_id: str | None,
+    on_text: callable,
+) -> str | None:
+    """Invoke `claude -p` with streaming output, calling on_text for each text block.
+
+    Returns the session_id from the final result message.
+    Uses --output-format stream-json so every assistant text block is emitted
+    as it happens (instead of only the last one).
+    """
     cmd = [
         "claude",
         "-p", prompt,
-        "--output-format", "json",
+        "--output-format", "stream-json",
+        "--verbose",
         "--permission-mode", "bypassPermissions",
         "--model", "claude-opus-4-6[1m]",
         "--effort", "medium",
@@ -178,30 +188,77 @@ def call_claude(prompt: str, session_id: str | None = None) -> tuple[str, str | 
     if session_id:
         cmd.extend(["--resume", session_id])
 
-    logger.info(f"Spawning claude CLI (resume={session_id or 'none'})")
+    logger.info(f"Spawning claude CLI streaming (resume={session_id or 'none'})")
 
-    result = subprocess.run(
+    # stderr goes to a file to avoid pipe buffer deadlocks
+    stderr_tmp = tempfile.NamedTemporaryFile(mode="w+", suffix=".stderr", delete=False)
+
+    proc = subprocess.Popen(
         cmd,
-        capture_output=True,
+        stdout=subprocess.PIPE,
+        stderr=stderr_tmp,
         text=True,
-        timeout=CLAUDE_TIMEOUT,
         cwd=PROJECT_DIR,
     )
 
-    if result.returncode != 0:
-        stderr = result.stderr.strip()
-        logger.error(f"Claude CLI failed (rc={result.returncode}): {stderr[:500]}")
-        raise RuntimeError(f"Claude CLI error: {stderr[:300]}")
+    new_session_id = session_id
+    deadline = time.time() + CLAUDE_TIMEOUT
 
-    raw = result.stdout.strip()
     try:
-        data = json.loads(raw)
-    except json.JSONDecodeError:
-        return raw, session_id
+        for line in proc.stdout:
+            if time.time() > deadline:
+                proc.kill()
+                raise subprocess.TimeoutExpired(cmd, CLAUDE_TIMEOUT)
 
-    response_text = data.get("result", raw)
-    new_session_id = data.get("session_id") or session_id
-    return response_text, new_session_id
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                data = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+
+            msg_type = data.get("type")
+
+            if msg_type == "assistant":
+                content = data.get("message", {}).get("content", [])
+                for block in content:
+                    if isinstance(block, dict) and block.get("type") == "text":
+                        text = block.get("text", "").strip()
+                        if text:
+                            on_text(text)
+
+            elif msg_type == "result":
+                new_session_id = data.get("session_id") or new_session_id
+
+        proc.wait(timeout=30)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        raise
+    except Exception as e:
+        proc.kill()
+        raise RuntimeError(f"Claude streaming error: {e}")
+    finally:
+        stderr_tmp.close()
+
+    if proc.returncode != 0:
+        try:
+            stderr_text = Path(stderr_tmp.name).read_text().strip()
+        except Exception:
+            stderr_text = "(stderr unavailable)"
+        logger.error(f"Claude CLI failed (rc={proc.returncode}): {stderr_text[:500]}")
+        try:
+            os.unlink(stderr_tmp.name)
+        except OSError:
+            pass
+        raise RuntimeError(f"Claude CLI error: {stderr_text[:300]}")
+
+    try:
+        os.unlink(stderr_tmp.name)
+    except OSError:
+        pass
+
+    return new_session_id
 
 
 # ---------------------------------------------------------------------------
@@ -436,10 +493,44 @@ def process_message_async(event: dict) -> None:
 
     # Call Claude
     session_id = _get_session(thread_ts)
+    all_texts = []  # collect all text blocks for audit/SKIP check
+    first_text_sent = False
+    skip_detected = False
+
+    file_pattern = re.compile(
+        r'(?:^|\s)(/(?:Users|tmp|var)[^\s\'"<>|*?]+\.(?:png|jpg|jpeg|gif|svg|webp|pdf|csv|xlsx|json|txt|html|zip|tar|gz|mp3|mp4|mov))',
+        re.IGNORECASE | re.MULTILINE,
+    )
+
+    def on_text(text_block: str):
+        """Called for each text block Claude produces — post it to Slack immediately."""
+        nonlocal first_text_sent, skip_detected
+
+        # Check for SKIP on the very first text block (channel relevance filter)
+        if not first_text_sent and text_block.strip() == "SKIP":
+            skip_detected = True
+            return
+
+        all_texts.append(text_block)
+
+        # Auto-upload any file paths mentioned
+        for fp_match in file_pattern.findall(text_block):
+            fp = Path(fp_match.strip())
+            if fp.exists() and fp.is_file():
+                upload_file_to_slack(str(fp), channel, thread_ts=thread_ts)
+                logger.info(f"Auto-uploaded file from response: {fp}")
+
+        # Post to Slack
+        slack_text = md_to_slack(text_block)
+        for chunk in chunk_message(slack_text):
+            slack_client.chat_postMessage(
+                channel=channel, text=chunk, thread_ts=thread_ts,
+            )
+        first_text_sent = True
 
     start = time.time()
     try:
-        response_text, new_session_id = call_claude(text, session_id)
+        new_session_id = call_claude_streaming(text, session_id, on_text)
     except subprocess.TimeoutExpired:
         minutes = CLAUDE_TIMEOUT // 60
         try: slack_client.reactions_remove(channel=channel, name="eyes", timestamp=msg_ts)
@@ -468,7 +559,7 @@ def process_message_async(event: dict) -> None:
     duration = time.time() - start
 
     # If Claude decided not to respond (channel messages only), stay silent
-    if response_text.strip() == "SKIP":
+    if skip_detected:
         try: slack_client.reactions_remove(channel=channel, name="eyes", timestamp=msg_ts)
         except Exception: pass
         logger.info(f"Skipped message from {user_id} in {channel} (not relevant)")
@@ -478,29 +569,14 @@ def process_message_async(event: dict) -> None:
     if new_session_id and thread_ts:
         _save_session(thread_ts, new_session_id)
 
-    # Detect file paths in response and upload them
-    file_pattern = re.compile(r'(?:^|\s)(/(?:Users|tmp|var)[^\s\'"<>|*?]+\.(?:png|jpg|jpeg|gif|svg|webp|pdf|csv|xlsx|json|txt|html|zip|tar|gz|mp3|mp4|mov))', re.IGNORECASE | re.MULTILINE)
-    file_matches = file_pattern.findall(response_text)
-    for file_path in file_matches:
-        fp = Path(file_path.strip())
-        if fp.exists() and fp.is_file():
-            upload_file_to_slack(str(fp), channel, thread_ts=thread_ts)
-            logger.info(f"Auto-uploaded file from response: {fp}")
-
-    # Send response
-    slack_text = md_to_slack(response_text)
-    for chunk in chunk_message(slack_text):
-        slack_client.chat_postMessage(
-            channel=channel, text=chunk, thread_ts=thread_ts,
-        )
-
     # Remove eyes reaction
     try:
         slack_client.reactions_remove(channel=channel, name="eyes", timestamp=msg_ts)
     except Exception:
         pass
 
-    audit_interaction(event, response_text, duration, new_session_id)
+    full_response = "\n\n".join(all_texts)
+    audit_interaction(event, full_response, duration, new_session_id)
     logger.info(f"Responded to {user_id} in {duration:.1f}s ({len(response_text)} chars)")
 
 

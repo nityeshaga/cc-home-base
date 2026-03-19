@@ -62,12 +62,14 @@ Preferences are stored in `${CLAUDE_PLUGIN_DATA}/inbox-preferences.md`. This fil
 Check if `${CLAUDE_PLUGIN_DATA}/inbox-preferences.md` exists. If it doesn't, this is the first time. Run the calibration flow:
 
 **Step 1: Learn archiving behavior by observation**
-1. Fetch the last 50 emails in the inbox: `gws gmail users messages list --params '{"userId": "me", "maxResults": 50, "labelIds": ["INBOX"]}'`
-2. Show the user a summary — sender, subject, date for each
-3. Ask: "Go ahead and archive the ones you don't need. I'll watch and learn."
-4. Wait for the user to archive manually
-5. Fetch the inbox again. Compare the two states. The messages that disappeared were archived.
-6. Analyze what was archived — senders, domains, subject patterns, keywords. Infer rules: "User archives all emails from @notifications.github.com", "User archives marketing emails with 'unsubscribe'", "User keeps emails from real people."
+1. Fetch the last 50 emails in the inbox
+2. Save the full list (message ID, sender, subject, date) to a temp file — this is your ground truth. Do not rely on memory for the diff.
+3. Show the user a summary — sender, subject, date for each
+4. Ask: "Go ahead and archive the ones you don't need. I'll watch and learn."
+5. Wait for the user to archive manually
+6. Fetch the inbox again. Save this second list to another temp file.
+7. Diff the two files to find exactly which messages were archived. Use the files — do not guess from memory.
+8. Analyze what was archived — senders, domains, subject patterns, keywords. Infer rules: "User archives all emails from @notifications.github.com", "User archives marketing emails with 'unsubscribe'", "User keeps emails from real people."
 
 **Step 2: Learn drafting style from sent emails**
 1. Fetch the last 100 sent emails: `gws gmail users messages list --params '{"userId": "me", "maxResults": 100, "labelIds": ["SENT"]}'`
@@ -164,10 +166,11 @@ Structured sections with freeform rules inside each — organized enough to scan
 
 On every subsequent run:
 1. Read `${CLAUDE_PLUGIN_DATA}/inbox-preferences.md`
-2. For each unread message, check the rules across all sections
-3. Apply what matches — archive, label, draft, surface, unsubscribe, or ask
-4. If no rule matches, use your judgment — archive obvious junk, surface anything that looks important
-5. When you make a judgment call on something new, consider adding it as a rule for next time
+2. Fetch all emails from the last 72 hours across all managed accounts — this is your working window. Anything older that wasn't caught before is the user's problem, not yours.
+3. For each unread message in that window, check the rules across all sections
+4. Apply what matches — archive, label, draft, surface, unsubscribe, or ask
+5. If no rule matches, use your judgment — archive obvious junk, surface anything that looks important
+6. When you make a judgment call on something new, consider adding it as a rule for next time
 
 ### Ongoing: Updating preferences
 

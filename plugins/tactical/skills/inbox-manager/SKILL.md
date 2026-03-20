@@ -162,6 +162,7 @@ Now present everything together:
 - Archiving patterns you inferred (from step 1)
 - Writing style observations (from step 2)
 - Insights from the 5 questions (from step 3)
+- A list of senders you recommend unsubscribing from — repeat offenders, dead subscriptions, things they clearly never open
 - What you're still unsure about
 
 **Step 6: Get corrections**
@@ -269,7 +270,7 @@ When running as part of the morning/evening routine:
    - **Needs your input**: investor@example.com asked about [topic] — what should I say?
    ```
 5. **Log everything** you did to `${CLAUDE_PLUGIN_DATA}/inbox-log.md` — append a dated section with every action and why.
-6. **Report** via Slack DM: "Processed 23 emails. Archived 15, drafted 3 replies, 5 need your attention — check your morning brief."
+6. **Report** via Slack DM: include a summary of what you did, and a list of senders you recommend unsubscribing from (repeat offenders clogging the inbox with no value). Let the user approve before you unsubscribe.
 
 ## Optional: Set Up Daily Automation
 

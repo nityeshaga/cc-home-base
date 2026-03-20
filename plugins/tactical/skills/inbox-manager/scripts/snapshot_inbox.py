@@ -17,7 +17,7 @@ def fetch_inbox(max_results=50):
     """Fetch inbox message IDs and metadata."""
     result = subprocess.run(
         ['gws', 'gmail', 'users', 'messages', 'list', '--params',
-         json.dumps({"userId": "me", "labelIds": ["INBOX"], "maxResults": max_results})],
+         json.dumps({"userId": "me", "q": "in:inbox category:primary", "maxResults": max_results})],
         capture_output=True, text=True
     )
     data = json.loads(result.stdout)

@@ -10,7 +10,7 @@ Manage email using the `gws` CLI. Keep inboxes clean, surface what matters, draf
 
 ## Tools
 
-The Google Workspace CLI is already installed and authenticated:
+The Google Workspace CLI is already installed and authenticated. You should also have the gws-gmail skill handy (if not install it via `npx skills add https://github.com/googleworkspace/cli/tree/main/skills/gws-gmail`).
 
 ```bash
 # Triage — show unread inbox summary
@@ -63,12 +63,26 @@ Check if `${CLAUDE_PLUGIN_DATA}/inbox-preferences.md` exists. If it doesn't, thi
 
 **Step 1: Learn archiving behavior by observation**
 
-- fetch the last 50 emails in their inbox
-- save the list in a temp file - this is the current state to tell you what's in their, is it read/unread
-- ask them to archive the last 50 emails so you can observe them and learn the pattern
-- when they are done, fetch the inbox again and save the new 50 email list in another temp file
-- now diff the previous file with the new file - to understand what happened - think hard - you'll probably see a new set of 50 emails except the ones they kept in their inbox from the first list - that's the signal
-- now infer rules
+Use the snapshot script at `${CLAUDE_PLUGIN_ROOT}/skills/inbox-manager/scripts/snapshot_inbox.py`:
+
+```bash
+# 1. Take a snapshot of the current inbox (saves to /tmp/inbox_before_*)
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/inbox-manager/scripts/snapshot_inbox.py" before
+
+# 2. Show the user the snapshot
+cat /tmp/inbox_before_snapshot.txt
+
+# 3. Ask them to archive the ones they don't need. Wait.
+
+# 4. Take a second snapshot after they're done
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/inbox-manager/scripts/snapshot_inbox.py" after
+
+# 5. Diff the two — shows what was archived vs kept
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/inbox-manager/scripts/snapshot_inbox.py" diff
+```
+
+- Read `/tmp/inbox_diff.json` for the structured diff — it tells you exactly which emails were archived and which were kept - if the user archived everything, the 2 files would be completely different but that's usually not the case. that's your clue.
+- Now infer rules from the diff — senders, domains, subject patterns, read/unread status, purpose
 
 **Step 2: Learn drafting style from sent emails**
 1. Fetch 100 sent emails over the last year or so 
@@ -185,6 +199,26 @@ If a user corrects you, update the rule and acknowledge: "Updated — I won't ar
 
 Preferences compound. Every correction makes you better. Every new instruction fills a gap.
 
+### Activity Log
+
+Every action you take gets logged to `${CLAUDE_PLUGIN_DATA}/inbox-log.md`. This is a running log across all daily runs — append only, never overwrite. If something goes wrong or someone asks "why did you archive that?", this is where you investigate.
+
+Each daily run starts with a header and logs every action:
+
+```markdown
+## 2026-03-19 — Morning Run
+
+- **Archived** newsletter@substack.com — "Weekly Digest #42" (rule: archive substack)
+- **Archived** notifications@github.com — "PR #123 merged" (rule: archive github notifications)
+- **Drafted reply** to client@example.com — "Re: Onboarding timeline" (surfaced in morning brief)
+- **Surfaced** investor@example.com — "Follow-up on Series A" (rule: always surface investors)
+- **Unsubscribed** promo@randomservice.com (user requested 2026-03-18)
+- **Skipped** mom@gmail.com — "Photos from Sunday" (rule: don't touch)
+- **Judgment call** → archived unknown-sender@marketing.io — "Limited time offer!" (looks like spam)
+```
+
+Log every action with: what you did, who/what it was about, and why (which rule triggered it or "judgment call"). This makes the system auditable and debuggable.
+
 ## The Triage Flow
 
 When running as part of the morning/evening routine:
@@ -205,7 +239,8 @@ When running as part of the morning/evening routine:
    - **Draft ready for review**: Reply to client@example.com about [topic] — check drafts in Gmail
    - **Needs your input**: investor@example.com asked about [topic] — what should I say?
    ```
-5. **Report** via Slack DM: "Processed 23 emails. Archived 15, drafted 3 replies, 5 need your attention — check your morning brief."
+5. **Log everything** you did to `${CLAUDE_PLUGIN_DATA}/inbox-log.md` — append a dated section with every action and why.
+6. **Report** via Slack DM: "Processed 23 emails. Archived 15, drafted 3 replies, 5 need your attention — check your morning brief."
 
 ## Optional: Set Up Daily Automation
 

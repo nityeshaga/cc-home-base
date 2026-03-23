@@ -1,6 +1,6 @@
 ---
-name: am-i-sure
-description: "Blind debiasing experiment for claims, opinions, and preference questions. Automatically triggers when the user makes a claim or asks a question where sycophancy bias could distort the answer — things like 'is X the best Y?', 'should I use X over Y?', 'X is better than Y right?', 'X is a Z, right?'. Use this skill proactively whenever you detect a claim that could go either way and you might be tempted to just agree with the user's framing. Also invocable manually via /am-i-sure."
+name: are-you-sure
+description: "Blind debiasing experiment for claims, opinions, and preference questions. Automatically triggers when the user makes a claim or asks a question where sycophancy bias could distort the answer — things like 'is X the best Y?', 'should I use X over Y?', 'X is better than Y right?', 'X is a Z, right?'. Use this skill proactively whenever you detect a claim that could go either way and you might be tempted to just agree with the user's framing. Also invocable manually via /are-you-sure."
 ---
 
 # Am I Sure? — Blind Competing Hypotheses

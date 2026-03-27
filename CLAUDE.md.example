@@ -98,14 +98,77 @@ You can call any Slack SDK method this way — list users, read message history,
 
 You have access to Google&#x27;s Gemini API for image generation. The API key is available as the `GEMINI_API_KEY` environment variable.
 
+## Browsing the web
+
+You have two browser tools. Pick the right one for the job:
+
+| Tool | When to use |
+|---|---|
+| **dev-browser** (CLI) | Browsing as Nityesh — anything that needs his logged-in sessions (X/Twitter, Stripe, Render, admin panels, etc.) |
+| **agent-browser** (skill) | General browser use — debugging UI issues, testing pages, scraping public sites, anything that doesn't need Nityesh's auth |
+
+### dev-browser — Nityesh's logged-in Chrome
+
+`dev-browser` connects to Chrome via CDP (Chrome DevTools Protocol) and runs sandboxed JS with full Playwright Page API access. It uses a copy of Nityesh's Chrome profile, so all his sessions/cookies are available.
+
+**Setup (run once per session — Chrome must be restarted with CDP enabled):**
+
+```bash
+# 1. Kill any running Chrome
+pkill -f "Google Chrome"; sleep 3
+
+# 2. Copy Nityesh's Chrome profile to a separate directory
+mkdir -p /tmp/chrome-debug-profile
+cp -a "$HOME/Library/Application Support/Google/Chrome/Default" /tmp/chrome-debug-profile/
+cp -a "$HOME/Library/Application Support/Google/Chrome/Local State" /tmp/chrome-debug-profile/
+
+# 3. Launch Chrome with remote debugging + extensions disabled
+#    (extensions disabled because a site-blocker extension blocks some sites)
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
+  --remote-debugging-port=9222 \
+  --user-data-dir="/tmp/chrome-debug-profile" \
+  --disable-extensions \
+  &>/dev/null &
+
+# 4. Verify CDP is listening
+sleep 5 && curl -s http://localhost:9222/json/version
+```
+
+**Why the profile copy?** Chrome refuses `--remote-debugging-port` on the default data directory. Copying the profile to `/tmp/chrome-debug-profile` preserves sessions while satisfying Chrome's requirement.
+
+**Usage:**
+
+```bash
+# Navigate and screenshot
+echo '
+const page = await browser.getPage("main");
+await page.goto("https://x.com/home");
+await page.waitForTimeout(3000);
+await page.screenshot({ path: "screenshot.png" });
+' | dev-browser --connect
+
+# Screenshots are saved in ~/.dev-browser/tmp/
+cp ~/.dev-browser/tmp/screenshot.png /tmp/screenshot.png
+```
+
+**Key constraints:**
+- Screenshots must use **relative paths** (sandbox restriction) — files end up in `~/.dev-browser/tmp/`
+- Always use `--connect` flag to attach to the running Chrome instance
+- The profile copy is a snapshot — if Nityesh logs into something new in his main Chrome, re-copy the profile
+
+### agent-browser — general browser use
+
+Use the `agent-browser` skill for tasks that don't need Nityesh's login: debugging CC's UI, testing public pages, general web scraping. It launches its own browser instance via Playwright.
+
 ## Google Workspace (`gws`)
 
-You have `gws` installed — a CLI for all Google Workspace APIs. You manage three Gmail accounts:
+You have `gws` installed — a CLI for all Google Workspace APIs. You manage four Gmail accounts:
 
 | Account | Credentials file | Usage |
 |---|---|---|
 | nityeshagarwal@gmail.com | `~/.config/gws/nityesh-personal.json` | Nityesh&#x27;s personal email |
 | nityesh@every.to | `~/.config/gws/nityesh-work.json` | Nityesh&#x27;s work email (Every Consulting) |
+| piyushagarwal5050@gmail.com | `~/.config/gws/piyush.json` | Piyush&#x27;s personal email |
 | luoji.claude@gmail.com | `~/.config/gws/luoji.json` | Your own email |
 
 ### Switching accounts
@@ -118,11 +181,11 @@ rm -f ~/.config/gws/token_cache.json
 GOOGLE_WORKSPACE_CLI_CREDENTIALS_FILE=~/.config/gws/nityesh-personal.json gws gmail users messages list --params &#x27;{&quot;userId&quot;: &quot;me&quot;, &quot;maxResults&quot;: 5}&#x27;
 ```
 
-Or set both inline for one-off commands:
+### Re-authenticating accounts
 
-```bash
-rm -f ~/.config/gws/token_cache.json &amp;&amp; GOOGLE_WORKSPACE_CLI_CREDENTIALS_FILE=~/.config/gws/nityesh-work.json gws gmail users messages list --params &#x27;{&quot;userId&quot;: &quot;me&quot;, &quot;maxResults&quot;: 5}&#x27;
-```
+When a refresh token expires or gets revoked, re-authenticate:
+1. Run `gws auth login` and complete the browser OAuth flow for the target account
+2. Re-export: `gws auth export --unmasked > ~/.config/gws/&lt;account-file&gt;.json`
 
 ### Important: always verify the account
 
@@ -138,6 +201,7 @@ These are set in `~/.zshrc` but only work in interactive shells, not in Claude C
 
 - `gws-personal` → nityeshagarwal@gmail.com (default)
 - `gws-work` → nityesh@every.to
+- `gws-piyush` → piyushagarwal5050@gmail.com
 - `gws-luoji` → luoji.claude@gmail.com
 
 ## Scheduling

@@ -359,6 +359,22 @@ def download_slack_files(event: dict) -> list[Path]:
     return downloaded
 
 
+# Regex for detecting file paths in messages (shared across interactive & proactive)
+FILE_PATH_PATTERN = re.compile(
+    r'(?:^|\s)(/(?:Users|tmp|var)[^\s\'"<>|*?]+\.(?:png|jpg|jpeg|gif|svg|webp|pdf|csv|xlsx|json|txt|html|zip|tar|gz|mp3|mp4|mov))',
+    re.IGNORECASE | re.MULTILINE,
+)
+
+
+def _auto_upload_files(text: str, channel: str, thread_ts: str | None = None) -> None:
+    """Scan text for file paths and upload any that exist to Slack."""
+    for fp_match in FILE_PATH_PATTERN.findall(text):
+        fp = Path(fp_match.strip())
+        if fp.exists() and fp.is_file():
+            upload_file_to_slack(str(fp), channel, thread_ts=thread_ts)
+            logger.info(f"Auto-uploaded file from response: {fp}")
+
+
 def upload_file_to_slack(
     file_path: str,
     channel: str,
@@ -451,6 +467,9 @@ def send_dm(
 
     effective_thread_ts = thread_ts or parent_ts
 
+    # Auto-upload any file paths mentioned in the message
+    _auto_upload_files(message, channel_id, thread_ts=effective_thread_ts)
+
     if session_id and effective_thread_ts:
         _save_session(effective_thread_ts, session_id)
 
@@ -481,6 +500,9 @@ def send_to_channel(
             parent_ts = result["ts"]
 
     effective_thread_ts = thread_ts or parent_ts
+
+    # Auto-upload any file paths mentioned in the message
+    _auto_upload_files(message, channel, thread_ts=effective_thread_ts)
 
     if session_id and effective_thread_ts:
         _save_session(effective_thread_ts, session_id)
@@ -550,11 +572,6 @@ def process_message_async(event: dict) -> None:
     first_text_sent = False
     skip_detected = False
 
-    file_pattern = re.compile(
-        r'(?:^|\s)(/(?:Users|tmp|var)[^\s\'"<>|*?]+\.(?:png|jpg|jpeg|gif|svg|webp|pdf|csv|xlsx|json|txt|html|zip|tar|gz|mp3|mp4|mov))',
-        re.IGNORECASE | re.MULTILINE,
-    )
-
     def on_text(text_block: str):
         """Called for each text block Claude produces — post it to Slack immediately."""
         nonlocal first_text_sent, skip_detected
@@ -567,11 +584,7 @@ def process_message_async(event: dict) -> None:
         all_texts.append(text_block)
 
         # Auto-upload any file paths mentioned
-        for fp_match in file_pattern.findall(text_block):
-            fp = Path(fp_match.strip())
-            if fp.exists() and fp.is_file():
-                upload_file_to_slack(str(fp), channel, thread_ts=thread_ts)
-                logger.info(f"Auto-uploaded file from response: {fp}")
+        _auto_upload_files(text_block, channel, thread_ts=thread_ts)
 
         # Post to Slack
         slack_text = md_to_slack(text_block)

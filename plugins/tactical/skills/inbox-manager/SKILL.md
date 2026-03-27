@@ -127,7 +127,7 @@ python3 "${CLAUDE_PLUGIN_ROOT}/skills/inbox-manager/scripts/snapshot_inbox.py" d
 - Now infer rules from the diff — senders, domains, subject patterns, read/unread status, purpose
 
 **Step 2: Learn drafting style from sent emails**
-1. Fetch 100 sent emails over the last year or so 
+1. Fetch 100 sent emails over the last year or so
 2. Read a diverse sample — look for variety: replies to strangers vs teammates, long vs short, formal vs casual, technical vs personal
 3. Infer patterns, contrasts and commonalities: typical greeting style, sign-off, tone, formality level, how they handle different types of conversations
 4. Note the email style
@@ -157,7 +157,7 @@ Ask one question, wait for the answer, then ask the next. Don't dump all 5 at on
 
 Before presenting your findings, go deeper. Sample 50-200 emails from across the last 3 years — not sequentially, but spread out. Use search queries with different date ranges to get variety:
 
-For each email, read the sender name, subject line, body text, and date. You're building a detailed understanding. 
+For each email, read the sender name, subject line, body text, and date. You're building a detailed understanding.
 
 How detailed? Something to the tune of this:
 

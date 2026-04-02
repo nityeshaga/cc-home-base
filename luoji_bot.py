@@ -30,6 +30,7 @@ import tempfile
 import threading
 import time
 import urllib.request
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -90,6 +91,7 @@ if not PROJECT_DIR:
 CLAUDE_TIMEOUT = int(os.environ.get("CLAUDE_TIMEOUT", "1800"))  # 30 min default
 MAX_SLACK_MSG_LEN = 3900
 PORT = int(os.environ.get("PORT", "3000"))
+BOT_USER_ID = "U0AMLHELFRP"
 
 # ---------------------------------------------------------------------------
 # Slack app (with signing secret for request verification)
@@ -126,12 +128,57 @@ def _get_user_name(user_id: str) -> str:
 
 
 
+def _fetch_thread_context(channel: str, thread_ts: str, current_msg_ts: str) -> str | None:
+    """Fetch all prior messages in a thread and format them as context for Claude.
+
+    Returns a formatted string of the conversation history, or None if there's
+    nothing useful (e.g., the thread has only the current message).
+    Excludes the current message (it's already in the prompt) and bot messages
+    that are Claude's own responses (to avoid echoing back our own output).
+    """
+    try:
+        result = slack_client.conversations_replies(
+            channel=channel, ts=thread_ts, limit=50,
+        )
+        messages = result.get("messages", [])
+    except Exception as e:
+        logger.warning(f"Failed to fetch thread history: {e}")
+        return None
+
+    if len(messages) <= 1:
+        return None
+
+    lines = []
+    for msg in messages:
+        msg_ts = msg.get("ts", "")
+        # Skip the current inbound message — it's already the prompt
+        if msg_ts == current_msg_ts:
+            continue
+
+        msg_user = msg.get("user", "")
+        msg_text = msg.get("text", "").strip()
+        if not msg_text:
+            continue
+
+        if msg_user == BOT_USER_ID:
+            lines.append(f"[You (Luo Ji)] said:\n{msg_text}")
+        else:
+            name = _get_user_name(msg_user)
+            lines.append(f"[{name}] said:\n{msg_text}")
+
+    if not lines:
+        return None
+
+    return "\n\n".join(lines)
+
+
 # ---------------------------------------------------------------------------
 # Session store: thread_ts → Claude session_id (file-backed)
 # ---------------------------------------------------------------------------
 
 SESSION_FILE = LOG_DIR / ".sessions.json"
 MAX_SESSIONS = 200
+_session_file_lock = threading.Lock()
 
 
 def _load_sessions() -> dict:
@@ -142,16 +189,207 @@ def _load_sessions() -> dict:
 
 
 def _save_session(thread_ts: str, session_id: str) -> None:
-    sessions = _load_sessions()
-    sessions[thread_ts] = session_id
-    if len(sessions) > MAX_SESSIONS:
-        for key in sorted(sessions.keys())[:-MAX_SESSIONS]:
-            del sessions[key]
-    SESSION_FILE.write_text(json.dumps(sessions))
+    with _session_file_lock:
+        sessions = _load_sessions()
+        sessions[thread_ts] = session_id
+        if len(sessions) > MAX_SESSIONS:
+            for key in sorted(sessions.keys())[:-MAX_SESSIONS]:
+                del sessions[key]
+        SESSION_FILE.write_text(json.dumps(sessions))
 
 
 def _get_session(thread_ts: str) -> str | None:
     return _load_sessions().get(thread_ts)
+
+
+# ---------------------------------------------------------------------------
+# Live session management: long-lived Claude processes with stream-json I/O
+# ---------------------------------------------------------------------------
+
+IDLE_TIMEOUT = 1800  # 30 minutes — kill process if no messages
+MAX_LIVE_SESSIONS = 5  # max concurrent Claude processes (memory guard)
+
+
+@dataclass
+class LiveSession:
+    """A long-lived Claude CLI process attached to a Slack thread."""
+    proc: subprocess.Popen
+    session_id: str | None = None
+    stdin_lock: threading.Lock = field(default_factory=threading.Lock)
+    last_activity: float = field(default_factory=time.time)
+    channel: str = ""
+    thread_ts: str = ""
+    # Serializes the full send→wait cycle so only one message at a time
+    # is being actively processed. Other messages queue in the CLI's stdin.
+    turn_lock: threading.Lock = field(default_factory=threading.Lock)
+    # Callback for posting text blocks to Slack
+    _on_text: callable = field(default=None, repr=False)
+    # Event that signals when a turn (result) is complete
+    _turn_done: threading.Event = field(default_factory=threading.Event)
+
+
+# thread_ts → LiveSession
+_live_sessions: dict[str, LiveSession] = {}
+_live_sessions_lock = threading.Lock()
+
+
+def _spawn_claude_process(session_id: str | None = None) -> subprocess.Popen:
+    """Spawn a long-lived Claude CLI process with stream-json I/O."""
+    cmd = [
+        "claude",
+        "-p", "",
+        "--input-format", "stream-json",
+        "--output-format", "stream-json",
+        "--verbose",
+        "--permission-mode", "bypassPermissions",
+        "--model", "claude-opus-4-6[1m]",
+        "--effort", "medium",
+    ]
+    if session_id:
+        cmd.extend(["--resume", session_id])
+
+    stderr_tmp = tempfile.NamedTemporaryFile(
+        mode="w+", suffix=".stderr", delete=False
+    )
+
+    proc = subprocess.Popen(
+        cmd,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=stderr_tmp,
+        text=True,
+        cwd=PROJECT_DIR,
+    )
+    logger.info(f"Spawned Claude process pid={proc.pid} (resume={session_id or 'none'})")
+    return proc
+
+
+def _reader_loop(session: LiveSession) -> None:
+    """Read stdout from a live Claude process and post responses to Slack.
+
+    Runs in a dedicated thread for each live session.
+    """
+    try:
+        for line in session.proc.stdout:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                data = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+
+            msg_type = data.get("type")
+
+            if msg_type == "system":
+                # Pick up session_id from init message
+                sid = data.get("session_id")
+                if sid:
+                    session.session_id = sid
+
+            elif msg_type == "assistant":
+                content = data.get("message", {}).get("content", [])
+                for block in content:
+                    if isinstance(block, dict) and block.get("type") == "text":
+                        text = block.get("text", "").strip()
+                        if text and session._on_text:
+                            session._on_text(text)
+
+            elif msg_type == "result":
+                sid = data.get("session_id")
+                if sid:
+                    session.session_id = sid
+                    _save_session(session.thread_ts, sid)
+                # Signal that this turn is complete
+                session._turn_done.set()
+
+    except Exception as e:
+        logger.error(f"Reader loop error for thread {session.thread_ts}: {e}")
+    finally:
+        # Process ended — clean up
+        logger.info(f"Reader loop ended for thread {session.thread_ts} (pid={session.proc.pid})")
+        with _live_sessions_lock:
+            _live_sessions.pop(session.thread_ts, None)
+
+
+def _get_or_create_live_session(thread_ts: str, channel: str) -> LiveSession:
+    """Get an existing live session or create a new one for a thread."""
+    with _live_sessions_lock:
+        session = _live_sessions.get(thread_ts)
+        if session and session.proc.poll() is None:
+            # Process is still alive
+            session.last_activity = time.time()
+            return session
+
+        # Need a new process — check if we should evict an old one first
+        if len(_live_sessions) >= MAX_LIVE_SESSIONS:
+            # Kill the oldest idle session
+            oldest_ts = min(_live_sessions, key=lambda k: _live_sessions[k].last_activity)
+            oldest = _live_sessions.pop(oldest_ts)
+            logger.info(f"Evicting idle session for thread {oldest_ts} (pid={oldest.proc.pid})")
+            try:
+                oldest.proc.stdin.close()
+                oldest.proc.wait(timeout=10)
+            except Exception:
+                oldest.proc.kill()
+
+        # Look up saved session_id for resumption
+        saved_session_id = _get_session(thread_ts)
+
+        proc = _spawn_claude_process(session_id=saved_session_id)
+        session = LiveSession(
+            proc=proc,
+            session_id=saved_session_id,
+            channel=channel,
+            thread_ts=thread_ts,
+        )
+        _live_sessions[thread_ts] = session
+
+        # Start reader thread
+        reader = threading.Thread(
+            target=_reader_loop, args=(session,), daemon=True
+        )
+        reader.start()
+
+        return session
+
+
+def _send_to_claude(session: LiveSession, text: str) -> None:
+    """Send a user message to a live Claude process via stdin."""
+    msg = json.dumps({
+        "type": "user",
+        "session_id": "",
+        "message": {"role": "user", "content": text},
+        "parent_tool_use_id": None,
+    })
+    with session.stdin_lock:
+        session.proc.stdin.write(msg + "\n")
+        session.proc.stdin.flush()
+    session.last_activity = time.time()
+
+
+def _cleanup_idle_sessions() -> None:
+    """Periodically kill Claude processes that have been idle too long."""
+    while True:
+        time.sleep(300)  # check every 5 minutes
+        now = time.time()
+        to_remove = []
+        with _live_sessions_lock:
+            for ts, session in list(_live_sessions.items()):
+                if now - session.last_activity > IDLE_TIMEOUT:
+                    to_remove.append((ts, session))
+
+        for ts, session in to_remove:
+            logger.info(f"Cleaning up idle session for thread {ts} (pid={session.proc.pid})")
+            try:
+                session.proc.stdin.close()
+                session.proc.wait(timeout=15)
+            except Exception:
+                session.proc.kill()
+            if session.session_id:
+                _save_session(ts, session.session_id)
+            with _live_sessions_lock:
+                _live_sessions.pop(ts, None)
 
 
 # ---------------------------------------------------------------------------
@@ -186,104 +424,8 @@ def audit_interaction(
 
 
 # ---------------------------------------------------------------------------
-# Claude CLI
+# Claude CLI (legacy one-shot function removed — now using live sessions above)
 # ---------------------------------------------------------------------------
-
-
-def call_claude_streaming(
-    prompt: str,
-    session_id: str | None,
-    on_text: callable,
-) -> str | None:
-    """Invoke `claude -p` with streaming output, calling on_text for each text block.
-
-    Returns the session_id from the final result message.
-    Uses --output-format stream-json so every assistant text block is emitted
-    as it happens (instead of only the last one).
-    """
-    cmd = [
-        "claude",
-        "-p", prompt,
-        "--output-format", "stream-json",
-        "--verbose",
-        "--permission-mode", "bypassPermissions",
-        "--model", "claude-opus-4-6[1m]",
-        "--effort", "medium",
-    ]
-    if session_id:
-        cmd.extend(["--resume", session_id])
-
-    logger.info(f"Spawning claude CLI streaming (resume={session_id or 'none'})")
-
-    # stderr goes to a file to avoid pipe buffer deadlocks
-    stderr_tmp = tempfile.NamedTemporaryFile(mode="w+", suffix=".stderr", delete=False)
-
-    proc = subprocess.Popen(
-        cmd,
-        stdout=subprocess.PIPE,
-        stderr=stderr_tmp,
-        text=True,
-        cwd=PROJECT_DIR,
-    )
-
-    new_session_id = session_id
-    deadline = time.time() + CLAUDE_TIMEOUT
-
-    try:
-        for line in proc.stdout:
-            if time.time() > deadline:
-                proc.kill()
-                raise subprocess.TimeoutExpired(cmd, CLAUDE_TIMEOUT)
-
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                data = json.loads(line)
-            except json.JSONDecodeError:
-                continue
-
-            msg_type = data.get("type")
-
-            if msg_type == "assistant":
-                content = data.get("message", {}).get("content", [])
-                for block in content:
-                    if isinstance(block, dict) and block.get("type") == "text":
-                        text = block.get("text", "").strip()
-                        if text:
-                            on_text(text)
-
-            elif msg_type == "result":
-                new_session_id = data.get("session_id") or new_session_id
-
-        proc.wait(timeout=30)
-    except subprocess.TimeoutExpired:
-        proc.kill()
-        raise
-    except Exception as e:
-        proc.kill()
-        raise RuntimeError(f"Claude streaming error: {e}")
-    finally:
-        stderr_tmp.close()
-
-    if proc.returncode != 0:
-        try:
-            stderr_text = Path(stderr_tmp.name).read_text().strip()
-        except Exception:
-            stderr_text = "(stderr unavailable)"
-        logger.error(f"Claude CLI failed (rc={proc.returncode}): {stderr_text[:500]}")
-        try:
-            os.unlink(stderr_tmp.name)
-        except OSError:
-            pass
-        raise RuntimeError(f"Claude CLI error: {stderr_text[:300]}")
-
-    try:
-        os.unlink(stderr_tmp.name)
-    except OSError:
-        pass
-
-    return new_session_id
 
 
 # ---------------------------------------------------------------------------
@@ -359,17 +501,28 @@ def download_slack_files(event: dict) -> list[Path]:
     return downloaded
 
 
-# Regex for detecting file paths in messages (shared across interactive & proactive)
-FILE_PATH_PATTERN = re.compile(
-    r'(?:^|\s)(/(?:Users|tmp|var)[^\s\'"<>|*?]+\.(?:png|jpg|jpeg|gif|svg|webp|pdf|csv|xlsx|json|txt|html|zip|tar|gz|mp3|mp4|mov))',
-    re.IGNORECASE | re.MULTILINE,
+# File upload trigger: only paths prefixed with "attach:" are uploaded.
+# Matches "attach:/path/to/file" or "attach:~/path/to/file" (with optional
+# whitespace after the colon). This prevents accidental uploads when file
+# paths are mentioned in normal conversation.
+_ATTACH_PATTERN = re.compile(
+    r'attach:\s*(~/[^\s`\'"<>|*?,]+\.\w+|/(?:Users|tmp|var|home)/[^\s`\'"<>|*?,]+\.\w+)',
+    re.MULTILINE,
 )
 
 
 def _auto_upload_files(text: str, channel: str, thread_ts: str | None = None) -> None:
-    """Scan text for file paths and upload any that exist to Slack."""
-    for fp_match in FILE_PATH_PATTERN.findall(text):
-        fp = Path(fp_match.strip())
+    """Scan text for attach:/path markers and upload matching files to Slack."""
+    seen: set[str] = set()
+    for match in _ATTACH_PATTERN.findall(text):
+        fp_str = match.rstrip('.,;:!?)]`"\'')
+        # Expand tilde to home directory
+        if fp_str.startswith('~'):
+            fp_str = str(Path.home() / fp_str[2:])
+        if fp_str in seen:
+            continue
+        seen.add(fp_str)
+        fp = Path(fp_str)
         if fp.exists() and fp.is_file():
             upload_file_to_slack(str(fp), channel, thread_ts=thread_ts)
             logger.info(f"Auto-uploaded file from response: {fp}")
@@ -524,7 +677,13 @@ def send_to_channel(
 
 
 def process_message_async(event: dict) -> None:
-    """Process a message in a background thread."""
+    """Process a message in a background thread.
+
+    Uses long-lived Claude processes with stream-json I/O. If a process is
+    already running for this thread, the message is piped to its stdin and
+    queued automatically by the CLI. Otherwise a new process is spawned
+    (resuming any prior session for the thread).
+    """
     user_id = event.get("user", "")
     text = event.get("text", "").strip()
     channel = event.get("channel", "")
@@ -545,30 +704,46 @@ def process_message_async(event: dict) -> None:
 
     # Prepend sender attribution so Claude knows who sent this message
     sender_name = _get_user_name(user_id)
+    msg_ts = event.get("ts")
 
     # For channel messages (not DMs), let Claude decide if it should respond
     is_channel = event.get("channel_type") not in ("im", "mpim")
     has_existing_session = _get_session(thread_ts) is not None
-    if is_channel and not has_existing_session:
-        text = (
+
+    # Check if there's already a live process for this thread
+    has_live_process = thread_ts in _live_sessions and _live_sessions[thread_ts].proc.poll() is None
+
+    # If this is a thread reply and we have no saved session AND no live process,
+    # fetch the full thread history so Claude has context on what was said before.
+    is_thread_reply = thread_ts != msg_ts
+    thread_context = None
+    if not has_existing_session and not has_live_process and is_thread_reply:
+        thread_context = _fetch_thread_context(channel, thread_ts, msg_ts)
+
+    if is_channel and not has_existing_session and not has_live_process:
+        prefix = (
             f"You received this message in a public channel from {sender_name} (<@{user_id}>). "
             "Only respond if it's relevant to you or your work. "
             "If it's not relevant, respond with exactly: SKIP\n\n"
-            + text
         )
+        if thread_context:
+            text = prefix + f"Here is the conversation so far in this thread:\n\n{thread_context}\n\n[{sender_name}] now says:\n{text}"
+        else:
+            text = prefix + text
     else:
-        text = f"[{sender_name}] says:\n{text}"
+        if thread_context:
+            text = f"Here is the conversation so far in this thread:\n\n{thread_context}\n\n[{sender_name}] now says:\n{text}"
+        else:
+            text = f"[{sender_name}] says:\n{text}"
 
     # Add eyes reaction as thinking indicator
-    msg_ts = event.get("ts")
     try:
         slack_client.reactions_add(channel=channel, name="eyes", timestamp=msg_ts)
     except Exception:
         pass
 
-    # Call Claude
-    session_id = _get_session(thread_ts)
-    all_texts = []  # collect all text blocks for audit/SKIP check
+    # Get or create a live Claude process for this thread
+    all_texts = []
     first_text_sent = False
     skip_detected = False
 
@@ -596,32 +771,43 @@ def process_message_async(event: dict) -> None:
 
     start = time.time()
     try:
-        new_session_id = call_claude_streaming(text, session_id, on_text)
-    except subprocess.TimeoutExpired:
-        minutes = CLAUDE_TIMEOUT // 60
+        session = _get_or_create_live_session(thread_ts, channel)
+
+        # Acquire turn_lock — this serializes the send→wait cycle.
+        # If another message is already being processed, we block here.
+        # The message is NOT sent to Claude's stdin until it's our turn,
+        # which means the on_text callback is always correct for the
+        # response we're receiving.
+        with session.turn_lock:
+            # Set the callback for this turn and reset the turn-done event
+            session._on_text = on_text
+            session._turn_done.clear()
+
+            # Send the message
+            _send_to_claude(session, text)
+
+            # Wait for this turn to complete (reader thread signals via _turn_done)
+            if not session._turn_done.wait(timeout=CLAUDE_TIMEOUT):
+                # Timed out
+                try: slack_client.reactions_remove(channel=channel, name="eyes", timestamp=msg_ts)
+                except Exception: pass
+                minutes = CLAUDE_TIMEOUT // 60
+                slack_client.chat_postMessage(
+                    channel=channel, thread_ts=thread_ts,
+                    text=f"Sorry, that timed out after {minutes} minutes. Try a simpler question?",
+                )
+                return
+
+    except Exception as e:
         try: slack_client.reactions_remove(channel=channel, name="eyes", timestamp=msg_ts)
         except Exception: pass
-        slack_client.chat_postMessage(
-            channel=channel, thread_ts=thread_ts,
-            text=f"Sorry, that timed out after {minutes} minutes. Try a simpler question?",
-        )
-        return
-    except RuntimeError as e:
-        try: slack_client.reactions_remove(channel=channel, name="eyes", timestamp=msg_ts)
-        except Exception: pass
+        logger.error(f"Error processing message in thread {thread_ts}: {e}")
         slack_client.chat_postMessage(
             channel=channel, thread_ts=thread_ts,
             text=f"Something went wrong: {e}",
         )
         return
-    except FileNotFoundError:
-        try: slack_client.reactions_remove(channel=channel, name="eyes", timestamp=msg_ts)
-        except Exception: pass
-        slack_client.chat_postMessage(
-            channel=channel, thread_ts=thread_ts,
-            text="Claude CLI not found. Make sure `claude` is installed and on PATH.",
-        )
-        return
+
     duration = time.time() - start
 
     # If Claude decided not to respond (channel messages only), stay silent
@@ -631,10 +817,6 @@ def process_message_async(event: dict) -> None:
         logger.info(f"Skipped message from {user_id} in {channel} (not relevant)")
         return
 
-    # Save session
-    if new_session_id and thread_ts:
-        _save_session(thread_ts, new_session_id)
-
     # Remove eyes reaction
     try:
         slack_client.reactions_remove(channel=channel, name="eyes", timestamp=msg_ts)
@@ -642,8 +824,7 @@ def process_message_async(event: dict) -> None:
         pass
 
     full_response = "\n\n".join(all_texts)
-    audit_interaction(event, full_response, duration, new_session_id)
-    logger.info(f"Responded to {user_id} in {duration:.1f}s ({len(response_text)} chars)")
+    audit_interaction(event, full_response, duration, session.session_id)
 
 
 # ---------------------------------------------------------------------------
@@ -656,6 +837,14 @@ def handle_message(event, say):
     """Handle DMs and channel messages."""
     subtype = event.get("subtype")
     if subtype and subtype != "file_share":
+        return
+
+    # Skip @mentions in channels — those are handled by handle_mention() via
+    # the app_mention event.  Without this guard, Slack fires BOTH a "message"
+    # event and an "app_mention" event for the same message, causing duplicate
+    # responses.
+    text = event.get("text", "")
+    if event.get("channel_type") != "im" and "<@U0AMLHELFRP>" in text:
         return
 
     user_id = event.get("user", "")
@@ -772,9 +961,12 @@ def main():
     signal.signal(signal.SIGTERM, lambda s, f: sys.exit(0))
     signal.signal(signal.SIGINT, lambda s, f: sys.exit(0))
 
-    logger.info(f"Luo Ji starting on port {PORT}")
+    logger.info(f"Luo Ji starting on port {PORT} (stream-json v2)")
     logger.info(f"Authorized users: {AUTHORIZED_USERS or 'all'}")
     logger.info(f"Project dir: {PROJECT_DIR}")
+
+    # Start idle session cleanup thread
+    threading.Thread(target=_cleanup_idle_sessions, daemon=True).start()
 
     flask_app.run(host="0.0.0.0", port=PORT)
 
